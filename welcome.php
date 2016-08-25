@@ -1,15 +1,50 @@
 <?php
    include('session.php');
+   error_reporting(0);
+   session_start();
+   if (!isset($_SESSION['username'])){
+   		$_GLOBALS['message'] = 'Session Timeout. Click here to <a href=\"login.php\">Log in</a>';
+
+   }else if (isset($_REQUEST['logout'])) {
+   		unset($_SESSION['username']);
+   		$_GLOBALs['message'] = "You are logged out.";
+   		header('Location:login.php');
+   }
+
 ?>
-<html">
-   
+<html>
+
    <head>
-      <title>Welcome </title>
+      <title>Question Bank </title>
+
+      <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+      <link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
+
    </head>
-   
+
    <body>
-      <h1>Welcome <?php echo $login_session; ?></h1> 
-      <h2><a href = "logout.php">Sign Out</a></h2>
+      <?php
+      	/****************/
+      if (isset($_GLOBALs['message'])){
+        echo "<div class=\"message\">".$_GLOBALS['message']."</div>";
+      }
+
+      ?>
+      <div id="container">
+        <div class="header">
+            <?php require'/include/header.php';?>
+        </div>
+        <div class="nav">
+            <form name="frmwelcome" action="welcome.php" method="post">
+                <ul id="menu">
+                    <?php if (isset($_SESSION['username'])){?>
+                    <li><input type="submit" value="Log Out" name="logout" class="subbtn"/></li>
+                    <?php include '/include/menus.php';?>
+                    <?php }?>
+                </ul>
+            </form>
+        </div>
+      </div>
    </body>
-   
+
 </html>
