@@ -13,22 +13,17 @@
 
 ?>
 <html>
-
    <head>
       <title>Question Bank </title>
-
-      <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+      <meta http-equiv="Content-Type" content="text/html;charset=GB2312"/>
       <link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
-
    </head>
-
    <body>
       <?php
       	/****************/
       if (isset($_GLOBALs['message'])){
         echo "<div class=\"message\">".$_GLOBALS['message']."</div>";
       }
-
       ?>
       <div id="container">
         <div class="header">
@@ -38,7 +33,7 @@
             <form name="frmwelcome" action="welcome.php" method="post">
                 <ul id="menu">
                     <?php if (isset($_SESSION['username'])){?>
-                    <li><input type="submit" value="Log Out" name="logout" class="subbtn"/></li>
+                    <li><input type="submit" value="×¢Ïú" name="logout" class="subbtn"/></li>
                     <?php include '/include/menus.php';?>
                     <?php }?>
                 </ul>

@@ -56,7 +56,7 @@ body{
    }
    .container{
    
-    width:300px;
+    /* width:300px; */
     border: solid 1px #333333;
      align : "center"
     }
@@ -211,4 +211,24 @@ body{
 #primary_nav_wrap ul li:hover > ul
 {
     display:block   
+}
+#page-course table th{
+    padding:4px 5px;
+}
+.no-overflow {
+    overflow: auto;
+    padding-bottom: 1px;
+}
+.no-overflow>.generaltable {
+    margin-bottom: 0;
+}
+table.flexible th, .generaltable th {
+    font-weight: bold;
+}
+table.flexible th, .generaltable th, table.flexible td, .generaltable td {
+    padding: 8px;
+    line-height: 20px;
+    text-align: left;
+    vertical-align: top;
+    border-top: 1px solid #ddd;
 }
