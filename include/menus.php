@@ -1,42 +1,50 @@
-<nav id="primary_nav_wrap">
-    <ul>
-        <li><a href="#">Ê×Ò³</a></li>
-        <li><a href="#">»ù±¾Êý¾Ý¹ÜÀí</a>
-            <ul>
-                <li><a href="<?php echo $CFG->wwwroot.'/course/course.php'?>">¿Î³Ì¹ÜÀí</a></li>
-                <li><a href="">ÖªÊ¶µã¹ÜÀí</a></li>
-                
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div id="navbar" class="navbar-collapse collapse">
+
+    <ul class="nav navbar-nav">
+        <li ><a href="#">é¦–é¡µ</a></li>
+        <li><a href="#">About</a></li>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"  aria-haspopup="true" aria-expanded="false">åŸºæœ¬æ•°æ®ç®¡ç†<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li><a href="<?php echo $CFG->wwwroot.'/course/course.php'?>">è¯¾ç¨‹ç®¡ç†</a></li>
+                <li><a href="">çŸ¥è¯†ç‚¹ç®¡ç†</a></li>
+
             </ul>
         </li>
-        <li><a href="#">ÌâÄ¿¹ÜÀí</a>
-            <ul>
-                <li><a href="">ä¯ÀÀÌâÄ¿</a></li>
-                <li><a href="">Â¼ÈëÌâÄ¿</a></li>
-                <li><a href="">ÐÞ¸ÄÌâÄ¿</a></li>
-                
+        <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"  aria-haspopup="true" aria-expanded="false">é¢˜ç›®ç®¡ç†<span class="caret"></a>
+            <ul class="dropdown-menu">
+                <li><a href="">æµè§ˆé¢˜ç›®</a></li>
+                <li><a href="">å½•å…¥é¢˜ç›®</a></li>
+                <li><a href="">ä¿®æ”¹é¢˜ç›®</a></li>
+
             </ul>
         </li>
-        <li><a href="#">×é¾í¹æÔò¹ÜÀí</a>
-            <ul>
-                <li><a href="">ä¯ÀÀ¹æÔò</a></li>
-                <li><a href="">Â¼Èë¹æÔò</a></li>
-                <li><a href="">ÐÞ¸Ä¹æÔò</a></li>
-                
+        <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"  aria-haspopup="true" aria-expanded="false">ç»„å·è§„åˆ™ç®¡ç†<span class="caret"></a>
+            <ul class="dropdown-menu">
+                <li><a href="">æµè§ˆè§„åˆ™</a></li>
+                <li><a href="">å½•å…¥è§„åˆ™</a></li>
+                <li><a href="">ä¿®æ”¹è§„åˆ™</a></li>
+
             </ul>
         </li>
-        <li><a href="#">×é¾í</a>
-            <ul>
-                <li><a href="">ä¯ÀÀÊÔ¾í</a></li>
-                <li><a href="">×é¾í</a></li>
-                <li><a href="">ÐÞ¸ÄÊÔ¾í</a></li>
-                
+        <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"  aria-haspopup="true" aria-expanded="false">ç»„å·<span class="caret"></a>
+            <ul class="dropdown-menu">
+                <li><a href="">æµè§ˆè¯•å·</a></li>
+                <li><a href="">ç»„å·</a></li>
+                <li><a href="">ä¿®æ”¹è¯•å·</a></li>
+
             </ul>
         </li>
-        <li><a href="#">ÕË»§¹ÜÀí</a>
-            <ul>
-                <li><a href="">¸öÈË×ÊÁÏ</a></li>
-                <li><a href="">ÐÞ¸ÄÃÜÂë</a></li>
+        <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"  aria-haspopup="true" aria-expanded="false">è´¦æˆ·ç®¡ç†<span class="caret"></a>
+            <ul class="dropdown-menu">
+                <li><a href="">ä¸ªäººèµ„æ–™</a></li>
+                <li><a href="">ä¿®æ”¹å¯†ç </a></li>
             </ul>
         </li>
     </ul>
+            </div>
+    </div>
 </nav>

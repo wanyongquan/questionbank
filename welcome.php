@@ -12,11 +12,18 @@
    }
 
 ?>
-<html>
-   <head>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+     <!-- the above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
       <title>Question Bank </title>
-      <meta http-equiv="Content-Type" content="text/html;charset=GB2312"/>
-      <link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
+    <!-- Bootstrap core CSS -->
+    <link href="<?php echo $CFG->wwwroot.'/bootstrap/css/bootstrap.min.css'?>" rel="stylesheet">
+
+<!--       <link rel="stylesheet" type="text/css" href="css/bootstrap.css"/> -->
    </head>
    <body>
       <?php
@@ -33,13 +40,20 @@
             <form name="frmwelcome" action="welcome.php" method="post">
                 <ul id="menu">
                     <?php if (isset($_SESSION['username'])){?>
-                    <li><input type="submit" value="×¢Ïú" name="logout" class="subbtn"/></li>
+                    <li><input type="submit" value="æ³¨é”€" name="logout" class="subbtn"/></li>
                     <?php include '/include/menus.php';?>
                     <?php }?>
                 </ul>
             </form>
         </div>
       </div>
+       <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug
+    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>-->
    </body>
-
 </html>

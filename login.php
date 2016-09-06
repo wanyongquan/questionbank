@@ -1,5 +1,5 @@
 <?php
-	$page_title="Ã‚ø‚œµÕ≥";
+	$page_title="È¢òÂ∫ìÁ≥ªÁªü";
 	$page_keywords="Question Exam";
 	$page_desc="Online Question Bank";
 
@@ -35,10 +35,20 @@
 	}
 
 ?>
-<html>
+
+<!DOCTYPE html>
+<html lang="en">
   <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <!-- the above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
   	<title><?php echo $page_title?></title>
-  	 <meta http-equiv="Content-Type" content="text/html;charset=GB2312"/>
+
+    <!-- Bootstrap core CSS -->
+    <link href="<?php echo $CFG->wwwroot.'/bootstrap/css/bootstrap.min.css'?>" rel="stylesheet">
+
   	<link href="css/bootstrap.css" rel="stylesheet">
   </head>
 
@@ -47,24 +57,28 @@
 		<div class="header">
             <?php require'/include/header.php';?>
         </div>
-            <div style = "background-color:#333333; color:#FFFFFF; padding:3px;"><b>µ«¬º</b></div>
 
-            <div style = "margin:30px">
                <form class = "form-signin" role = "form"
 		            action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']);
 		            ?>" method = "post">
+                    <h2 class="form-signin-heading">Please Sign in</h2>
 		            <h4 class = "form-signin-heading"><?php echo $error; ?></h4>
-		            <label>”√ªß√˚  :</label><br>
-		            <input type = "text" class = "form-control"
-		               name = "username" placeholder = "username = admin"
+		            <label for="inputEmail" class="sr-only">Áî®Êà∑Âêç:</label>
+		            <input type = "text"  id="inputEmail" class = "form-control"
+		               name = "username" placeholder = "username"
 		               required autofocus></br>
-		            <label>√‹¬Î  :</label><br>
-		            <input type = "password" class = "form-control"
-		               name = "password" placeholder = "password = 1234" required><br>
+		            <label for="inputPassword" class="sr-only">ÂØÜ&nbsp;&nbsp;Á†Å:</label>
+		            <input type = "password"  id="inputPassword" class = "form-control"
+		               name = "password" placeholder = "password" required>
+                       <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="remember-me">Remember me
+                            </label>
+                       </div>
 		            <button class = "btn btn-lg btn-primary btn-block" type = "submit"
-		               name = "login">µ«¬º</button>
+		               name = "login">ÁôªÂΩï</button>
 		         </form>
-              <!-- 
+              <!--
               <form action = "" method = "post">
                   <label>UserName  :</label><input type = "text" name = "username" class = "box"/><br /><br />
                   <label>Password  :</label><input type = "password" name = "password" class = "box" /><br/><br />
@@ -72,7 +86,7 @@
                </form>
                 -->
                <div style = "font-size:11px; color:#cc0000; margin-top:10px"><?php echo $error; ?></div>
-            </div>
+
       </div>
   </body>
 </html>
