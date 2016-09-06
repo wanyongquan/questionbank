@@ -11,11 +11,16 @@
         header('Location:login.php');
     }
  ?>
-<html>
-    <head>
-        <title>课程管理</title>
-        <meta http-equiv="Content-Type" content="text/html;charset=GB2312"/>
-        <link rel="stylesheet" type="text/css" href="../css/bootstrap.css"/>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+     <!-- the above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+      <title>Question Bank </title>
+    <!-- Bootstrap core CSS -->
+    <link href="<?php echo $CFG->wwwroot.'/bootstrap/css/bootstrap.min.css'?>" rel="stylesheet">
     </head>
     <?php 
     /****************/
@@ -24,15 +29,12 @@
     }
     ?>
 <div id="container">
-    <div class="header">
-            <?php require('../include/header.php')?>
-        </div>
+
     <div class="nav">
         <form name="frmcourse" action="course.php" method="post">
             <ul id="menu">
                     <?php if (isset($_SESSION['username'])){?>
-                    <li><input type="submit" value="注销" name="logout"
-                    class="subbtn" /></li>
+                    
                     <?php include '../include/menus.php';?>
                     <?php }?>
                 </ul>
@@ -46,21 +48,21 @@
                 <tr>
                     <th class="table-header c0 centeralign" style=""
                         scope="col"><a
-                        href="user.php?sort=coursename&amp;dir=ASC">课程名称</a></th>
+                        href="user.php?sort=coursename&amp;dir=ASC">Course Name</a></th>
                     
-                    <th class="table-header c5" style="" scope="col">编辑</th>
+                    <th class="table-header c5" style="" scope="col">Action</th>
                     <th class="table-header c6 lastcol" style="" scope="col"></th>
                 </tr>
             </thead>
             <tbody>
                 <tr class="lastrow">
                     <td class="centeralign cell c0" style=""><a
-                        href="../user/view.php?id=2&amp;course=1">linux 系统</a></td>
+                        href="../user/view.php?id=2&amp;course=1">linux Core</a></td>
                     
-                    <td class="cell c5" style=""><a title="编辑"
+                    <td class="cell c5" style=""><a title="Edit"
                         href="http://localhost/user/editadvanced.php?id=2&amp;course=1"><img
                             src="<?php echo $CFG->wwwroot.'/images/gear.png'?>"
-                            alt="编辑" class="iconsmall" /></a></td>
+                            alt="edit" class="iconsmall" /></a></td>
                     <td class="cell c6 lastcol" style=""></td>
                 </tr>
             </tbody>

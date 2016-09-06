@@ -33,17 +33,11 @@
       }
       ?>
       <div id="container">
-        <div class="header">
-            <?php require'/include/header.php';?>
-        </div>
         <div class="nav">
             <form name="frmwelcome" action="welcome.php" method="post">
-                <ul id="menu">
-                    <?php if (isset($_SESSION['username'])){?>
-                    <li><input type="submit" value="注销" name="logout" class="subbtn"/></li>
-                    <?php include '/include/menus.php';?>
-                    <?php }?>
-                </ul>
+                <?php include '/include/menus.php';?>
+                
+                
             </form>
         </div>
       </div>

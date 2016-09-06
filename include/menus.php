@@ -45,6 +45,13 @@
             </ul>
         </li>
     </ul>
-            </div>
+        <?php if (isset($_SESSION['username'])){?>
+            <ul class="nav navbar-nav navbar-right">
+                <li><input type="submit" value="注销" name="logout"
+                    class="btn btn-lg btn-primary btn-block" />
+            
+            </ul>
+            <?php }?>
+        </div>
     </div>
 </nav>
