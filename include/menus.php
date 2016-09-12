@@ -9,7 +9,7 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"  aria-haspopup="true" aria-expanded="false">基本数据管理<span class="caret"></span></a>
             <ul class="dropdown-menu">
                 <li><a href="<?php echo $CFG->wwwroot.'/course/course.php'?>">课程管理</a></li>
-                <li><a href="">知识点管理</a></li>
+                <li><a href="<?php echo $CFG->wwwroot.'/keyknowledge/keyknowledge.php'?>">知识点管理</a></li>
 
             </ul>
         </li>

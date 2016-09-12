@@ -2,7 +2,7 @@
     include( '../../config.php');
     if(isset($_POST['coursename']) && isset($_POST['description'])){
         // include database file
-        include($CFG->wwwroot."dblib.php");
+        //include($CFG->wwwroot."/dblib.php");
 
         // get values
         $coursename = $_POST['coursename'];

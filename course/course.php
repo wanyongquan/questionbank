@@ -122,10 +122,10 @@
                             data-dismiss="modal">Cancel</button>
                         <button type="button" class="btn btn-primary"
                             onclick="addCourse()">Add Record</button>
-                    </div>
-            </div>
-        </div>
-    </div>
+                    </div> <!-- End of modal footer -->
+            </div> <!-- End of modal content -->
+        </div> <!-- End of modal dialog -->
+    </div> <!-- End of Modal -->
     <!--  end of modal new course-->
 
     <!-- Modal dialog for edit course -->
