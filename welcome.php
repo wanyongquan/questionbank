@@ -8,7 +8,7 @@
    }else if (isset($_REQUEST['logout'])) {
    		unset($_SESSION['username']);
    		$_GLOBALs['message'] = "You are logged out.";
-   		header('Location:login.php');
+   		header('Location:'.$CFG->wwwroot.'/login.php');
    }
 
 ?>
@@ -32,12 +32,10 @@
         echo "<div class=\"message\">".$_GLOBALS['message']."</div>";
       }
       ?>
-      <div id="container">
+      <div id="container" class="container">
         <div class="nav">
             <form name="frmwelcome" action="welcome.php" method="post">
                 <?php include '/include/menus.php';?>
-                
-                
             </form>
         </div>
       </div>

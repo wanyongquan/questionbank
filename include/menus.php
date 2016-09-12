@@ -3,7 +3,7 @@
         <div id="navbar" class="navbar-collapse collapse">
 
     <ul class="nav navbar-nav">
-        <li ><a href="#">首页</a></li>
+        <li ><a href=<?php echo $CFG->wwwroot."/welcome.php#"?>>首页</a></li>
         <li><a href="#">About</a></li>
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"  aria-haspopup="true" aria-expanded="false">基本数据管理<span class="caret"></span></a>
@@ -49,7 +49,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li><input type="submit" value="注销" name="logout"
                     class="btn btn-lg btn-primary btn-block" />
-            
+
             </ul>
             <?php }?>
         </div>

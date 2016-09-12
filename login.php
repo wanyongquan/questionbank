@@ -63,11 +63,11 @@
 		            ?>" method = "post">
                     <h2 class="form-signin-heading">Please Sign in</h2>
 		            <h4 class = "form-signin-heading"><?php echo $error; ?></h4>
-		            <label for="inputEmail" class="sr-only">用户名:</label>
+		            <label for="inputEmail" >用户名:</label>
 		            <input type = "text"  id="inputEmail" class = "form-control"
 		               name = "username" placeholder = "username"
-		               required autofocus></br>
-		            <label for="inputPassword" class="sr-only">密&nbsp;&nbsp;码:</label>
+		               required autofocus>
+		            <label for="inputPassword" >密码:</label>
 		            <input type = "password"  id="inputPassword" class = "form-control"
 		               name = "password" placeholder = "password" required>
                        <div class="checkbox">
