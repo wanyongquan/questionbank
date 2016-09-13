@@ -3,7 +3,7 @@
     include( '../../config.php');
 
     // check request
-    if (isset($_POST)){
+    if (isset($_POST['id'])){
         // get values from param
         $id = $_POST['id'];
         $coursename = $_POST['coursename'];

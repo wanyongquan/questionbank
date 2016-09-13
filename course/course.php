@@ -176,10 +176,10 @@
                         <button type="button" class="btn btn-primary btn-ok" id="btnConfirmDel"
                             onclick="deleteCourse(this);">Delete</button>
                             <a class="btn btn-danger btn-ok" onclick="deleteCourse(this)">Delete</a>
-                    </div>
-            </div>
-        </div>
-    </div>
+                    </div><!--  end of modal-footer -->
+            </div><!--  end of modal-content -->
+        </div><!--  end of modal-dialog -->
+    </div><!--  end of modal -->
     <!--  end of modal delete course-->
     </div>
     </div>

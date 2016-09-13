@@ -30,72 +30,95 @@
         echo "<div class=\"message\">".$_GLOBALS['message']."</div>";
     }
     ?>
+    <?php if (isset($_SESSION['username'])){?>
+        <?php include '../include/menus.php';?>
+        <?php }?>
         <div class="container">
           <div class="nav">
-            <form name="frmknowledge"  method="post">
-
-                        <?php if (isset($_SESSION['username'])){?>
-
-                        <?php include '../include/menus.php';?>
-                        <?php }?>
+            <form name="frmsubject"  method="post">
 
             </form>
-            <div class="page-knowledge">
-                <h2>Key Knowledge</h2>
-                <div><button class="btn btn-success" data-toggle="modal" data-target="#add_keyknowledge_modal" data-backdrop="false">新增知识点</button></div>
+            <div class="page-subject">
+                <h2>subject</h2>
+                <div><button class="btn btn-success" data-toggle="modal" data-target="#add_subject_modal" data-backdrop="false">新增知识点</button></div>
             </div>
-            <div class="knowledge_content">
-                <!-- knowledge content table starts here -->
+            <div class="subject_content">
+                <!-- subject content table starts here -->
             </div>
           </div>
-          <!-- Modal dialog for add new keyknowledge -->
-          <div id="add_keyknowledge_modal" class="modal fade" role="dialog">
+          <!-- Modal dialog for add new subject -->
+          <div id="add_subject_modal" class="modal fade" role="dialog">
             <div class="modal-dialog">
                 <!--  Modal dialog content -->
                 <div class="modal-content">
                     <div class="modal-header">
-                        <buton type="button" class="close" data-dismiss="modal">&times;</buton>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
                         <h4 class="modal-title">Add New 知识点</h4>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="knowledge_name">Knowledge Name</label>
-                            <input type="text" id="knowledge_name" placeholder="" class="form-control"/>
+                            <label for="subject_name">subject Name</label>
+                            <input type="text" id="subject_name" placeholder="" class="form-control"/>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default"
                             data-dismiss="modal">Cancel</button>
                         <button type="button" class="btn btn-primary"
-                            onclick="addKnowledge()">Add Knowledge</button>
+                            onclick="addSubject()">Add Subject</button>
                     </div> <!-- End of modal footer -->
                 </div><!-- End of modal content -->
             </div> <!-- End of modal dialog -->
           </div> <!-- End of Modal  -->
-          <!-- Modal dialog for edit keyknowledge -->
-          <div id="edit_keyknowledge_modal" class="modal fade" role="dialog">
+
+          <!-- Modal dialog for edit subject -->
+          <div id="edit_subject_modal" class="modal fade" role="dialog">
             <div class="modal-dialog">
                 <!--  Modal dialog content -->
                 <div class="modal-content">
                     <div class="modal-header">
-                        <buton type="button" class="close" data-dismiss="modal">&times;</buton>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
                         <h4 class="modal-title">edit  知识点</h4>
+                        <input type="hidden" id="hidden_subject_id">
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="knowledge_name">Knowledge Name</label>
-                            <input type="text" id="knowledge_name" placeholder="" class="form-control"/>
+                            <label for="edit_subject_name">subject Name</label>
+                            <input type="text" id="edit_subject_name" placeholder="" class="form-control"/>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default"
                             data-dismiss="modal">Cancel</button>
                         <button type="button" class="btn btn-primary"
-                            onclick="addKnowledge()">Save</button>
+                            onclick="updateSubjectDetails()">Save</button>
                     </div> <!-- End of modal footer -->
                 </div><!-- End of modal content -->
             </div> <!-- End of modal dialog -->
           </div> <!-- End of Modal  -->
+
+    <!--  Modal dialog for delete subject  -->
+    <div id="delete_subject_modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!--  Modal dialog content -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"> Delete subject</h4>
+                    <input type="hidden" id="hidden_edit_subject_id">
+                </div>
+                <div class="modal-body">
+                      <p> Do you really want to delete this subject?</p>
+                </div>
+                <div class="modal-footer">
+                        <button type="button" class="btn btn-default"
+                            data-dismiss="modal">No</button>
+                            <a class="btn btn-danger btn-ok" onclick="deleteSubject()">Delete</a>
+                    </div><!--  end of modal-footer -->
+            </div><!--  end of modal-content -->
+        </div><!--  end of modal-dialog -->
+    </div><!--  end of modal -->
+    <!--  end of modal delete subject-->
         </div>
     <!-- Bootstrap core JavaScript
     ================================================== -->
@@ -103,6 +126,6 @@
     <script
         src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="../bootstrap/js/bootstrap.min.js"></script>
-
+    <script src="subject.js" type="text/javascript"></script>
 </body>
 </html>
