@@ -29,19 +29,13 @@
         echo "<div class=\"message\">".$_GLOBALS['message']."</div>";
     }
     ?>
+
+<?php if (isset($_SESSION['username'])){?>
+
+<?php include '../include/menus.php';?>
+<?php }?>
 <div id="container" class="container">
 
-    <div class="nav">
-        <form name="frmcourse" action="course.php" method="post">
-
-                    <?php if (isset($_SESSION['username'])){?>
-
-                    <?php include '../include/menus.php';?>
-                    <?php }?>
-
-        </form>
-
-    </div>
 <div class="no-overflow">
     <div id="page-course">
         <h2>Coureses</h2>
@@ -54,42 +48,7 @@
         </p>
 
         <div class="coursescontent">
-        <table class="table table-striped">
-            <thread>
-             <tr>
-                <th>Course name</th>
-                <th>Description</th>
-                <th>Operations</th>
-             </tr>
-            </thread>
-            <tbody>
-                <tr>
-                    <td>Linux core</td>
-                    <td>deep inside the linux operation system.</td>
-                    <td><a title="Edit"
-                        href="http://localhost/user/editadvanced.php?id=2&amp;course=1"><img
-                            src="<?php echo $CFG->wwwroot.'/images/gear.png'?>"
-                            alt="edit" class="iconsmall" /></a></td>
-                 </tr>
-                 <tr>
-                     <td>Java programming</td>
-                     <td>learn how to programming with java</td>
-                     <td><a title="Edit"
-                        href="http://localhost/user/editadvanced.php?id=2&amp;course=2"><img
-                            src="<?php echo $CFG->wwwroot.'/images/gear.png'?>"
-                            alt="edit" class="iconsmall" /></a></td>
-                  </tr>
-                  <tr>
-                     <td>PHP MySql Web site development</td>
-                     <td>develop a dynamic web site with PHP and mysql</td>
-                     <td><a title="Edit"
-                        href="http://localhost/user/editadvanced.php?id=2&amp;course=2"><img
-                            src="<?php echo $CFG->wwwroot.'/images/gear.png'?>"
-                            alt="edit" class="iconsmall" /></a></td>
-                  </tr>
-                  <!-- getCourses() -->
-            </tbody>
-        </table>
+                  <!-- getCourses() table starts here -->
         </div>
     </div>
 
@@ -98,18 +57,19 @@
         <div class="modal-dialog">
             <!--  Modal dialog content -->
             <div class="modal-content">
+                  <form id="addCourseForm" class="form-horizontal" role="form" method="post">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title"> Add New Course</h4>
                 </div>
                 <div class="modal-body">
                       <div class="form-group">
-                            <label for="first_name">Course Name</label> <input
-                                type="text" id="coursename"
-                                placeholder="Course Name"
-                                class="form-control" />
-                        </div>
+                            <label for="first_name" class=" control-label">Course Name</label>
 
+                            <input   type="text" id="coursename"
+                                placeholder="Course Name"
+                                class="form-control required" />
+                        </div>
                         <div class="form-group">
                             <label for="last_name">Description</label> <input
                                 type="text" id="description"
@@ -120,9 +80,10 @@
                 <div class="modal-footer">
                         <button type="button" class="btn btn-default"
                             data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-primary"
-                            onclick="addCourse()">Add Record</button>
+                        <button type="submit" class="btn btn-primary" id="btnAddCourse"
+                            onclick="addCourse(this)">Add Course</button>
                     </div> <!-- End of modal footer -->
+                      </form>
             </div> <!-- End of modal content -->
         </div> <!-- End of modal dialog -->
     </div> <!-- End of Modal -->
@@ -141,7 +102,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="edit-coursename">Course Name</label>
-                        <input type="text" id="edit_coursename" placeholder="Course Name" class="form-control"/>
+                        <input type="text" id="edit_coursename" placeholder="Course Name" class="form-control" required/>
                     </div>
                     <div class="form-group">
                         <label for="edit-coursedescription">Description</label>
@@ -173,8 +134,6 @@
                 <div class="modal-footer">
                         <button type="button" class="btn btn-default"
                             data-dismiss="modal">No</button>
-                        <button type="button" class="btn btn-primary btn-ok" id="btnConfirmDel"
-                            onclick="deleteCourse(this);">Delete</button>
                             <a class="btn btn-danger btn-ok" onclick="deleteCourse(this)">Delete</a>
                     </div><!--  end of modal-footer -->
             </div><!--  end of modal-content -->

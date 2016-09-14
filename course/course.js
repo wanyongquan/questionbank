@@ -3,11 +3,21 @@
  */
 
 // Add course
-function addCourse(){
+function addCourse(e){
+	return;
 	// get values from page
 	var coursename = $("#coursename").val();
 	var description = $("#description").val();
-	
+	alert('onclick')
+	if(!coursename){
+		// add error highlight
+		//$("#coursename").closest('.form-group').removeClass('has-success').addClass('has-error');
+		// stop submission
+		//e.preventDefault();
+		//return;
+	}else{
+		$("#coursename").closest('.form-group').removeClass('has-error').addClass('has-success');
+	}
 	// handler
 	$.post("ajax/addcourse.php", {
 		coursename:coursename,
@@ -143,4 +153,19 @@ $(document).ready(function() {
 		});
 
 	}
-)
+
+);
+
+$('#addCourseForm').on('submit', function(e){
+	var coursename = $("#coursename");
+	alert('on submit')
+	if (!coursename.val()){
+		$("#coursename").closest('.form-group').removeClass('has-success').addClass('has-error');
+		e.preventDefault();
+		alert('prevent?');
+	}else{
+		$("#coursename").closest('.form-group').removeClass('has-error').addClass('has-success');
+	}
+	
+});
+
