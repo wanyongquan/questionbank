@@ -21,6 +21,7 @@
       <title>Question Bank </title>
     <!-- Bootstrap core CSS -->
     <link href="<?php echo $CFG->wwwroot.'/bootstrap/css/bootstrap.min.css'?>" rel="stylesheet">
+    <link href="../css/bootstrap.css" rel="stylesheet">
     </head>
    <body>
     <?php
@@ -54,36 +55,40 @@
 
     <!--  Modal dialog for add new course  -->
     <div id="add_new_course_modal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
+        <div class="modal-dialog" >
             <!--  Modal dialog content -->
             <div class="modal-content">
-                  <form id="addCourseForm" class="form-horizontal" role="form" method="post">
-                <div class="modal-header">
+                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title"> Add New Course</h4>
                 </div>
                 <div class="modal-body">
-                      <div class="form-group">
-                            <label for="first_name" class=" control-label">Course Name</label>
-
+                  <form id="addCourseForm" class="form-horizontal" role="form" method="post" data-toggle="validator">
+                     <div class="form-group">
+                          <div class="controls">
+                            <label for="first_name" class="col-xs-3 col-md-3 control-label">Course Name</label>
+                            <div class="col-xs-6 col-md-6">
                             <input   type="text" id="coursename"
                                 placeholder="Course Name"
-                                class="form-control required" />
+                                class="form-control" required data-error="Please enter course name"/>
+                            <div class="help-block with-errors"></div>  </div>
+                          </div>
                         </div>
                         <div class="form-group">
-                            <label for="last_name">Description</label> <input
+                            <label for="last_name" class="col-xs-3 control-label">Description</label>
+                            <div class="col-xs-6"> <input
                                 type="text" id="description"
                                 placeholder="Description"
-                                class="form-control" />
+                                class="form-control" /></div>
                         </div>
+                      </form>
                 </div>
                 <div class="modal-footer">
                         <button type="button" class="btn btn-default"
                             data-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-primary" id="btnAddCourse"
-                            onclick="addCourse(this)">Add Course</button>
+                            >Add Course</button>
                     </div> <!-- End of modal footer -->
-                      </form>
             </div> <!-- End of modal content -->
         </div> <!-- End of modal dialog -->
     </div> <!-- End of Modal -->
@@ -147,6 +152,7 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="../bootstrap/js/bootstrap.min.js"></script>
+    <script src="../script/form-validator.min.js" type="text/javascript"></script>
     <script src="course.js"  type="text/javascript"> </script>
     </body>
 </html>

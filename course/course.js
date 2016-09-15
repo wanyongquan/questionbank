@@ -3,7 +3,7 @@
  */
 
 // Add course
-function addCourse(e){
+function addCourse(){
 	return;
 	// get values from page
 	var coursename = $("#coursename").val();
@@ -146,6 +146,9 @@ $(document).ready(function() {
 	// load the course table on page load.
 	reloadCourses();
 	
+	$("#btnAddCourse").on('click', function(){
+		$("#addCourseForm").submit();
+	})
 	$('#delete_course_modal').on('show.bs.modal', function(e){
 		   
 			$(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
@@ -156,16 +159,25 @@ $(document).ready(function() {
 
 );
 
-$('#addCourseForm').on('submit', function(e){
+$("#addCourseForm").validator().on('submit', function(e){
+	
+	if (e.isDefaultPrevented()){
+		// handle error
+		//alert(' has error');
+	}else{
+		event.preventDefault();
+		//call method;
+		alert('cool');
+		addCourse();
+	}
 	var coursename = $("#coursename");
-	alert('on submit')
-	if (!coursename.val()){
+	/*if (!coursename.val()){
 		$("#coursename").closest('.form-group').removeClass('has-success').addClass('has-error');
 		e.preventDefault();
 		alert('prevent?');
 	}else{
 		$("#coursename").closest('.form-group').removeClass('has-error').addClass('has-success');
-	}
+	}*/
 	
 });
 
