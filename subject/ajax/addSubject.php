@@ -1,11 +1,11 @@
 <?php
     include ('../../config.php');
+    
+    if (isset($_POST['subjectname'] )){
+        $subjectname = $_POST['subjectname'];
 
-    if (isset($_POST['knowledgename'] )){
-        $knowledgename = $_POST['knowledgename'];
-
-        $query = "insert into tk_knowledges (knowledgename) values('$knowledgename')";
+        $query = "insert into tk_subjects (subjectname) values('$subjectname')";
         $result = mysqli_query($DB, $query) or die( exit(mysqli_error($DB)) );
 
-        echo ' 1 knowledge added';
+        echo ' 1 subject added';
     }

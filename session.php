@@ -1,5 +1,5 @@
 <?php
-include('config.php');
+include_once 'config.php';
 session_start();
 
 $user_check = $_SESSION['username'];

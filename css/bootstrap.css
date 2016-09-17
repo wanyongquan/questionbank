@@ -18,6 +18,11 @@
   text-align: left;
   vertical-align: middle;
 }
+
+.summarycontent{
+    display:none;
+}
+<!-- -->
 body{
   background:url(images/bg.png) repeat;
    height:auto;
@@ -73,12 +78,7 @@ body{
       text-align: center;
       color: #017572;
    }
-   .container{
-   
-    /* width:300px; */
-    border: solid 1px #333333;
-     align : "center"
-    }
+
     .menubar
 {
      background:#808080 url("images/menu.png") repeat;
@@ -118,11 +118,7 @@ body{
     letter-spacing:3px;
     font-weight:bolder;
  }
-  .nav
-{
-     background:#808080 url("../images/menu.png") repeat;
-     height:2.7em;
-}
+
 .subbtn {
     font-family: Arial, Helvetica, sans-serif;
     background: url("images/btn.png");

@@ -39,7 +39,7 @@
 
 <div class="no-overflow">
     <div id="page-course">
-        <h2>Coureses</h2>
+        <h2>课程</h2>
         <p>
        <!-- <div class="singlebutton">
             <form method="get" action="<?php  echo $CFG->wwwroot.'/course/editadvanced.php'?>">
@@ -60,7 +60,7 @@
             <div class="modal-content">
                  <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title"> Add New Course</h4>
+                    <h4 class="modal-title">新增 课程</h4>
                 </div>
                 <div class="modal-body">
                   <form id="addCourseForm" class="form-horizontal" role="form" method="post" data-toggle="validator">
@@ -101,22 +101,29 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel" >Edit course</h4>
+                    <h4 class="modal-title" id="myModalLabel" >编辑 课程</h4>
                     <input type="hidden" id="hidden_course_id">
                 </div>
                 <div class="modal-body">
+                  <form id="edit_course_form" class="form-horizontal" role="form" method="post" data-toggle="validator">
                     <div class="form-group">
-                        <label for="edit-coursename">Course Name</label>
+                        <label for="edit-coursename" class="col-xs-3">Course Name</label>
+                        <div class="col-xs-6">
                         <input type="text" id="edit_coursename" placeholder="Course Name" class="form-control" required/>
+                        <div class="help-block with-errors"></div>
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label for="edit-coursedescription">Description</label>
+                        <label for="edit-coursedescription" class="col-xs-3">Description</label>
+                        <div class="col-xs-6">
                         <input type="text" id="edit_coursedescription" placeholder = "Description" class="form-control"/>
+                        </div>
                     </div>
+                    </form>
                 </div> <!-- end of moal body -->
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" onclick="updateCourseDetails()">Save</button>
+                    <button type="button" class="btn btn-primary" id="btnEditCourse">Save</button>
                 </div><!--  end of modal-footer -->
             </div><!--  end of modal content -->
         </div><!--  end of modal dialog -->

@@ -4,12 +4,14 @@
 
 // add subject
 function addSubject(){
+	
 	// get values from page
 	var subjectname = $("#subject_name").val();
-	
+	alert('calling addsubject' + subjectname);
 	$.ajax({
 		url:'ajax/addSubject.php',
 		type:'POST',
+		dataType:"text",
 		data:{
 			subjectname:subjectname
 		},
@@ -19,12 +21,12 @@ function addSubject(){
 			
 			// clear field in popup dialog
 			$("#subject_name").val("");
-			
+			alert('success');
 			// load the subject table
-			reloadsubjects();
+			reloadSubjects();
 		},
-		error:function(xhr, textStatus, errorThrown){
-			alert('An error occurred!' + errorThrown);
+		error:function(xhr){
+			alert(xhr.responseText);
 		}
 	}
 	);
@@ -56,7 +58,7 @@ function getSubjectDetails(id){
 
 function updateSubjectDetails(){
 	// get values from page
-	var coursename = $("#edit_subject_name").val();
+	var subjectname = $("#edit_subject_name").val();
 	
 	// get the subject id from hidden field
 	var subjectid = $("#hidden_subject_id").val();
@@ -94,6 +96,15 @@ $(document).ready(function(){
 	// reload subject table
 	reloadSubjects();
 	
+	
+	$("#btnAddSubject").on('click', function(){
+	    alert('submitting new form');
+		$("#add_subject_form").submit();
+	})
+	$("#btnEditSubject").on('click', function(){
+		$("#edit_subject_form").submit();
+	})
+	
 	$('#delete_subject_modal').on('show.bs.modal', function(e){ 
 		//$(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
 		
@@ -102,3 +113,29 @@ $(document).ready(function(){
 
 	}
 )
+
+$("#add_subject_form").validator().on('submit', function(e){
+	
+	if (e.isDefaultPrevented()){
+		// handle error
+	}else{
+		e.preventDefault();
+		//call method;
+		alert('call new');
+		addSubject();
+	}
+	
+});
+$("#edit_subject_form").validator().on('submit', function(e){
+	
+	if (e.isDefaultPrevented()){
+		// handle error
+	}else{
+		event.preventDefault();
+		//call method;
+		
+		updateSubjectDetails();
+	}
+	
+});
+

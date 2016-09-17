@@ -22,6 +22,7 @@
       <title>Question Bank </title>
     <!-- Bootstrap core CSS -->
     <link href="<?php echo $CFG->wwwroot.'/bootstrap/css/bootstrap.min.css'?>" rel="stylesheet">
+    <link href="../css/bootstrap.css" rel="stylesheet">
     </head>
    <body>
     <?php
@@ -34,12 +35,10 @@
         <?php include '../include/menus.php';?>
         <?php }?>
         <div class="container">
-          <div class="nav">
-            <form name="frmsubject"  method="post">
+          <div class="no-overflows">
 
-            </form>
             <div class="page-subject">
-                <h2>subject</h2>
+                <h2>知识点</h2>
                 <div><button class="btn btn-success" data-toggle="modal" data-target="#add_subject_modal" data-backdrop="false">新增知识点</button></div>
             </div>
             <div class="subject_content">
@@ -53,19 +52,24 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Add New 知识点</h4>
+                        <h4 class="modal-title">新增  知识点</h4>
                     </div>
                     <div class="modal-body">
+                    <form id="add_subject_form" class="form-horizontal" role="form" data-toggle="validator">
                         <div class="form-group">
-                            <label for="subject_name">subject Name</label>
-                            <input type="text" id="subject_name" placeholder="" class="form-control"/>
+                            <label for="subject_name" class="col-xs-3">subject Name</label>
+                            <div class="col-xs-6">
+                            <input type="text" id="subject_name" placeholder="" required data-error="Please enter subject name" class="form-control"/>
+                            <div class="help-block with-errors"></div>
+                            </div>
                         </div>
+                       </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default"
                             data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-primary"
-                            onclick="addSubject()">Add Subject</button>
+                        <button type="button" class="btn btn-primary" id="btnAddSubject"
+                            >Add Subject</button>
                     </div> <!-- End of modal footer -->
                 </div><!-- End of modal content -->
             </div> <!-- End of modal dialog -->
@@ -78,20 +82,24 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">edit  知识点</h4>
+                        <h4 class="modal-title">编辑 知识点</h4>
                         <input type="hidden" id="hidden_subject_id">
                     </div>
                     <div class="modal-body">
+                      <form id="edit_subject_form" class="form-horizontal" role="form" method="post" data-toggle="validator">
                         <div class="form-group">
-                            <label for="edit_subject_name">subject Name</label>
-                            <input type="text" id="edit_subject_name" placeholder="" class="form-control"/>
+                            <label for="edit_subject_name" class="col-xs-3">subject Name</label>
+                            <div class="col-xs-6">
+                            <input type="text" id="edit_subject_name" placeholder="" required data-error="Please enter subject name" class="form-control"/>
+                            <div class="help-block with-errors"></div></div>
                         </div>
+                        </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default"
                             data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-primary"
-                            onclick="updateSubjectDetails()">Save</button>
+                        <button type="button" class="btn btn-primary" id="btnEditSubject"
+                            >Save</button>
                     </div> <!-- End of modal footer -->
                 </div><!-- End of modal content -->
             </div> <!-- End of modal dialog -->
@@ -126,6 +134,7 @@
     <script
         src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="../bootstrap/js/bootstrap.min.js"></script>
+    <script src="../script/form-validator.min.js" type="text/javascript"></script>
     <script src="subject.js" type="text/javascript"></script>
 </body>
 </html>

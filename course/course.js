@@ -149,6 +149,10 @@ $(document).ready(function() {
 	$("#btnAddCourse").on('click', function(){
 		$("#addCourseForm").submit();
 	})
+	$("#btnEditCourse").on('click', function(){
+		$("#edit_course_form").submit();
+	})
+	
 	$('#delete_course_modal').on('show.bs.modal', function(e){
 		   
 			$(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
@@ -163,21 +167,24 @@ $("#addCourseForm").validator().on('submit', function(e){
 	
 	if (e.isDefaultPrevented()){
 		// handle error
-		//alert(' has error');
 	}else{
 		event.preventDefault();
 		//call method;
-		alert('cool');
+		alert('add course');
 		addCourse();
 	}
-	var coursename = $("#coursename");
-	/*if (!coursename.val()){
-		$("#coursename").closest('.form-group').removeClass('has-success').addClass('has-error');
-		e.preventDefault();
-		alert('prevent?');
-	}else{
-		$("#coursename").closest('.form-group').removeClass('has-error').addClass('has-success');
-	}*/
 	
 });
 
+$("#edit_course_form").validator().on('submit', function(e){
+	
+	if (e.isDefaultPrevented()){
+		// handle error
+	}else{
+		event.preventDefault();
+		//call method;
+		
+		updateCourseDetails();
+	}
+	
+});
