@@ -20,14 +20,16 @@
 
 		$sql = "select uid from tk_users where username='$myusername' and password='$mypassword'";
 		$result = mysqli_query($DB, $sql);
-		$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-		//$active = $row['active'];
 
 		$count = mysqli_num_rows($result);
 		// if username and password matchs, result row must be 1 row;
 		if ($count ==1 ){
 			//session_register("myusername");
-			$_SESSION['username'] = $myusername;
+			while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+			    $_SESSION['userid'] = $row['uid'];
+			    $_SESSION['username'] = $myusername;
+			}
+
 			header("location:welcome.php");
 		}else{
 			$error = "Username or password is wrong.";

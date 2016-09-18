@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 2016-09-17 14:31:50
+-- Generation Time: 2016-09-18 10:19:04
 -- 服务器版本： 5.6.17
 -- PHP Version: 5.5.12
 
@@ -40,6 +40,11 @@ CREATE TABLE IF NOT EXISTS `bs_dictionaryitems` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
+-- 插入之前先把表清空（truncate） `bs_dictionaryitems`
+--
+
+TRUNCATE TABLE `bs_dictionaryitems`;
+--
 -- 转存表中的数据 `bs_dictionaryitems`
 --
 
@@ -59,6 +64,11 @@ CREATE TABLE IF NOT EXISTS `bs_dictionarytypes` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
+--
+-- 插入之前先把表清空（truncate） `bs_dictionarytypes`
+--
+
+TRUNCATE TABLE `bs_dictionarytypes`;
 --
 -- 转存表中的数据 `bs_dictionarytypes`
 --
@@ -80,6 +90,11 @@ CREATE TABLE IF NOT EXISTS `tk_courses` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
 
 --
+-- 插入之前先把表清空（truncate） `tk_courses`
+--
+
+TRUNCATE TABLE `tk_courses`;
+--
 -- 转存表中的数据 `tk_courses`
 --
 
@@ -100,15 +115,47 @@ INSERT INTO `tk_courses` (`course_id`, `coursename`, `description`) VALUES(12, '
 DROP TABLE IF EXISTS `tk_questions`;
 CREATE TABLE IF NOT EXISTS `tk_questions` (
   `question_id` int(11) NOT NULL AUTO_INCREMENT,
-  `question_body` varchar(1000) CHARACTER SET utf8 NOT NULL,
+  `question_body` varchar(1000) NOT NULL,
+  `qtype` varchar(20) NOT NULL,
   `point` int(11) NOT NULL,
   `difficultylevel_id` int(11) NOT NULL,
-  `createdDate` date NOT NULL,
-  `createdBy` varchar(100) CHARACTER SET utf8 NOT NULL,
+  `createdDate` datetime NOT NULL,
+  `createdBy` varchar(100) NOT NULL,
   PRIMARY KEY (`question_id`),
   KEY `difficultylevel_id` (`difficultylevel_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
+--
+-- 插入之前先把表清空（truncate） `tk_questions`
+--
+
+TRUNCATE TABLE `tk_questions`;
+--
+-- 转存表中的数据 `tk_questions`
+--
+
+INSERT INTO `tk_questions` (`question_id`, `question_body`, `qtype`, `point`, `difficultylevel_id`, `createdDate`, `createdBy`) VALUES(1, 'sdaas4', 'multichoice', 1, 1, '2016-09-18 00:00:00', '1');
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `tk_question_answers`
+--
+
+DROP TABLE IF EXISTS `tk_question_answers`;
+CREATE TABLE IF NOT EXISTS `tk_question_answers` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `question_id` int(11) NOT NULL,
+  `answer` longtext NOT NULL,
+  `iscorrectanswer` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- 插入之前先把表清空（truncate） `tk_question_answers`
+--
+
+TRUNCATE TABLE `tk_question_answers`;
 -- --------------------------------------------------------
 
 --
@@ -118,10 +165,15 @@ CREATE TABLE IF NOT EXISTS `tk_questions` (
 DROP TABLE IF EXISTS `tk_subjects`;
 CREATE TABLE IF NOT EXISTS `tk_subjects` (
   `subject_id` int(11) NOT NULL AUTO_INCREMENT,
-  `subjectName` varchar(100) CHARACTER SET utf8 NOT NULL COMMENT 'subject name',
+  `subjectName` varchar(100) NOT NULL COMMENT 'subject name',
   PRIMARY KEY (`subject_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='subject' AUTO_INCREMENT=40 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='subject' AUTO_INCREMENT=40 ;
 
+--
+-- 插入之前先把表清空（truncate） `tk_subjects`
+--
+
+TRUNCATE TABLE `tk_subjects`;
 --
 -- 转存表中的数据 `tk_subjects`
 --
@@ -155,6 +207,11 @@ CREATE TABLE IF NOT EXISTS `tk_users` (
   PRIMARY KEY (`uid`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
+--
+-- 插入之前先把表清空（truncate） `tk_users`
+--
+
+TRUNCATE TABLE `tk_users`;
 --
 -- 转存表中的数据 `tk_users`
 --
