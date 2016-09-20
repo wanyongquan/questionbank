@@ -4,14 +4,14 @@
 
     // write the table header
 
-    $data = '<table class="table table-striped">
-            <thread>
+    $data = '<table class="table table-striped table-hover">
+            <thead>
              <tr>
                 <th>Course name</th>
                 <th>Description</th>
                 <th>Operations</th>
              </tr>
-            </thread>
+            </thead>
             <tbody>';
 
     $query= 'select * from tk_courses order by coursename';

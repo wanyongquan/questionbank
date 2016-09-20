@@ -2,8 +2,8 @@
     include("../../config.php");
 
     // write the table header;
-    $data = '<table class="table table-striped">
-                <thread><tr><th>subject</th><th>Actions</th></tr></thread>
+    $data = '<table class="table table-striped table-hover">
+                <thead><tr><th>subject</th><th>Actions</th></tr></thead>
                 <tbody>';
     $query = 'select * from tk_subjects order by subjectname;';
     $result = $DB->query($query) or die(exit(mysqli_error($DB)));
@@ -15,7 +15,7 @@
                         data-toggle="modal" data-target="#edit_subject_modal" data-backdrop="false" >
                         <img src="'. $CFG->wwwroot.'/images/gear.png"
                                 alt="edit" class="iconsmall" /></a>
-                        <a class="delete_product" data-id="'.$row['subject_id'].'"  
+                        <a class="delete_product" data-id="'.$row['subject_id'].'"
                             data-toggle="modal" data-target="#delete_subject_modal" data-backdrop="false">
                             <i class="glyphicon glyphicon-trash"></i></a></td>';
 

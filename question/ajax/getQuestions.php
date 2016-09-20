@@ -2,15 +2,15 @@
     include_once '../../config.php';
 
     // write the html table header
-    $data = '<table class="table table-striped">
-               <thread<tr><th>题干</th>
+    $data = '<table class="table table-striped table-hover">
+               <thead<tr><th>题干</th>
                             <th>题型</th>
                             <th>难度</th>
                             <th>知识点</th>
                             <th>分数</th>
                             <th>创建人</th>
                             <th>创建日期</th>
-                            <th>操作</th></thread>
+                            <th>操作</th></thead>
             <tbody>';
     $query = 'select * from tk_questions left join bs_dictionaryitems as dictdata '
             .'on tk_questions.difficultylevel_id = dictdata.dictionary_id order by question_id;';

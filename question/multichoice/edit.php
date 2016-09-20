@@ -28,6 +28,8 @@
     <div id="content" class="container">
       <h2>添加一道试题</h2>
       <form action="addquestion.php" class="form-horizontal" role="form" method="post">
+        <fieldset>
+            <legend>General Info</legend>
 
          <div class="form-group ">
            <div class="col-sm-2 control-label">
@@ -48,7 +50,8 @@
          <div id="item_question_body" class="form-group">
            <div class="col-sm-2 control-label">
            <label for="question_text">题干</label></div>
-           <div class="col-sm-3"><input id="question_body" name="question_body"></input>
+           <div class="col-sm-10">
+           <textarea id="question_body" name="question_body" rows="7" class="field col-sm-12"></textarea>
                 <input type="hidden" value="multichoice" name="qtype"></input>
            </div>
          </div>
@@ -57,14 +60,42 @@
             <label for="question_mark">分数</label></div>
             <div class="col-sm-3"><input id="question_mark" name="question_mark"></input></div>
          </div>
-         <div id="item_question_answer" class="form-group">
-            <div class="col-sm-2 control-label">
-            <label for="question_answer">正确答案</label></div>
-            <div class="col-sm-3"><input id="question_answer"></input></div>
-         </div>
+         </fieldset>
+         <fieldset>
+            <legend>Answer options</legend>
+          <div class=" form-group">
+           <div class="col-sm-2 control-label">
+                <label for="question_answer_option1">选项1</label></div>
+              <div class="col-sm-10">
+                <input type="text" id="question_answer_option1" name="question_answer_option1" class="col-sm-12"></input>
+                <label class="checkbox" for="check_option1"><input type="checkbox" id="check_option1" name="check_option1">是正确选项</label>
+                </div>
+           </div>
+           <div class=" form-group">
+           <div class="col-sm-2 control-label " >
+                <label for="question_answer_option2">选项2</label></div>
+                <div class="col-sm-10">
+                    <input type="text" id="question_answer_option2" name="question_answer_option2" class="col-sm-12"></input>
+                    <label class="checkbox" for="check_option2"><input type="checkbox" name="check_option2">是正确选项</label></div>
+           </div>
+            <div class=" form-group">
+           <div class="col-sm-2 control-label " >
+                <label for="question_answer_option3">选项3</label></div>
+                <div class="col-sm-10">
+                    <input type="text" id="question_answer_option3" name="question_answer_option2" class="col-sm-12"></input>
+                    <label class="checkbox" for="check_option2"><input type="checkbox" name="check_option2">是正确选项</label></div>
+           </div>
+           <div class=" form-group">
+           <div class="col-sm-2 control-label " >
+                <label for="question_answer_option4">选项4</label></div>
+                <div class="col-sm-10">
+                    <input type="text" id="question_answer_option4" name="question_answer_option4" class="col-sm-12"></input>
+                    <label class="checkbox" for="check_option4"><input type="checkbox" name="check_option4">是正确选项</label></div>
+           </div>
+         </fieldset>
 
-       <div class="form-group">
-        <div  class="col-sm-5 col-sm-offset-2">
+       <div class="form-actions">
+        <div  class="col-sm-8 col-sm-offset-2">
           <button type="submit" class="btn btn-success">保存</button>
           <button type="button" class="btn btn-default">取消</button>
           </div>
