@@ -16,6 +16,7 @@
     <link href="<?php echo $CFG->wwwroot.'/bootstrap/css/bootstrap.min.css'?>" rel="stylesheet">
     <link href="../css/bootstrap.css" rel="stylesheet">
     <link href="../css/nav-sidebar.css" rel="stylesheet">
+    <link href="../css/footer.css" rel="stylesheet">
     <title>Question Bank </title>     
     </head>
     <body>
@@ -90,7 +91,7 @@
                                 <div class="summarycontent option4">根据题目回答</div>
                                 <div class="summarycontent option5">综合题目</div>
                               </div>
-                              <button type="submit" class="btn btn-submit" id="btnChooseType">submit</button>
+                              
                             </div>
                           </div>
                        </form>
@@ -104,7 +105,11 @@
                 </div><!-- End of modal content -->
             </div> <!-- End of modal dialog -->
           </div> <!-- End of Modal  -->
-       
+     <footer class="footer">
+      <div class="container">
+        <p class="text-muted">Copyright.</p>
+      </div>
+    </footer>
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
