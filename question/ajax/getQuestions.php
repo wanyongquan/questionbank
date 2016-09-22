@@ -13,7 +13,9 @@
                             <th>操作</th></thead>
             <tbody>';
     $query = 'select * from tk_questions left join bs_dictionaryitems as dictdata '
-            .'on tk_questions.difficultylevel_id = dictdata.dictionary_id order by question_id;';
+            .'on tk_questions.difficultylevel_id = dictdata.dictionary_id  left join'
+            .' tk_users on tk_users.uid = tk_questions.createdby left join '
+            .' tk_subjects on tk_subjects.subject_id = tk_questions.subject_id order by question_id;';
     $result = $DB->query($query) or die(exit(mysqli_error($DB)));
 
     if ($result->num_rows > 0){
@@ -21,15 +23,15 @@
             $data .= '<tr><td>'.$row['question_body'].'</td>';
             $data .= '<td>'.$row['qtype'].'</td>';
             $data .= '<td>'.$row['dictionary_value'].'</td>';
-            $data .= '<td>subject</td>';
+            $data .= '<td>'.$row['subjectName'].'</td>';
             $data .= '<td>'.$row['point'].'</td>';
-            $data .= '<td>'.$row['createdBy'].'</td>';
+            $data .= '<td>'.$row['username'].'</td>';
             $data .= '<td>'.$row['createdDate'].'</td>';
             $data .= '<td><a title="Edit" >
                         <img src="'.$CFG->wwwroot.'/images/gear.png" alt="edit" class="iconsmall"/></a>
-                        <a class="delete_product" data-id="'.$row['question_id'].'"
+                        <a  data-id="'.$row['question_id'].'"
                            data-toggle="modal" data-target="#delete_question_modal"
-                           data-backdrop="false"><i class="glyphicon glyphon-trash"></i></a></td>';
+                           data-backdrop="false"><i class="glyphicon glyphicon-trash"></i></a></td>';
             $data .= '</tr>';
         }
     }else{
