@@ -54,11 +54,12 @@
                 <li><a href="">修改密码</a></li>
             </ul>
         </li>
+
     </ul>
         <?php if (isset($_SESSION['username'])){?>
             <ul class="nav navbar-nav navbar-right">
-                <li><input type="submit" value="注销" name="logout"
-                    class="btn  btn-primary btn-block" />
+                <li><input type="submit" value="注销" id="global-logout-button" name="logout"
+                    class="btn  btn-primary btn-block " />
             </ul>
             <?php }?>
         </div>

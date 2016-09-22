@@ -1,5 +1,12 @@
 @CHARSET "UTF-8";
-
+#global-logout-button{
+    margin-top:7px;
+    cursor:pointer;
+    height:32px;
+    margin-right:0;
+    opacity:1;
+    padding: 0 7px 0 8px;
+}
 .modal {
   text-align: center;
   padding: 0!important;
