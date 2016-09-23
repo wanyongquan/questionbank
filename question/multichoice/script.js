@@ -40,7 +40,8 @@ function getDifficultyLevels(){
 $(document).ready(function(e){
     var items = "";
     // get all subjects 
-    getSubjects();
+    //getSubjects();
     // get all difficultylevels
-    getDifficultyLevels();
+    //$difficultylevelid = 
+    //getDifficultyLevels();
 });

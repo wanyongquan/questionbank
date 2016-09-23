@@ -7,6 +7,35 @@
         $questiontype = $_POST['questiontype'];
 
     }
+
+    $id = null;
+    if (!empty($_GET['id'])){
+        $id = $_REQUEST['id'];
+    }
+    if (null == $id){
+        header:("location:question.php");
+    }
+
+    if (!empty($_POST)){
+        //
+    }else{
+        // get question details and show on page
+        $query = "select * from tk_questions "
+                ." left join tk_subjects on tk_subjects.subject_id = tk_questions.subject_id"
+                ." left join vw_difficultylevels on vw_difficultylevels.dictionary_id = tk_questions.difficultylevel_id"
+                . " where tk_questions.question_id=$id" ;
+        $result = mysqli_query($DB, $query);
+        if (!$result ){
+            //error
+        }else{
+            $row = mysqli_fetch_assoc($result);
+            $question_id= $row['question_id'];
+            $qbody = $row['question_body'];
+            $point = $row['point'];
+            $subject_id= $row['subject_id'];
+            $difficultylevelid = $row['difficultylevel_id'];
+        }
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -19,7 +48,7 @@
     <link href="<?php echo $CFG->wwwroot.'/bootstrap/css/bootstrap.min.css'?>" rel="stylesheet">
     <link href="../../css/bootstrap.css" rel="stylesheet">
     <link href="../../css/nav-sidebar.css" rel="stylesheet">
-    
+
     <title>Question Bank </title>
     </head>
     <body>
@@ -36,71 +65,61 @@
              <label  for="subject_list">知识点</label>
            </div>
            <div class="col-sm-3">
-            <select id="subject_list"  name="subject_id" class="form-control"></select>
+            <select id="subject_list"  name="subject_id" class="form-control">
+            <?php
+            $query = "select * from tk_subjects order by subject_id;";
 
+            $result = $DB->query($query) or die(exit(mysqli_error($DB)));
+
+            if ($result->num_rows >0){
+                foreach ($result as $row){
+                    $selected = ($subject_id == $row['subject_id']) ? "selected": "";
+                    echo  '<option value="'.$row['subject_id'].'" '.$selected.' >'.$row['subjectName'].'</option>';
+                }
+            }
+            ?>
+            </select>
            </div>
          </div>
          <div class="form-group">
             <div class="col-sm-2 control-label" >
             <label for="difficultylevel_list">难度</label></div>
             <div class="col-sm-3">
-            <select id="difficultylevel_list"  name="difficultyLevel_id" class="form-control"></select></div>
+            <select id="difficultylevel_list"  name="difficultyLevel_id" class="form-control">
+            <?php
+            $query = 'select * from vw_difficultylevels';
+
+            $result = $DB->query($query) or die(exit(mysqli_error($DB)));
+
+            if ($result->num_rows > 0){
+                foreach ($result as $row){
+                    $selected = ($difficultylevel_id ==$row['directory_id']) ? "selected" : "";
+                    echo '<option value="'.$row['dictionary_id'].'"'. $selected .' >'.$row['dictionary_value'].'</option>';
+                }
+            }
+            ?>
+            </select></div>
          </div>
 
          <div id="item_question_body" class="form-group">
            <div class="col-sm-2 control-label">
            <label for="question_text">题干</label></div>
            <div class="col-sm-10">
-           <textarea id="question_body" name="question_body" rows="7" class="field col-sm-12"></textarea>
-                <input type="hidden" value="multichoice" name="qtype"></input>
+           <textarea id="question_body" name="question_body" rows="7" class="field col-sm-12"><?php echo !empty($qbody) ? $qbody:'';?></textarea>
+                <input type="hidden" value="multichoice" name="qtype">
            </div>
          </div>
          <div id="item_question_mark" class="form-group">
             <div class="col-sm-2 control-label">
             <label for="question_mark">分数</label></div>
-            <div class="col-sm-3"><input id="question_mark" name="question_mark"></input></div>
-            
-         </div> 
+            <div class="col-sm-3"><input id="question_mark" name="question_mark" value="<?php echo !empty($point) ? $point: ''?>"></input></div>
+
+         </div>
          </fieldset>
          <fieldset>
             <legend>选项</legend>
-          <div class=" form-group">
-           <div class="col-sm-2 control-label">
-                <label for="question_answer_option1">选项1</label></div>
-              <div class="col-sm-10">
-                <input type="text" id="question_answer_option1" 
-                name="question_answer_option1" class="form-control"></input>     
-                <label class="checkbox" for="check_option1">
-                <input type="checkbox" id="check_option1" name="check_option1">是正确选项</label>
-                </div>
-           </div>
-           <div class=" form-group">
-           <div class="col-sm-2 control-label " >
-                <label for="question_answer_option2">选项2</label></div>
-                <div class="col-sm-10">
-                    <input type="text" id="question_answer_option2"
-                     name="question_answer_option2" class="form-control"></input>
-                    <label class="checkbox" for="check_option2">
-                    <input type="checkbox" name="check_option2">是正确选项</label></div>
-           </div>
-            <div class=" form-group">
-           <div class="col-sm-2 control-label " >
-                <label for="question_answer_option3">选项3</label></div>
-                <div class="col-sm-10">
-                    <input type="text" id="question_answer_option3" 
-                    name="question_answer_option3" class="form-control"></input>
-                    <label class="checkbox" for="check_option3">
-                    <input type="checkbox" name="check_option3">是正确选项</label></div>
-           </div>
-           <div class=" form-group">
-           <div class="col-sm-2 control-label " >
-                <label for="question_answer_option4">选项4</label></div>
-                <div class="col-sm-10">
-                    <input type="text" id="question_answer_option4" 
-                    name="question_answer_option4" class="form-control"></input>
-                    <label class="checkbox" for="check_option4">
-                    <input type="checkbox" name="check_option4">是正确选项</label></div>
-           </div>
+            <?php include 'multichoice_edit_form.php'?>
+
          </fieldset>
 
        <div class="form-group">

@@ -66,6 +66,22 @@ function deleteQuestion(e){
 				reloadQuestions();
 			});
 }
+
+
+function getQuestionDetails(id){
+	// add question_id to the hidden input 
+	$("#hidden_question_id").val(id);
+	$.post("ajax/getQuestionDetails.php",
+			{id:id},
+			function(data, status){
+			    // parse data in json
+			    var question = JSON.parse(data);
+			    
+			    // 
+			}
+	);
+}
+
 /*// call choose function after submit modal
 $("#choose_questiontype_form").validator().on('submit', function(e){
     if (e.isDefaultPrevented()){

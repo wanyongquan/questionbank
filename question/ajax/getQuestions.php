@@ -27,8 +27,7 @@
             $data .= '<td>'.$row['point'].'</td>';
             $data .= '<td>'.$row['username'].'</td>';
             $data .= '<td>'.$row['createdDate'].'</td>';
-            $data .= '<td><a title="Edit" >
-                        <img src="'.$CFG->wwwroot.'/images/gear.png" alt="edit" class="iconsmall"/></a>
+            $data .= '<td><a title="Edit" href="multichoice/edit.php?id='.$row['question_id'].'"><i class="glyphicon glyphicon-edit"></i></a>
                         <a  data-id="'.$row['question_id'].'"
                            data-toggle="modal" data-target="#delete_question_modal"
                            data-backdrop="false"><i class="glyphicon glyphicon-trash"></i></a></td>';
