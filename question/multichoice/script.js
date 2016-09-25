@@ -45,3 +45,16 @@ $(document).ready(function(e){
     //$difficultylevelid = 
     //getDifficultyLevels();
 });
+
+function onSubmitQForm(){
+    var qid = $("#hidden_question_id").val();
+    if (qid != null){
+        // edit page
+        document.question_form.action="updateQuestion.php";
+    }else{
+        // add page
+        document.question_form.action="addQuestion.php";
+    }
+    // trigger the validations
+    return document.question_form.runvaliation();
+}

@@ -57,9 +57,11 @@
         }?>
     <div id="content" class="container">
       <div class="page-header"><h1>添加一道试题</h1></div>
-      <form action="addquestion.php" class="form-horizontal" role="form" method="post">
+      <form name="question_form" id="question_form" action="addquestion.php" class="form-horizontal" 
+        role="form" method="post" onsubmit="return onSubmitQForm();">
         <fieldset>
             <legend>概要</legend>
+            <input type="hidden" name="hidden_question_id" id="hidden_question_id" value="<?php echo (!empty($id) ? $id: '')?>">
          <div class="form-group ">
            <div class="col-sm-2 control-label">
              <label  for="subject_list">知识点</label>
@@ -125,7 +127,7 @@
        <div class="form-group">
         <div  class="col-sm-8 col-sm-offset-2">
           <button type="submit" class="btn btn-success">保存</button>
-          <button type="button" class="btn btn-default">取消</button>
+          <button type="button" class="btn btn-default" onclick="history.back();" >取消</button>
           </div>
        </div>
       </form>

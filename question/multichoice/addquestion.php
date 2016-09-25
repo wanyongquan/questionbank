@@ -1,7 +1,7 @@
 <?php
     session_start();
     require_once '../../config.php';
-
+    require_once '../../lib/datelib.php';
     // get the form data submited by POST
     if (isset($_POST['qtype']) && isset($_POST['question_body'])){
         $qtype= $_POST['qtype'];
@@ -9,7 +9,6 @@
         $difficultyLevel_id = $_POST['difficultyLevel_id'];
         $question_mark = $_POST['question_mark'];
         $user_id = $_SESSION['userid'];
-
 
             // start the transaction
             $DB->autocommit(false);
