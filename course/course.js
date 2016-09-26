@@ -168,7 +168,7 @@ $("#addCourseForm").validator().on('submit', function(e){
 	if (e.isDefaultPrevented()){
 		// handle error
 	}else{
-		event.preventDefault();
+		e.preventDefault();
 		//call method;
 		alert('add course');
 		addCourse();
@@ -181,7 +181,7 @@ $("#edit_course_form").validator().on('submit', function(e){
 	if (e.isDefaultPrevented()){
 		// handle error
 	}else{
-		event.preventDefault();
+		e.preventDefault();
 		//call method;
 		
 		updateCourseDetails();

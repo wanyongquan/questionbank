@@ -48,13 +48,15 @@ $(document).ready(function(e){
 
 function onSubmitQForm(){
     var qid = $("#hidden_question_id").val();
-    if (qid != null){
-        // edit page
-        document.question_form.action="updateQuestion.php";
-    }else{
+    
+    if (qid == null || qid==""){
         // add page
         document.question_form.action="addQuestion.php";
+    }else{
+        // edit page
+        document.question_form.action="updateQuestion.php";
     }
-    // trigger the validations
-    return document.question_form.runvaliation();
+    
 }
+
+

@@ -5,7 +5,6 @@
 
     if (isset($_POST['questiontype'])){
         $questiontype = $_POST['questiontype'];
-
     }
 
     $id = null;
@@ -58,7 +57,7 @@
     <div id="content" class="container">
       <div class="page-header"><h1>添加一道试题</h1></div>
       <form name="question_form" id="question_form" action="addquestion.php" class="form-horizontal" 
-        role="form" method="post" onsubmit="return onSubmitQForm();">
+        role="form" method="post" onsubmit="return onSubmitQForm();" data-toggle="validator">
         <fieldset>
             <legend>概要</legend>
             <input type="hidden" name="hidden_question_id" id="hidden_question_id" value="<?php echo (!empty($id) ? $id: '')?>">
@@ -102,26 +101,39 @@
             ?>
             </select></div>
          </div>
-
          <div id="item_question_body" class="form-group">
            <div class="col-sm-2 control-label">
            <label for="question_text">题干</label></div>
            <div class="col-sm-10">
-           <textarea id="question_body" name="question_body" rows="7" class="field col-sm-12"><?php echo !empty($qbody) ? $qbody:'';?></textarea>
+           <textarea id="question_body" name="question_body" rows="7" required 
+            class="field  form-control"><?php echo !empty($qbody) ? $qbody:'';?></textarea>
                 <input type="hidden" value="multichoice" name="qtype">
+                <div class="help-block with-errors"></div>
            </div>
          </div>
          <div id="item_question_mark" class="form-group">
             <div class="col-sm-2 control-label">
             <label for="question_mark">分数</label></div>
-            <div class="col-sm-3"><input id="question_mark" name="question_mark" value="<?php echo !empty($point) ? $point: ''?>"></input></div>
-
+            <div class="col-sm-3">
+                <input id="question_mark" name="question_mark" class="form-control" required placeholder="Please set the mark" value="<?php echo !empty($point) ? $point: ''?>"></input>
+                <div class="help-block with-errors"></div>
+            </div>
          </div>
          </fieldset>
          <fieldset>
             <legend>选项</legend>
             <?php include 'multichoice_edit_form.php'?>
-
+<div class=" form-group">
+       <div class="col-sm-2 control-label " >
+            <label for="question_answer_option2">选项2</label></div>
+            <div class="col-sm-10">
+                <input type="text" id="question_answer_option2"
+                 name="question_answer_option2" required class="form-control"></input>
+                 
+                <label class="checkbox" for="check_option2">
+                <input type="checkbox" name="check_option2" >是正确选项</label></div>
+                <div class="help-block with-errors"></div>
+       </div>
          </fieldset>
 
        <div class="form-group">
