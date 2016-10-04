@@ -21,7 +21,6 @@ function addSubject(){
 			
 			// clear field in popup dialog
 			$("#subject_name").val("");
-			alert('success');
 			// load the subject table
 			reloadSubjects();
 		},
@@ -98,7 +97,7 @@ $(document).ready(function(){
 	
 	
 	$("#btnAddSubject").on('click', function(){
-	    alert('submitting new form');
+	    //alert('submitting new form');
 		$("#add_subject_form").submit();
 	})
 	$("#btnEditSubject").on('click', function(){
@@ -121,7 +120,6 @@ $("#add_subject_form").validator().on('submit', function(e){
 	}else{
 		e.preventDefault();
 		//call method;
-		alert('call new');
 		addSubject();
 	}
 	

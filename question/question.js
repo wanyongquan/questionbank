@@ -36,21 +36,24 @@ $(document).ready(function(){
 
 // get the question type that user choose and forward to create question page;
 function choosequestiontype(){
-    // get question type 
-    var questiontype = $('input[name="questiontype"]:checked').val();
     $.ajax({
-        url:'/multichoice/edit.php',
+        url:'ajax/questiontypeconfirm.php',
         type:'POST',
-        data:{
-            questiontype:questiontype
-        },
+        datatype:"text",
+        data:$("#choose_questiontype_form").serialize(),
         success:function(data, status){
-            alert('success');
-            // hide the modal
-            $("#choose_questiontype_form").modal("hide");
+            // clear radio state
             
-        }
-    })
+            $('input[name="questiontype"]').prop('checked',false);
+            // close the modal dialog;
+            
+            $("#choose_questiontype_modal").modal("hide");
+            
+            // redirect
+            
+            window.location= data;
+            }
+        });
 }
 
 // delete a question 
@@ -82,16 +85,18 @@ function getQuestionDetails(id){
 	);
 }
 
-/*// call choose function after submit modal
+// call choose function after submit modal
 $("#choose_questiontype_form").validator().on('submit', function(e){
+    
     if (e.isDefaultPrevented()){
         //
+       
     }else{
         e.preventDefault();
         alert('pass, and forward');
         choosequestiontype();
     }
-})*/
+});
 
 $('input[type=radio]').on('change', function(){
    
@@ -104,10 +109,3 @@ $('input[type=radio]').on('change', function(){
     
    
 });
-
-
-$('#btnChooseType').submit(function(){
-    alert('submit button click');
-    //$('#choose_questiontype_form').modal('hide');
-    return false;
-})

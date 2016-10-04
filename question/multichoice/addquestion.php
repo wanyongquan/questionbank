@@ -45,7 +45,7 @@
             $stmt->execute();
 
             echo '1 question added';
-            header("location:../question.php");
+            header("location:../question.php", true, 303);
 
             $stmt->close();
             $DB->commit();

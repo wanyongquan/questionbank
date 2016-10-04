@@ -2,7 +2,7 @@
     include('../session.php');
     error_reporting(0);
     session_start();
-    xdebug_break();
+
     
     if (!isset($_SESSION['username'])){
         $_GLOBALS['message'] = 'Session Timeout. Click here to <a href=\"'.$CFG->wwwroot.'\login.php\">Log in</a>';

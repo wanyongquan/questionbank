@@ -4,11 +4,10 @@
 
 // Add course
 function addCourse(){
-	return;
 	// get values from page
 	var coursename = $("#coursename").val();
 	var description = $("#description").val();
-	alert('onclick')
+	
 	if(!coursename){
 		// add error highlight
 		//$("#coursename").closest('.form-group').removeClass('has-success').addClass('has-error');
@@ -154,11 +153,9 @@ $(document).ready(function() {
 	})
 	
 	$('#delete_course_modal').on('show.bs.modal', function(e){
-		   
 			$(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
 			$(this).find('.btn-ok').attr('data-id', $(e.relatedTarget).data('id'));
 		});
-
 	}
 
 );
@@ -169,8 +166,7 @@ $("#addCourseForm").validator().on('submit', function(e){
 		// handle error
 	}else{
 		e.preventDefault();
-		//call method;
-		alert('add course');
+		//call method to post form data;
 		addCourse();
 	}
 	

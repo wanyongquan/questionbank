@@ -5,7 +5,6 @@
     include_once '../lib/datelib.php';
 
     error_reporting(1);
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -25,10 +24,9 @@
     <?php if (isset($_SESSION['username'])){
          include '../include/menus.php';
         }?>
-
        <div class="container">
-        <div >
-            <h2 >试题</h2>
+        <div>
+            <h2>试题</h2>
             <p>
             <button class="btn btn-success" data-toggle="modal" data-target="#choose_questiontype_modal" data-backdrop="false">新增试题</button>
             </p>
@@ -36,7 +34,6 @@
                 <!-- question content table starts here -->
             </div>
         </div>
-
        </div>
        <!--  Modal dialog for add question -->
         <div id="choose_questiontype_modal" class="modal fade" role="dialog">
@@ -48,48 +45,48 @@
                         <h4 class="modal-title">选择题型</h4>
                     </div>
                     <div class="modal-body">
-                    <form id="choose_questiontype_form" action="multichoice/edit.php" method="post" class="form-horizontal" role="form" data-toggle="validator">
-
+                    <form id="choose_questiontype_form"  method="post" 
+                        class="form-horizontal" role="form" data-toggle="validator">
                           <div class="row">
-                            <div class="col-sm-5 col-md-5 ">
+                            <div class="col-sm-5 col-md-5 navbar-default ">
                             <div class="sidebar-nav">
-                            <div class="navbar navbar-default " role="navigation">
-
-                              <div id="typeoptions" class="navbar-collapse collapse sidebar-navbar-collapse">
+                            <div class="navbar  form-group " role="navigation">                        
+                              <div id="typeoptions" class="navbar-collapse collapse sidebar-navbar-collapse" >                      
                               <ul class="nav navbar-nav">
                                 <li class="active">
-                                  <label><input id="option1" type="radio" name="questiontype" value="multichoice">
-                                    <span class="typename">选择题</span>
+                                  <label><input id="option1" type="radio" name="questiontype" value="multichoice" required 
+                                        data-error="please choose at least one question type"></input>                                     
+                                    <span class="typename">选择题</span>                      
                                   </label>
                                 </li>
                                 <li class="">
-                                  <label><input id="option2" type="radio" name="questiontype"  value="truefalse">
+                                  <label><input id="option2" type="radio" name="questiontype"  value="truefalse" required>
                                   <span class="typename">判断题</span></label>
                                 </li>
                                 <li class="">
-                                  <label><input id="option3" type="radio" name="questiontype"  value="shortanswer">
+                                  <label><input id="option3" type="radio" name="questiontype"  value="shortanswer" required>
                                   <span class="typename">填空题</span></label>
                                 </li>
                                 <li class="">
-                                  <label><input id="option4" type="radio" name="questiontype" value="essay">
+                                  <label><input id="option4" type="radio" name="questiontype" value="essay" required>
                                   <span class="typename">简答题</span></label>
                                 </li>
                                 <li class="">
-                                  <label><input id="option5" type="radio" name="questiontype" value="genaral">
+                                  <label><input id="option5" type="radio" name="questiontype" value="genaral" required>
                                   <span class="typename">综合题</span></label>
                                 </li>
                               </ul>
-                              </div>
-                              </div>
-                            </div>
-                            </div>
+                              <div class="help-block with-errors"></div>
+                              </div>                  
+                               </div>
+                             </div>
+                            </div> 
                             <div class="col-sm-7  col-md-7 main">
                                 <div class="summarycontent option1">从预先定义的选项中选择一个或多个做为答案。</div>
                                 <div class="summarycontent option2">判断题目的正确或错误</div>
                                 <div class="summarycontent option3">在空白处填入正确答案</div>
                                 <div class="summarycontent option4">根据题目回答</div>
                                 <div class="summarycontent option5">综合题目</div>
-
                             </div>
                           </div>
                        </form>
@@ -97,8 +94,7 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default"
                             data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-primary" id="btnAddQuestion">添加</button>
-
+                        <button type="submit" class="btn btn-primary" id="btnAddQuestion">添加</button>
                     </div> <!-- End of modal footer -->
                 </div><!-- End of modal content -->
             </div> <!-- End of modal dialog -->

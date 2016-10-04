@@ -1,23 +1,20 @@
 <?php
+
     include_once '../../config.php';
 
     include_once '../../session.php';
 
-    if (isset($_POST['questiontype'])){
-        $questiontype = $_POST['questiontype'];
+    if (isset($_SESSION['questiontype'])){
+        $questiontype = $_SESSION['questiontype'];
     }
 
     $id = null;
     if (!empty($_GET['id'])){
         $id = $_REQUEST['id'];
     }
-    if (null == $id){
-        header:("location:question.php");
-    }
 
-    if (!empty($_POST)){
-        //
-    }else{
+    if (null != $id ){
+        // for edit a existing question
         // get question details and show on page
         $query = "select * from tk_questions "
                 ." left join tk_subjects on tk_subjects.subject_id = tk_questions.subject_id"
@@ -123,17 +120,6 @@
          <fieldset>
             <legend>选项</legend>
             <?php include 'multichoice_edit_form.php'?>
-<div class=" form-group">
-       <div class="col-sm-2 control-label " >
-            <label for="question_answer_option2">选项2</label></div>
-            <div class="col-sm-10">
-                <input type="text" id="question_answer_option2"
-                 name="question_answer_option2" required class="form-control"></input>
-                 
-                <label class="checkbox" for="check_option2">
-                <input type="checkbox" name="check_option2" >是正确选项</label></div>
-                <div class="help-block with-errors"></div>
-       </div>
          </fieldset>
 
        <div class="form-group">
