@@ -37,23 +37,29 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-         <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width,initial-scale=1">
-     <!-- the above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <!-- Bootstrap core CSS -->
-    <link href="<?php echo $CFG->wwwroot.'/bootstrap/css/bootstrap.min.css'?>" rel="stylesheet">
-    <link href="../../css/bootstrap.css" rel="stylesheet">
-    <link href="../../css/nav-sidebar.css" rel="stylesheet">
-
-    <title>Question Bank </title>
+        <!-- the above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <!-- Bootstrap core CSS -->
+        <link
+            href="<?php echo $CFG->wwwroot.'/bootstrap/css/bootstrap.min.css'?>"
+            rel="stylesheet">
+        <link href="../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../css/bootstrap.css" rel="stylesheet">
+        <link href="../../css/nav-sidebar.css" rel="stylesheet">
+        <link href="../../lib/bootstrapValidator/css/bootstrapValidator.css">
+        <link href="../../css/all.css" rel="stylesheet">
+        <title>Question Bank</title>
     </head>
-    <body>
-    <?php if (isset($_SESSION['username'])){
+<body>
+    <?php
+    
+if (isset ( $_SESSION['username'])){
          include '../../include/menus.php';
         }?>
     <div id="content" class="container">
       <div class="page-header"><h1>添加一道试题</h1></div>
-      <form name="question_form" id="question_form" action="addquestion.php" class="form-horizontal" 
+      <form name="question_form" id="question_form"  class="form-horizontal" 
         role="form" method="post" onsubmit="return onSubmitQForm();" data-toggle="validator">
         <fieldset>
             <legend>概要</legend>
@@ -102,7 +108,7 @@
            <div class="col-sm-2 control-label">
            <label for="question_text">题干</label></div>
            <div class="col-sm-10">
-           <textarea id="question_body" name="question_body" rows="7" required 
+           <textarea id="question_body" name="question_body" rows="7"  
             class="field  form-control"><?php echo !empty($qbody) ? $qbody:'';?></textarea>
                 <input type="hidden" value="multichoice" name="qtype">
                 <div class="help-block with-errors"></div>
@@ -112,7 +118,7 @@
             <div class="col-sm-2 control-label">
             <label for="question_mark">分数</label></div>
             <div class="col-sm-3">
-                <input id="question_mark" name="question_mark" class="form-control" required placeholder="Please set the mark" value="<?php echo !empty($point) ? $point: ''?>"></input>
+                <input id="question_mark" name="question_mark" class="form-control"  placeholder="Please set the mark" value="<?php echo !empty($point) ? $point: ''?>"></input>
                 <div class="help-block with-errors"></div>
             </div>
          </div>
@@ -138,10 +144,12 @@
       <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script
-        src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="../../bootstrap/js/bootstrap.min.js"></script>
-    <script src="../../script/form-validator.min.js" type="text/javascript"></script>
+    <script src="../../script/bootstrapValidator.min.js" type="text/javascript"></script>
+    <!-- <script src="../../script/form-validator.min.js" type="text/javascript"></script> -->
     <script src="script.js" type="text/javascript"></script>
-    </body>
+    <script src="../../lib/jqueryvalidation/jquery.validate.js" type="text/javascript"></script>
+    <script src="../../lib/bootstrapValidator/js/bootstrapValidator.js" type="text/javascript"></script>
+  </body>
 </html>

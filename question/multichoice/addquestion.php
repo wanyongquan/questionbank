@@ -25,26 +25,26 @@
                     values( ?, ?,?)");
             $stmt->bind_param("iss", $question_id, $answer_option, $option_is_true_answer);
             // option1
-            $answer_option = $_POST['question_answer_option1'];
-            $option_is_true_answer = isset($_POST['check_option1'])?true:false;
+            $answer_option = $_POST['qitem_answer1'];
+            $option_is_true_answer = isset($_POST['check_options'][0])?true:false;
             $stmt->execute();
 
             // option2
-            $answer_option = $_POST['question_answer_option2'];
-            $option_is_true_answer = isset($_POST['check_option2']) ? true : false;
+            $answer_option = $_POST['qitem_answer2'];
+            $option_is_true_answer = isset($_POST['check_options'][1]) ? true : false;
             $stmt->execute();
 
             // option3
-            $answer_option = $_POST['question_answer_option3'];
-            $option_is_true_answer = isset($_POST['check_option3'])?true:false;
+            $answer_option = $_POST['qitem_answer3'];
+            $option_is_true_answer = isset($_POST['check_options'][2])?true:false;
             $stmt->execute();
 
             // option4
-            $answer_option = $_POST['question_answer_option4'];
-            $option_is_true_answer = isset($_POST['check_option4'])?true:false;
+            $answer_option = $_POST['qitem_answer4'];
+            $option_is_true_answer = isset($_POST['check_options'][3])?true:false;
             $stmt->execute();
 
-            echo '1 question added';
+           
             header("location:../question.php", true, 303);
 
             $stmt->close();

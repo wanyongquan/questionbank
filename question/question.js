@@ -93,7 +93,7 @@ $("#choose_questiontype_form").validator().on('submit', function(e){
        
     }else{
         e.preventDefault();
-        alert('pass, and forward');
+
         choosequestiontype();
     }
 });

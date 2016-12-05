@@ -26,49 +26,30 @@
             }
         }
     }else{
+       
+       for($index = 1; $index <= 4; $index +=1 ){
 ?>
-<div class=" form-group">
-       <div class="col-sm-2 control-label">
-            <label for="question_answer_option1">选项1</label></div>
-          <div class="col-sm-10">
-            <input type="text" id="question_answer_option1" placeholder="Please enter option content" data-error="please enter xxx"
-                name="question_answer_option1" required class="form-control"></input>
-             <div class="help-block with-errors"></div>  
-         <label class="checkbox" for="check_option1">
-            <input type="checkbox" id="check_option1" name="check_option1">是正确选项</label>
-             
-            </div>
-       </div>
-       <div class=" form-group">
-       <div class="col-sm-2 control-label " >
-            <label for="question_answer_option2">选项2</label></div>
-            <div class="col-sm-10">
-                <input type="text" id="question_answer_option2"
-                 name="question_answer_option2" required class="form-control"></input>
-                 
-                <label class="checkbox" for="check_option2">
-                <input type="checkbox" name="check_option2" >是正确选项</label></div>
-                <div class="help-block with-errors"></div>
-       </div>
-        <div class=" form-group">
-       <div class="col-sm-2 control-label " >
-            <label for="question_answer_option3">选项3</label></div>
-            <div class="col-sm-10">
-                <input type="text" id="question_answer_option3"
-                name="question_answer_option3" required class="form-control"></input>
-                <div class="help-block with-errors"></div>
-                <label class="checkbox" for="check_option3">
-                <input type="checkbox" name="check_option3">是正确选项</label></div>
-       </div>
-       <div class=" form-group">
-       <div class="col-sm-2 control-label " >
-            <label for="question_answer_option4">选项4</label></div>
-            <div class="col-sm-10">
-                <input type="text" id="question_answer_option4"
-                name="question_answer_option4" required class="form-control"></input>
-                <div class="help-block with-errors"></div>
-                <label class="checkbox" for="check_option4">
-                <input type="checkbox" name="check_option4">是正确选项</label></div>
-       </div>
+<div class=" form-group qitem">
+    <div class="col-sm-2 col-lg-2 control-label qitem_title">
+        <label for="question_answer_option1">选项<?php echo $index;?></label>
+    </div>
+    <div class="col-sm-10 col-lg-10 qitem_content">
+    <div class="col-sm-10 col-lg-8">
+        <input type="text" id="question_answer_option<?php echo $index;?>"
+            placeholder="Please enter option content"
+             name="qitem_answer<?php echo $index;?>" required
+             class="form-control"></input>
+        <div class="help-block with-errors"></div>
+     </div>
+     <div class="col-sm-10 col-lg-8">
+        <label class="checkbox" for="check_option<?php echo $index;?>"> 
+          <input type="checkbox" id="check_option<?php echo $index;?>" name="check_options[]">本选项是正确答案
+        </label>
+    </div>
+    </div>
+</div>
 
-<?php }?>
+<?php 
+       }
+    }
+?>     

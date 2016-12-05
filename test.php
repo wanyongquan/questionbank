@@ -29,16 +29,30 @@ include_once 'config.php';
             <div class="form-group">
                 <label class="col-lg-3 control-label">Favourite browser</label>
                 <div class="col-lg-5">
+                <label class="col-lg-3 control-label">Editors</label>
+                    <input class="form-control" type="text" id="e11" required
+                        name="editors[]" />
                     <div class="checkbox">
-                        <label> <input type="checkbox" name="browsers[]"
+                        <label> <input type="checkbox" id="chrome" name="browsers[]"
                             value="chrome" /> Google Chrome
                         </label>
                     </div>
+                 </div>
+             </div>
+             <div class="form-group">
+                    <div class="col-lg-5">
+                     <label>Email address</label>
+                        <input class="form-control" type="text" id="e12"
+                            required name="editors[]" />
+                   
                     <div class="checkbox">
-                        <label> <input type="checkbox" name="browsers[]"
+                        <label> <input type="checkbox" id="firefox" name="browsers[]"
                             value="firefox" /> Firefox
                         </label>
                     </div>
+                     </div>
+              </div>
+              <div class="form-group">
                     <div class="checkbox">
                         <label> <input type="checkbox" name="browsers[]"
                             value="ie" /> IE
@@ -64,13 +78,13 @@ include_once 'config.php';
             <div class="form-group">
                 <label class="col-lg-3 control-label">Editors</label>
                 <div class="col-lg-5">
-                    <input class="form-control" type="text"
+                    <input class="form-control" type="text" id="e1" required
                         name="editors[]" />
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-lg-offset-3 col-lg-5">
-                    <input class="form-control" type="text"
+                    <input class="form-control" type="text" id="e2"
                         name="editors[]" />
                 </div>
             </div>
