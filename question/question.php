@@ -64,7 +64,7 @@
                                   <span class="typename">判断题</span></label>
                                 </li>
                                 <li class="">
-                                  <label><input id="option3" type="radio" name="questiontype"  value="shortanswer" required>
+                                  <label><input id="option3" type="radio" name="questiontype"  value="fillblank" required>
                                   <span class="typename">填空题</span></label>
                                 </li>
                                 <li class="">

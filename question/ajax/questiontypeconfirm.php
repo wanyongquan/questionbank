@@ -7,7 +7,14 @@
         $questiontype = $_POST['questiontype'];
         $_SESSION['questiontype'] = $questiontype;
         
-        echo "multichoice/edit.php";
+        $forwardurl = "";
+        switch($questiontype){
+            case "multichoice":
+                $forwardurl = "multichoice/edit.php";
+            case "fillblank":
+                $forwardurl = "fillblank/edit.php";
+        }
+        echo $forwardurl;
         //header("location: multichoice/edit.php", true, 303);
     }
     

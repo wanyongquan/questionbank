@@ -29,26 +29,30 @@
         $result = mysqli_query($DB, $query) or die (exit (mysqli_error($DB)));
         
         // step 2, update table tk_question_answers
-        $stmt = $DB->prepare("update tk_question_answers set answer =?, iscorrectanswer=?;");
-        $stmt->bind_param("ss", $answer_option, $option_is_true_answer);
+        $stmt = $DB->prepare("update tk_question_answers set answer =?, iscorrectanswer=? where question_id=? and id=?;");
+        $stmt->bind_param("ssii", $answer_option, $option_is_true_answer, $question_id, $qanswer_id);
         // option 1
-        $answer_option = $_POST['question_answer_option1'];
-        $option_is_true_answer = isset($_POST['check_option1'])? true:false;
+        $qanswer_id = $_POST['qanswer_id1'];
+        $answer_option = $_POST['qitem_answer1'];
+        $option_is_true_answer = isset($_POST['check_options'][1])? true:false;
         $stmt->execute();
         
         // option 2
-        $answer_option = $_POST['question_answer_option2'];
-        $option_is_true_answer = isset($_POST['check_option2'])? true:false;
+        $qanswer_id = $_POST['qanswer_id2'];
+        $answer_option = $_POST['qitem_answer2'];
+        $option_is_true_answer = isset($_POST['check_options'][2])? true:false;
         $stmt->execute();
         
         // option 3
-        $answer_option = $_POST['question_answer_option3'];
-        $option_is_true_answer = isset($_POST['check_option3'])? true:false;
+        $qanswer_id = $_POST['qanswer_id3'];
+        $answer_option = $_POST['qitem_answer3'];
+        $option_is_true_answer = isset($_POST['check_options'][3])? true:false;
         $stmt->execute();
         
         // option 4
-        $answer_option = $_POST['question_answer_option4'];
-        $option_is_true_answer = isset($_POST['check_option4'])? true:false;
+        $qanswer_id = $_POST['qanswer_id4'];
+        $answer_option = $_POST['qitem_answer4'];
+        $option_is_true_answer = isset($_POST['check_options'][4])? true:false;
         $stmt->execute();
         // submit
         $stmt->close();
