@@ -24,6 +24,13 @@
     <!-- Bootstrap core CSS -->
     <link href="<?php echo $CFG->wwwroot.'/bootstrap/css/bootstrap.min.css'?>" rel="stylesheet">
     <link href="../css/bootstrap.css" rel="stylesheet">
+    <!-- MetisMenu CSS -->
+    <link href="../lib/sb-admin-2/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+    <!-- SB Admin 2 CSS -->
+    <link href="../lib/sb-admin-2/dist/css/sb-admin-2.css" rel="stylesheet">
+    <!-- Font Awesome CSS -->
+    <link href="../lib/sb-admin-2/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+   
     </head>
    <body>
     <?php
@@ -35,12 +42,15 @@
 
 <?php if (isset($_SESSION['username'])){?>
 
-<?php include '../include/menus.php';?>
-<?php }?>
-<div id="container" class="container">
 
-<div class="no-overflow">
-    <div id="page-course">
+<?php }?>
+<div id="wrapper" class="container-fluid">
+<?php 
+     include '../include/sidemenu.php';
+ ?>
+<div id="page-wrapper" >
+
+    <div id="page-course" class="row">
         <h2>课程</h2>
         <p>
        <!-- <div class="singlebutton">
@@ -155,11 +165,13 @@
     <!--  end of modal delete course-->
     </div>
     </div>
-     <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="../lib/jquery/jquery-3.1.1.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
     <script src="../bootstrap/js/bootstrap.min.js"></script>
+    <!--  metisMenu Plugin JavaScript -->
+    <script src="../lib/sb-admin-2/vendor/metisMenu/metisMenu.min.js"></script>
+    <!-- SB Admin 2 JavaScript -->
+    <script src="../lib/sb-admin-2/dist/js/sb-admin-2.js"></script>
     <script src="../script/form-validator.min.js" type="text/javascript"></script>
     <script src="course.js"  type="text/javascript"> </script>
     </body>
