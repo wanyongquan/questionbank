@@ -58,12 +58,31 @@
                     <form id="add_subject_form" class="form-horizontal" role="form" data-toggle="validator">
                         <div class="form-group">
                             <label for="subject_name" class="col-xs-3">subject Name</label>
-                            <div class="col-xs-6">
+                            <div class="col-xs-8">
                             <input type="text" id="subject_name" placeholder="" required data-error="Please enter subject name" class="form-control"/>
                             <div class="help-block with-errors"></div>
                             </div>
                         </div>
-                       </form>
+                            <div class="form-group">
+                                <label for="qitem_course_id" class="col-xs-3">Course</label>
+                                <div class="col-sm-8">
+                                    <select id="qitem_course_id"
+                                        name="qitem_course_id"
+                                        class="form-control ">
+                                        <option value="">请选择课程</option>
+                                        <?php
+                                        $courses = getCourses ();
+                                        if ($courses->num_rows > 0) {
+                                            foreach ( $courses as $course ) {
+                                                $courseselected = ($course_id == $course ['course_id']) ? "selected" : "";
+                                                echo '<option value="' . $course ['course_id'] . '" ' . $courseselected . ' >' . $course ['coursename'] . '</option>';
+                                            }
+                                        }
+                                        ?>    
+                                     </select>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default"
@@ -89,7 +108,7 @@
                       <form id="edit_subject_form" class="form-horizontal" role="form" method="post" data-toggle="validator">
                         <div class="form-group">
                             <label for="edit_subject_name" class="col-xs-3">subject Name</label>
-                            <div class="col-xs-6">
+                            <div class="col-xs-8">
                             <input type="text" id="edit_subject_name" placeholder="" required data-error="Please enter subject name" class="form-control"/>
                             <div class="help-block with-errors"></div></div>
                         </div>
@@ -131,7 +150,7 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="../lib/jquery/jquery-3.1.1.min.js"></script>
     <script src="../bootstrap/js/bootstrap.min.js"></script>
     <script src="../script/form-validator.min.js" type="text/javascript"></script>
     <script src="subject.js" type="text/javascript"></script>

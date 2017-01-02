@@ -3,7 +3,7 @@
 
     // write the html table header
     $data = '<table class="table table-striped table-hover">
-               <thead<tr><th>题干</th>
+               <thead<tr><th>名称</th>
                             <th>题型</th>
                             <th>难度</th>
                             <th>课程</th>
@@ -22,7 +22,8 @@
 
     if ($result->num_rows > 0){
         foreach ($result as $row){
-            $data .= '<tr><td>'.$row['question_body'].'</td>';
+            $questiontype = $row['qtype'];
+            $data .= '<tr><td>'.$row['question_name'].'</td>';
             $data .= '<td>'.$row['qtype'].'</td>';
             $data .= '<td>'.$row['dictionary_value'].'</td>';
             $data .= '<td>'.$row['coursename'].'</div>';
@@ -30,7 +31,8 @@
             $data .= '<td>'.$row['point'].'</td>';
             $data .= '<td>'.$row['username'].'</td>';
             $data .= '<td>'.$row['createdDate'].'</td>';
-            $data .= '<td><a title="Edit" href="multichoice/edit.php?id='.$row['question_id'].'"><i class="glyphicon glyphicon-edit"></i></a>
+            
+            $data .= '<td><a title="Edit" href="' .$questiontype .'/edit.php?id='.$row['question_id'].'"><i class="glyphicon glyphicon-edit"></i></a>
                         <a  data-id="'.$row['question_id'].'"
                            data-toggle="modal" data-target="#delete_question_modal"
                            data-backdrop="false"><i class="glyphicon glyphicon-trash"></i></a></td>';

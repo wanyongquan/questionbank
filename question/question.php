@@ -68,7 +68,7 @@
                                   <span class="typename">填空题</span></label>
                                 </li>
                                 <li class="">
-                                  <label><input id="option4" type="radio" name="questiontype" value="essay" required>
+                                  <label><input id="option4" type="radio" name="questiontype" value="shortanswer" required>
                                   <span class="typename">简答题</span></label>
                                 </li>
                                 <li class="">
@@ -129,8 +129,7 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script
-        src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="../lib/jquery/jquery-3.1.1.min.js"></script>
     <script src="../bootstrap/js/bootstrap.min.js"></script>
     <script src="../script/form-validator.min.js" type="text/javascript"></script>
     <script src="question.js" type="text/javascript"></script>

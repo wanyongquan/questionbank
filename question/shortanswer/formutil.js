@@ -1,5 +1,5 @@
 /**
- * Holds functions that manipulate multichoice question
+ * Holds functions that manipulate shortanswer question
  */
 
 function getSubjects(){
@@ -112,26 +112,6 @@ $(document).ready(function(e){
         }
        
     );*/
-    
-    // handler for course change event
-    $("#qitem_course_id").on('change', function(){
-        // get the id of selected course
-        var course_id = $("#qitem_course_id").val();
-       // load subject droplist when course selection changed 
-        $.ajax({
-            url:'../ajax/getCourseSubjects.php',
-            type:'post',
-            data:{course_id:course_id},
-            dataType:'text',
-            success:function(data, status){
-                $("#subject_list").html(data);
-               
-            },
-            error:function(xhr){
-                alert(xhr.responseText);
-            }
-        });
-    });
 });
 
 function onSubmitQForm(){

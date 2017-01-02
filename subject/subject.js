@@ -7,13 +7,16 @@ function addSubject(){
 	
 	// get values from page
 	var subjectname = $("#subject_name").val();
+	var course_id = $("#qitem_course_id").val();
+	
 	alert('calling addsubject' + subjectname);
 	$.ajax({
 		url:'ajax/addSubject.php',
 		type:'POST',
 		dataType:"text",
 		data:{
-			subjectname:subjectname
+			subjectname:subjectname,
+			course_id:course_id
 		},
 		success:function(data, status){
 			// close the popup dialog
@@ -21,6 +24,7 @@ function addSubject(){
 			
 			// clear field in popup dialog
 			$("#subject_name").val("");
+			$("#qitem_course_id").val("");
 			// load the subject table
 			reloadSubjects();
 		},
@@ -97,7 +101,7 @@ $(document).ready(function(){
 	
 	
 	$("#btnAddSubject").on('click', function(){
-	    //alert('submitting new form');
+	    alert('submitting new form');
 		$("#add_subject_form").submit();
 	})
 	$("#btnEditSubject").on('click', function(){

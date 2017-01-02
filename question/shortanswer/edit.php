@@ -8,10 +8,15 @@
     if (isset($_SESSION['questiontype'])){
         $questiontype = $_SESSION['questiontype'];
     }
-
+    $row = null;
     $questionId = null;
-    $question_name= null;
-    $question_answer=null;
+    $question_name=null;
+    $qbody = null;
+    $point = null;
+    $course_id =null;
+    $subject_id=null;
+    $difficultylevelid = null;
+    $quesion_answer= null;
     if (!empty($_GET['id'])){
         $questionId = $_REQUEST['id'];
     }
@@ -26,12 +31,13 @@
         }else{
             $row = mysqli_fetch_assoc($result);
             $question_id= $row['question_id'];
-            $question_name= $row['question_name'];
+            $question_name = $row['question_name'];
             $qbody = $row['question_body'];
-            
             $point = $row['point'];
+            $course_id = $row['course_id'];
             $subject_id= $row['subject_id'];
             $difficultylevelid = $row['difficultylevel_id'];
+            
         }
     }
 ?>
@@ -59,59 +65,65 @@
          include '../../include/menus.php';
         }?>
     <div id="content" class="container">
-      <div class="page-header"><h1>添加一道填空题</h1></div>
+      <div class="page-header"><h1>添加一道简答题</h1></div>
       <form name="question_form" id="question_form"  class="form-horizontal" 
         role="form" method="post" onsubmit="return onSubmitQForm();" data-toggle="validator">
-       <fieldset>
+        <fieldset>
             <legend>概要</legend>
-            <input type="hidden" name="hidden_question_id" id="hidden_question_id" value="<?php echo (!empty($questionId) ? $questionId: '')?>">
-            <div id="item_question_name" class="form-group">
-                <div class="col-sm-2 control-label">
-                    <label for="question_name">题目名称</label>
+                <input type="hidden" name="hidden_question_id"
+                    id="hidden_question_id"
+                    value="<?php echo (!empty($questionId) ? $questionId: '')?>">
+                <input type="hidden" value="shortanswer"  name="qtype">
+                <div id="item_question_name" class="form-group">
+                    <div class="col-sm-2 control-label">
+                        <label for="question_name">题目名称</label>
+                    </div>
+                    <div class="col-sm-8 col-lg-8">
+                        <input id="question_name" name="question_name"
+                            class="form-control" required
+                            value="<?php echo !empty($question_name) ? $question_name: ''?>"></input>
+                        <div class="help-block with-errors"></div>
+                    </div>
                 </div>
-                <div class="col-sm-8 col-lg-8">
-                    <input id="question_name" name="question_name"
-                        class="form-control" required
-                        value="<?php echo !empty($question_name) ? $question_name: ''?>"></input>
-                    <div class="help-block with-errors"></div>
+                <div id="item_question_body" class="form-group">
+                    <div class="col-sm-2 control-label">
+                        <label for="question_text">题干</label>
+                    </div>
+                    <div class="col-sm-8 col-lg-8">
+                        <textarea id="question_body" name="question_body"
+                         rows="5" class="field  form-control" 
+                         required><?php echo !empty($qbody) ? $qbody:''?></textarea>
+                        
+                        <div class="help-block with-errors"></div>
+                    </div>
                 </div>
-            </div>
-            <div id="item_question_body" class="form-group">
-               <div class="col-sm-2 control-label">
-                    <label for="question_text">题干</label>
-               </div>
-               <div class="col-sm-8 col-lg-8">
-                    <textarea id="question_body" name="question_body"   
-                        class="field  form-control" rows="5" required ><?php echo !empty($qbody) ? $qbody:'';?></textarea>
-                    <input type="hidden" value="fillblank" name="qtype">
-                    <div class="help-block with-errors"></div>
-               </div>
-             </div>
-         <div id="qitem_course" class="form-group">
-            <div class="col-sm-2 control-label">
-            <label for="question_mark">课程</label></div>
-            <div class="col-sm-8 col-lg-8">
-                <select id="qitem_course_id" name ="qitem_course_id" class="form-control ">
-                    <option value="">--请选择课程--</option>
-                <?php 
-                    $courses = getCourses();
-                    if ($courses->num_rows >0){
-                        foreach ($courses as $course){
-                            $courseselected = ($course_id == $course['course_id']) ? "selected": "";
-                            echo  '<option value="'.$course['course_id'].'" '.$courseselected.' >'.$course['coursename'].'</option>';
-                        }
-                    }
-                ?>    
-                </select>
-            </div>
-         </div>
-         <div class="form-group ">
+                <div id="qitem_course" class="form-group">
+                    <div class="col-sm-2 control-label">
+                        <label for="question_mark">课程</label>
+                    </div>
+                    <div class="col-sm-8 col-lg-8">
+                        <select id="qitem_course_id"
+                            name="qitem_course_id" class="form-control ">
+                            <option value="">--请选择课程--</option>
+                            <?php
+                            $courses = getCourses ();
+                            if ($courses->num_rows > 0) {
+                                foreach ( $courses as $course ) {
+                                    $courseselected = ($course_id == $course ['course_id']) ? "selected" : "";
+                                    echo '<option value="' . $course ['course_id'] . '" ' . $courseselected . ' >' . $course ['coursename'] . '</option>';
+                                }
+                            }
+                            ?>    
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group ">
                <div class="col-sm-2 control-label">
                  <label  for="subject_list">知识点</label>
                </div>
                <div class="col-sm-8 col-lg-8">
                 <select id="subject_list"  name="subject_id" class="form-control">
-                    s<option value="">--请选择知识点--</option>
+                    <option value="">--请选择知识点--</option>
                 <?php
                 $query = "select * from tk_subjects order by subject_id;";
     
@@ -166,10 +178,14 @@
                 <div class="col-sm-2 control-label">
                     <label for="answer_content1">答案1</label>
                 </div>
+                <?php 
+                    $answers = getQuestionAnswers($questionId);
+                    
+                ?>
                 <div class="col-sm-8 col-lg-8">
                     <textarea id="answer_content1" name="answer_content1" 
                         class="field  form-control" rows="5" 
-                        required><?php echo !empty($question_answer) ? $question_answer:'';?></textarea>
+                        required><?php echo !empty($qbody) ? $qbody:'';?></textarea>
                     <div class="help-block with-errors"></div>
                 </div>
             </div>

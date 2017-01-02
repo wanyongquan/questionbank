@@ -25,6 +25,7 @@ function setupDB() {
     try {
         // $DB->connect($CFG->dbhost, $CFG->dbuser, $CFG->dbpass);
         $DB = mysqli_connect ( $CFG->dbhost, $CFG->dbuser, $CFG->dbpass, $CFG->dbname );
+        mysqli_set_charset($DB, "utf8");
     } catch ( exception $e ) {
         //
         echo $e->getMessage ();
@@ -38,4 +39,24 @@ function query($sql){
     global $DB;
    $result = mysqli_query($DB, $sql)  or die( exit(mysqli_error($DB))) ;
 
+}
+
+function getCourses(){
+    GLOBAL $DB;
+    
+    $sql = "select * from tk_courses";
+    $result = mysqli_query($DB, $sql);
+    return $result;
+}
+
+function getSubjectsByCourseId($courseId){
+    GLOBAL $DB;
+    
+    $sql = "select * from tk_subjects, tk_courses where tk_subjects.course_id = tk_courses.course_id";
+    $sql .= " and tk_subjects.course_id = ".$courseId;
+    
+    $result = mysqli_query($DB, $sql);
+    
+    return $result;
+    
 }
