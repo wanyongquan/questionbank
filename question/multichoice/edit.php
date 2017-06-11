@@ -69,7 +69,7 @@ if (isset ( $_SESSION['username'])){
          include '../../include/menus.php';
         }?>
     <div id="content" class="container">
-      <div class="page-header"><h1>添加一道选择题</h1></div>
+      <div class="page-header"><h2>添加一道选择题</h2></div>
       <form name="question_form" id="question_form"  class="form-horizontal" 
         role="form" method="post" onsubmit="return onSubmitQForm();">
         <fieldset>

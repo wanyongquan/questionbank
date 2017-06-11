@@ -1,7 +1,7 @@
 <?php
    include('session.php');
    error_reporting(0);
-   session_start();
+
    if (!isset($_SESSION['username'])){
    		$_GLOBALS['message'] = 'Session Timeout. Click here to <a href=\"login.php\">Log in</a>';
 
@@ -23,7 +23,7 @@
     <!-- Bootstrap core CSS -->
     <link href="<?php echo $CFG->wwwroot.'/bootstrap/css/bootstrap.min.css'?>" rel="stylesheet">
 
-<!--       <link rel="stylesheet" type="text/css" href="css/bootstrap.css"/> -->
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
    </head>
    <body>
       <?php
@@ -32,18 +32,22 @@
         echo "<div class=\"message\">".$_GLOBALS['message']."</div>";
       }
       ?>
+       
       <div id="container" class="container">
         <div class="nav">
             <form name="frmwelcome" action="welcome.php" method="post">
-                <?php include '/include/menus.php';?>
+                <?php 
+                include '/include/menus.php';
+                ?>
+               
             </form>
         </div>
+        
       </div>
        <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="lib/jquery/jquery-3.1.1.min.js"></script>
     <script src="bootstrap/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug
     <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>-->

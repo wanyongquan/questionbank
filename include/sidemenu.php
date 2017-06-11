@@ -7,11 +7,15 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">Question Bank</a>
+          <img style="margin:10px 2px 2px 10px;float:left;" height="53" width="80" 
+          src="<?php echo $CFG->wwwroot.'/images/question.png'?>" alt="question bank"/>
+          <a class="navbar-brand" href="index.php">Question Bank</a>
+          
         </div>
         <!-- /.navbar-header -->
+        <div class="collapse navbar-collapse navbar-top-menu-collapse navbar-right">
         
-        <ul class="nav navbar-top-links navbar-right">
+        <ul class="nav navbar-nav">
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
               <i class="fa fa-user fa-fw"></i><i class="fa fa-caret-down"></i>
@@ -26,6 +30,7 @@
           </li>
           <!-- /.dropdown -->
         </ul>
+        </div>
         <!-- /.navbar-top-links -->
         <div class="navbar-default sidebar" role="navigation">
           <div class="sidebar-nav navbar-collapse">
@@ -79,6 +84,9 @@
                   </li>
                   <li>
                     <a href="<?php echo $CFG->wwwroot.'/course/course.php'?>">课程</a>
+                  </li>
+                  <li>
+                    <a href="<?php echo $CFG->wwwroot.'/users/pages.php'?>">页面权限</a>
                   </li>
                 </ul>
               </li>

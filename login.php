@@ -5,20 +5,25 @@
 
 	//inlucde("header.inc");
 
-	include ('config.php');
-	ob_start();
-	session_start();
-
+	require_once ('config.php');
+   
 	error_reporting(E_ALL);
 	$error = "";
 
 	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		// get username and password from form;
-		$myusername = mysqli_real_escape_string($db, $_POST['username']);
-		//$mypassword = mysqli_real_escape_string($db, $_POST['password']);
+		$username = Input::get('username');
+		$password = Input::get('password');
+		$user = new User();
+		$login = $user->login($username, $password);
+		if ($login){
+		    //redirect to custom login script
+		    header("location: welcome.php");
+		}
+		
 		$mypassword = md5(htmlspecialchars($_REQUEST['password'],ENT_QUOTES));
 
-		$sql = "select uid from tk_users where username='$myusername' and password='$mypassword'";
+		$sql = "select uid from tk_users where username='$username' and password='$mypassword'";
 		$result = mysqli_query($DB, $sql);
 
 		$count = mysqli_num_rows($result);
@@ -27,7 +32,7 @@
 			//session_register("myusername");
 			while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
 			    $_SESSION['userid'] = $row['uid'];
-			    $_SESSION['username'] = $myusername;
+			    $_SESSION['username'] = $username;
 			}
 
 			header("location:welcome.php");
@@ -38,32 +43,48 @@
 
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <!-- the above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-  	<title><?php echo $page_title?></title>
+<?php 
+    require_once '/include/header.php';
+    require_once $abs_doc_root.$app_root.'/include/navigation.php';
+?>
 
-    <!-- Bootstrap core CSS -->
-    <link href="<?php echo $CFG->wwwroot.'/bootstrap/css/bootstrap.min.css'?>" rel="stylesheet">
-
-  	<link href="css/bootstrap.css" rel="stylesheet">
-  </head>
-
-  <body>
    <div class="container">
-		<div class="header">
-            <?php require'/include/header.php';?>
+		<nav class="navbar navbar-default nav-bar-static-top" role="navigation" style="margin-bottom:0">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <img style="margin:10px 2px 2px 10px;float:left;" height="53" width="80" 
+          src="<?php echo $CFG->wwwroot.'/images/question.png'?>" alt="question bank"/>
+          <a class="navbar-brand" href="index.php">Question Bank</a>
+          
         </div>
-
+        <!-- /.navbar-header -->
+        
+        <ul class="nav navbar-top-links navbar-right">
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+              <i class="fa fa-user fa-fw"></i><i class="fa fa-caret-down"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-user">
+              <li><a href="#"><i class="fa fa-user fa-fw"></i>User Profile</a></li>
+              <li><a href="#"><i class="fa fa-gear fa-fw"></i>Settings</a></li>
+              <li class="divider"></li>
+              <li><a href="<?php echo $CFG->wwwroot?>/login.php"><i class="fa fa-sign-out fa-fw"></i>Logout</a></li>
+            </ul>
+            <!-- /.dropdown-user -->
+          </li>
+          <!-- /.dropdown -->
+        </ul>
+        <!-- /.navbar-top-links -->
+    </nav>
                <form class = "form-signin" role = "form"
 		            action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']);
 		            ?>" method = "post">
-                    <h2 class="form-signin-heading">Please Sign in</h2>
+                    <h2 class="form-signin-heading">Welcome to Question Bank</h2>
 		            <h4 class = "form-signin-heading"><?php echo $error; ?></h4>
 		            <label for="inputEmail" >用户名:</label>
 		            <input type = "text"  id="inputEmail" class = "form-control"
@@ -90,5 +111,6 @@
                <div style = "font-size:11px; color:#cc0000; margin-top:10px"><?php echo $error; ?></div>
 
       </div>
-  </body>
-</html>
+<?php require_once $abs_doc_root.$app_root.'/include/page_footer.php';?>
+<?php require_once $abs_doc_root.$app_root.'/include/scripts.php';?>
+<?php require_once $abs_doc_root.$app_root.'/include/html_footer.php';?>  

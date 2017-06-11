@@ -1,8 +1,8 @@
 <?php
     include('../session.php');
     error_reporting(0);
-    session_start();
-
+    
+    require_once '../config.php';
     
     if (!isset($_SESSION['username'])){
         $_GLOBALS['message'] = 'Session Timeout. Click here to <a href=\"'.$CFG->wwwroot.'\login.php\">Log in</a>';
@@ -13,51 +13,20 @@
         header('Location:'.$CFG->wwwroot.'/login.php');
     }
  ?>
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-     <!-- the above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-      <title>Question Bank </title>
-    <!-- Bootstrap core CSS -->
-    <link href="<?php echo $CFG->wwwroot.'/bootstrap/css/bootstrap.min.css'?>" rel="stylesheet">
-    <link href="../css/bootstrap.css" rel="stylesheet">
-    <!-- MetisMenu CSS -->
-    <link href="../lib/sb-admin-2/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
-    <!-- SB Admin 2 CSS -->
-    <link href="../lib/sb-admin-2/dist/css/sb-admin-2.css" rel="stylesheet">
-    <!-- Font Awesome CSS -->
-    <link href="../lib/sb-admin-2/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-   
-    </head>
-   <body>
-    <?php
-    /****************/
-    if (isset($_GLOBALs['message'])){
-        echo "<div class=\"message\">".$_GLOBALS['message']."</div>";
-    }
-    ?>
-
-<?php if (isset($_SESSION['username'])){?>
-
-
-<?php }?>
-<div id="wrapper" class="container-fluid">
-<?php 
-     include '../include/sidemenu.php';
+ <?php 
+     require_once $abs_doc_root.$app_root.'/include/header.php';
+     require_once $abs_doc_root.$app_root.'/include/navigation.php';
  ?>
-<div id="page-wrapper" >
 
+<div  class="container">
     <div id="page-course" class="row">
         <h2>课程</h2>
         <p>
        <!-- <div class="singlebutton">
             <form method="get" action="<?php  echo $CFG->wwwroot.'/course/editadvanced.php'?>">
-            <div><input type="submit"  class="btn btn-success" value="添加课程" /><input type="hidden" name="id" value="-1" /></div></form>
+            <div><input type="submit"  class="btn btn-primary" value="添加课程" /><input type="hidden" name="id" value="-1" /></div></form>
         </div> -->
-        <button class="btn btn-success "  data-toggle="modal" data-target="#add_new_course_modal"  data-backdrop="false">新增课程</button>
+        <button class="btn btn-primary "  data-toggle="modal" data-target="#add_new_course_modal"  data-backdrop="false">新增课程</button>
         </p>
 
         <div class="coursescontent">
@@ -163,16 +132,10 @@
         </div><!--  end of modal-dialog -->
     </div><!--  end of modal -->
     <!--  end of modal delete course-->
+
     </div>
-    </div>
-    <script src="../lib/jquery/jquery-3.1.1.min.js"></script>
-    <!-- Bootstrap core JavaScript -->
-    <script src="../bootstrap/js/bootstrap.min.js"></script>
-    <!--  metisMenu Plugin JavaScript -->
-    <script src="../lib/sb-admin-2/vendor/metisMenu/metisMenu.min.js"></script>
-    <!-- SB Admin 2 JavaScript -->
-    <script src="../lib/sb-admin-2/dist/js/sb-admin-2.js"></script>
-    <script src="../script/form-validator.min.js" type="text/javascript"></script>
+
+<?php require_once $abs_doc_root.$app_root.'/include/page_footer.php';?>
+<?php require_once $abs_doc_root.$app_root.'/include/scripts.php';?>
     <script src="course.js"  type="text/javascript"> </script>
-    </body>
-</html>
+<?php require_once $abs_doc_root.$app_root.'/include/html_footer.php';?>  

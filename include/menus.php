@@ -14,13 +14,13 @@
         <div id="navbar" class="navbar-collapse collapse">
 
     <ul class="nav navbar-nav">
-        <li ><a href=<?php echo $CFG->wwwroot."/welcome.php#"?>>首页</a></li>
+        <li ><a href=<?php echo $CFG->wwwroot."/index.php#"?>>首页</a></li>
         <li class="dropdown active">
-            <a href="#" id="coursemgmt" class="dropdown-toggle" data-toggle="dropdown" role="menu" aria-haspopup="true" aria-expanded="false">基本数据管理<span class="caret"></span></a>
+            <a href="#" id="coursemgmt" class="dropdown-toggle" data-toggle="dropdown" role="menu" aria-haspopup="true" aria-expanded="false">系统管理<span class="caret"></span></a>
             <ul class="dropdown-menu">
-                <li><a href="<?php echo $CFG->wwwroot.'/course/course.php'?>" >课程管理</a></li>
+                <li><a href="<?= $qb_url_root.'/course/course.php'?>" >课程管理</a></li>
                 <li><a href="<?php echo $CFG->wwwroot.'/subject/subject.php'?>">知识点管理</a></li>
-
+                <li><a href="<?=$CFG->wwwroot.'/users/pages.php' ?>">页面权限管理</a>
             </ul>
         </li>
         <li class="dropdown">
@@ -34,7 +34,7 @@
         </li>
         <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"  aria-haspopup="true" aria-expanded="false">组卷规则管理<span class="caret"></span></a>
             <ul class="dropdown-menu">
-                <li><a href="">浏览规则</a></li>
+                <li><a href="<?php echo $CFG->wwwroot.'/rule/index.php'?>">浏览规则</a></li>
                 <li><a href="">录入规则</a></li>
                 <li><a href="">修改规则</a></li>
 

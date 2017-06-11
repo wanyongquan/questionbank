@@ -1,6 +1,6 @@
 <?php
 include_once 'config.php';
-session_start();
+//session_start();
 
 $user_check = $_SESSION['username'];
 
@@ -11,6 +11,6 @@ $row = mysqli_fetch_array($ses_sql,MYSQLI_ASSOC);
 $login_session = $row['username'];
 
 if(!isset($_SESSION['username'])){
-	header('Location:'.$CFG->wwwroot.'/login.php');
+	header('Location:'.$CFG->wwwroot.'/index.php');
 }
 ?>
