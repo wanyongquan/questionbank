@@ -10,7 +10,7 @@
         </button>
         <img class="img-responsive" style="margin:10px 2px 2px 10px;float:left;" height="53" width="80" 
               src="<?php echo $CFG->wwwroot.'/images/question.png'?>" alt="question bank"/>
-        <a class="navbar-brand" href="#">QuestionBank</a>
+        <a class="navbar-brand" href="#">燕子题库</a>
       </div>
       <div class="collapse navbar-collapse navbar-top-menu-collapse navbar-left">
         <ul class="nav navbar-nav">
@@ -18,13 +18,34 @@
           <li class="active dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">系统管理<span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li><a href="<?=$qb_url_root.'course/course.php' ?>">课程管理</a></li>
-              <li><a href="<?=$qb_url_root."subject/subject.php"?>">知识点管理</a></li>
-              <li><a href="<?=$qb_url_root."rule/index.php"?>">组卷规则管理</a></li>
-              <li><a href="<?=$qb_url_root."users/pages.php"?>">页面权限管理</a></li>
+              <li><a href="<?=$qb_url_root.'/course/course.php' ?>">课程管理</a></li>
+              <li><a href="<?=$qb_url_root."/subject/subject.php"?>">知识点管理</a></li>
+              <li><a href="<?=$qb_url_root."/rule/index.php"?>">组卷规则管理</a></li>
+              <li><a href="<?=$qb_url_root."/users/pages.php"?>">页面权限管理</a></li>
             </ul>
           </li>
-          <li><a href="#">Rules</a></li>
+          <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"  aria-haspopup="true" aria-expanded="false">题目管理<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li><a href="<?php echo $qb_url_root.'/question/question.php'?>">浏览题目</a></li>
+                <li><a href="">录入题目</a></li>
+                <li><a href="">修改题目</a></li>
+            </ul>
+        </li>
+        <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"  aria-haspopup="true" aria-expanded="false">组卷规则管理<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li><a href="<?php echo $qb_url_root.'/rule/index.php'?>">浏览规则</a></li>
+                <li><a href="">录入规则</a></li>
+                <li><a href="">修改规则</a></li>
+            </ul>
+        </li>
+        <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"  aria-haspopup="true" aria-expanded="false">组卷<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li><a href="">浏览试卷</a></li>
+                <li><a href="">组卷</a></li>
+                <li><a href="">修改试卷</a></li>
+            </ul>
+        </li>
         </ul>
       </div>
       <div class="collapse navbar-collapse navbar-top-menu-collapse navbar-right">

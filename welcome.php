@@ -1,55 +1,52 @@
 <?php
-   include('session.php');
-   error_reporting(0);
+include ('session.php');
+error_reporting ( 0 );
 
-   if (!isset($_SESSION['username'])){
-   		$_GLOBALS['message'] = 'Session Timeout. Click here to <a href=\"login.php\">Log in</a>';
+if (! isset ( $_SESSION ['username'] )) {
+    $_GLOBALS ['message'] = 'Session Timeout. Click here to <a href=\"login.php\">Log in</a>';
 
-   }else if (isset($_REQUEST['logout'])) {
-   		unset($_SESSION['username']);
-   		$_GLOBALs['message'] = "You are logged out.";
-   		header('Location:'.$CFG->wwwroot.'/login.php');
-   }
+} else if (isset ( $_REQUEST ['logout'] )) {
+    unset ( $_SESSION ['username'] );
+    $_GLOBALs ['message'] = "You are logged out.";
+    header ( 'Location:' . $CFG->wwwroot . '/login.php' );
+}
 
 ?>
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-     <!-- the above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-      <title>Question Bank </title>
-    <!-- Bootstrap core CSS -->
-    <link href="<?php echo $CFG->wwwroot.'/bootstrap/css/bootstrap.min.css'?>" rel="stylesheet">
-
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
-   </head>
-   <body>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- Bootstrap core CSS -->
+<link href="<?=$app_root?>/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<!-- MetisMenu CSS -->
+<link href="<?=$app_root?>/lib/sb-admin-2/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+<!-- SB Admin 2 CSS -->
+<link href="<?=$app_root?>/lib/sb-admin-2/dist/css/sb-admin-2.css" rel="stylesheet">
+<!-- Font Awesome CSS -->
+<link href="<?=$app_root?>/lib/sb-admin-2/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<!-- Custom css -->
+<link href="<?=$app_root?>/css/footer.css" rel="stylesheet">
+<link href="<?=$app_root?>/css/all.css" rel="stylesheet">
+</head>
+<body>
       <?php
-      	/****************/
-      if (isset($_GLOBALs['message'])){
-        echo "<div class=\"message\">".$_GLOBALS['message']."</div>";
-      }
-      ?>
+    /**
+     * *************
+     */
+    if (isset ( $_GLOBALs ['message'] )) {
+        echo "<div class=\"message\">" . $_GLOBALS ['message'] . "</div>";
+    }
+    ?>
        
-      <div id="container" class="container">
-        <div class="nav">
-            <form name="frmwelcome" action="welcome.php" method="post">
-                <?php 
-                include '/include/menus.php';
-                ?>
-               
-            </form>
-        </div>
-        
-      </div>
-       <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="lib/jquery/jquery-3.1.1.min.js"></script>
-    <script src="bootstrap/js/bootstrap.min.js"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>-->
-   </body>
+      
+    <?php
+    require_once $abs_doc_root . $app_root . '/include/navigation.php';
+    ?>
+   
+      <div id="container" class="container"></div>
+      <?php require_once $abs_doc_root.$app_root.'/include/page_footer.php';?>
+      <?php require_once $abs_doc_root.$app_root.'/include/scripts.php';?>
+    </body>
 </html>

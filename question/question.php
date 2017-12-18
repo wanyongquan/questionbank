@@ -14,7 +14,7 @@
         <meta name="viewport" content="width=device-width,initial-scale=1">
      <!-- the above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <!-- Bootstrap core CSS -->
-    <link href="<?php echo $CFG->wwwroot.'/bootstrap/css/bootstrap.min.css'?>" rel="stylesheet">
+    <link href="<?php echo $CFG->wwwroot.'/lib/bootstrap/css/bootstrap.min.css'?>" rel="stylesheet">
     <link href="../css/bootstrap.css" rel="stylesheet">
     <link href="../css/nav-sidebar.css" rel="stylesheet">
     <link href="../css/footer.css" rel="stylesheet">
@@ -126,12 +126,10 @@
         </div><!--  end of modal-dialog -->
     </div><!--  end of modal -->
     <!--  end of modal delete course-->
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
+    
+    <?php require_once $abs_doc_root.$app_root.'/include/page_footer.php';?>
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="../lib/jquery/jquery-3.1.1.min.js"></script>
-    <script src="../bootstrap/js/bootstrap.min.js"></script>
-    <script src="../script/form-validator.min.js" type="text/javascript"></script>
+    <?php require_once $abs_doc_root.$app_root.'/include/scripts.php';?>
     <script src="question.js" type="text/javascript"></script>
     </body>
 </html>

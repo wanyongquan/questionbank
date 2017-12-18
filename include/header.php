@@ -11,7 +11,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
   <!-- the above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
   <meta name="description" content="">
-  <title>Question Bank</title>
+  <title>燕子题库</title>
     
   <!-- Bootstrap core CSS -->
   <link href="<?=$app_root?>/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">

@@ -19,7 +19,7 @@
  ?>
 
 <div  class="container">
-    <div id="page-course" class="row">
+    <div id="page-course" >
         <h2>课程</h2>
         <p>
        <!-- <div class="singlebutton">
@@ -47,7 +47,7 @@
                   <form id="addCourseForm" class="form-horizontal" role="form" method="post" data-toggle="validator">
                      <div class="form-group">
                           <div class="controls">
-                            <label for="first_name" class="col-xs-3 col-md-3 control-label">Course Name</label>
+                            <label for="first_name" class="col-xs-3 col-md-3 control-label">课程名称</label>
                             <div class="col-xs-6 col-md-6">
                             <input   type="text" id="coursename"
                                 placeholder="Course Name"
@@ -56,7 +56,7 @@
                           </div>
                         </div>
                         <div class="form-group">
-                            <label for="last_name" class="col-xs-3 control-label">Description</label>
+                            <label for="last_name" class="col-xs-3 control-label">描述</label>
                             <div class="col-xs-6"> <input
                                 type="text" id="description"
                                 placeholder="Description"
@@ -66,9 +66,8 @@
                 </div>
                 <div class="modal-footer">
                         <button type="button" class="btn btn-default"
-                            data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary" id="btnAddCourse"
-                            >Add Course</button>
+                            data-dismiss="modal">取消</button>
+                        <button type="submit" class="btn btn-primary" id="btnAddCourse">保存</button>
                     </div> <!-- End of modal footer -->
             </div> <!-- End of modal content -->
         </div> <!-- End of modal dialog -->
@@ -88,14 +87,14 @@
                 <div class="modal-body">
                   <form id="edit_course_form" class="form-horizontal" role="form" method="post" data-toggle="validator">
                     <div class="form-group">
-                        <label for="edit-coursename" class="col-xs-3">Course Name</label>
+                        <label for="edit-coursename" class="col-xs-3">课程名称</label>
                         <div class="col-xs-6">
                         <input type="text" id="edit_coursename" placeholder="Course Name" class="form-control" required/>
                         <div class="help-block with-errors"></div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="edit-coursedescription" class="col-xs-3">Description</label>
+                        <label for="edit-coursedescription" class="col-xs-3">描述</label>
                         <div class="col-xs-6">
                         <input type="text" id="edit_coursedescription" placeholder = "Description" class="form-control"/>
                         </div>
@@ -103,8 +102,8 @@
                     </form>
                 </div> <!-- end of moal body -->
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="btnEditCourse">Save</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="btnEditCourse">保存</button>
                 </div><!--  end of modal-footer -->
             </div><!--  end of modal content -->
         </div><!--  end of modal dialog -->
@@ -118,15 +117,15 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title"> Delete Course</h4>
+                    <h4 class="modal-title">删除课程</h4>
                 </div>
                 <div class="modal-body">
-                      <p> Do you really want to delete this course?</p>
+                      <p> 你确定要删除本课程吗?</p>
                 </div>
                 <div class="modal-footer">
                         <button type="button" class="btn btn-default"
-                            data-dismiss="modal">No</button>
-                            <a class="btn btn-danger btn-ok" onclick="deleteCourse(this)">Delete</a>
+                            data-dismiss="modal">取消</button>
+                            <a class="btn btn-danger btn-ok" onclick="deleteCourse(this)">删除</a>
                     </div><!--  end of modal-footer -->
             </div><!--  end of modal-content -->
         </div><!--  end of modal-dialog -->

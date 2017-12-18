@@ -29,9 +29,9 @@ $file_found=FALSE;
 
 for($i = 1; $i < $self_path_length; $i++){
     array_splice($self_path, $self_path_length-$i, $i);
-    $qb_url_root=implode("/",$self_path)."/";
+    $qb_url_root=implode("/",$self_path);
 
-    if (file_exists($abs_doc_root.$qb_url_root.'login.php')){
+    if (file_exists($abs_doc_root.$qb_url_root.'/login.php')){
         $file_found=TRUE;
         break;
     }else{
