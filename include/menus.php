@@ -5,7 +5,7 @@
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                 <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href=<?php echo $CFG->wwwroot."/welcome.php#"?>>Question Bank</a>
+            <a class="navbar-brand" href=<?php echo $CFG->wwwroot."/index2.php#"?>>Question Bank</a>
         </div>
         <div class="collapse navbar-collapse navbar-top-menu-collapse navbar-left">
             <ul class="nav navbar-nav">

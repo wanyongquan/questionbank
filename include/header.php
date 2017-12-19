@@ -14,13 +14,13 @@
   <title>燕子题库</title>
     
   <!-- Bootstrap core CSS -->
-  <link href="<?=$app_root?>/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="<?=$app_root?>/lib/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <!-- MetisMenu CSS -->
-  <link href="<?=$app_root?>/lib/sb-admin-2/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+  <link href="<?=$app_root?>/lib/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
   <!-- SB Admin 2 CSS -->
-  <link href="<?=$app_root?>/lib/sb-admin-2/dist/css/sb-admin-2.css" rel="stylesheet">
+  <link href="<?=$app_root?>/lib/sb-admin-2/css/sb-admin-2.css" rel="stylesheet">
   <!-- Font Awesome CSS -->
-  <link href="<?=$app_root?>/lib/sb-admin-2/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link href="<?=$app_root?>/lib/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
   <!-- Custom css -->
   <link href="<?=$app_root?>/css/footer.css" rel="stylesheet">
   <link href="<?=$app_root?>/css/all.css" rel="stylesheet">

@@ -7,9 +7,9 @@
     $data = '<table class="table table-striped table-hover">
             <thead>
              <tr>
-                <th>Course name</th>
-                <th>Description</th>
-                <th>Operations</th>
+                <th>课程名称</th>
+                <th>描述</th>
+                <th>操作</th>
              </tr>
             </thead>
             <tbody>';

@@ -18,7 +18,7 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
     $login = $user->login ( $username, $password );
     if ($login) {
         // redirect to custom login script
-        header ( "location: welcome.php" );
+        header ( "location: index2.php" );
     }
     
     $mypassword = md5 ( htmlspecialchars ( $_REQUEST ['password'], ENT_QUOTES ) );
@@ -35,7 +35,7 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
             $_SESSION ['username'] = $username;
         }
         
-        header ( "location:welcome.php" );
+        header ( "location:index2.php" );
     } else {
         $error = "Username or password is wrong.";
     }
@@ -125,5 +125,13 @@ require_once '/include/header.php';
     </div>
 <div style="font-size: 11px; color: #cc0000; margin-top: 10px"><?php echo $error; ?></div>
 <?php require_once $abs_doc_root.$app_root.'/include/page_footer.php';?>
-<?php require_once $abs_doc_root.$app_root.'/include/scripts.php';?>
-<?php require_once $abs_doc_root.$app_root.'/include/html_footer.php';?>  
+<!-- jQuery -->
+    <script src="lib/vendor/jquery/jquery.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="lib/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="lib/vendor/metisMenu/metisMenu.min.js"></script>
+    <!-- Sb Admin 2 Theme JavaScript -->
+    <script src="lib/sb-admin-2/js/sb-admin-2.js"></script>
+    </body>
+</html>  
