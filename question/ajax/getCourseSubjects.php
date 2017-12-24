@@ -7,7 +7,7 @@
         $html = "";
         if ($subjects->num_rows>0){
             foreach($subjects as $subject){
-                $option =  '<option value="'.$subject['subject_id'].'" '.$courseselected.' >'.$subject['subjectName'].'</option>';
+                $option =  '<option value="'.$subject['subject_id'].'" '.$courseselected.' >'.$subject['subject_name'].'</option>';
                 $html .= $option;            
             }
         

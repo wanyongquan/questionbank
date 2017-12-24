@@ -52,11 +52,19 @@ function getCourses(){
 function getSubjectsByCourseId($courseId){
     GLOBAL $DB;
     
-    $sql = "select * from tk_subjects, tk_courses where tk_subjects.course_id = tk_courses.course_id";
-    $sql .= " and tk_subjects.course_id = ".$courseId;
+    $sql = "select subject_id,subject_name from tk_subjects, tk_courses where tk_subjects.course_id = tk_courses.course_id";
+    $sql .= " and tk_subjects.course_id = ".$courseId. " order by subject_name";
     
     $result = mysqli_query($DB, $sql);
     
     return $result;
     
+}
+
+function getAllCourses(){
+    global $DB;
+
+    $sql = "select course_id, course_name from tk_courses";
+    $result = mysqli_query($DB, $sql);
+    return $result;
 }

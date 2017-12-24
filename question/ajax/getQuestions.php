@@ -3,10 +3,10 @@
 
     // write the html table header
     $data = '<table class="table table-striped table-hover">
-               <thead<tr><th>名称</th>
+               <thead><tr><th>名称</th>
                             <th>题型</th>
                             <th>难度</th>
-                            <th>课程</th>
+                           
                             <th>知识点</th>
                             <th>分数</th>
                             <th>创建人</th>
@@ -26,8 +26,8 @@
             $data .= '<tr><td>'.$row['question_name'].'</td>';
             $data .= '<td>'.$row['qtype'].'</td>';
             $data .= '<td>'.$row['dictionary_value'].'</td>';
-            $data .= '<td>'.$row['coursename'].'</div>';
-            $data .= '<td>'.$row['subjectName'].'</td>';
+            
+            $data .= '<td>'.$row['subject_name'].'</td>';
             $data .= '<td>'.$row['point'].'</td>';
             $data .= '<td>'.$row['username'].'</td>';
             $data .= '<td>'.$row['createdDate'].'</td>';

@@ -8,7 +8,7 @@
          $subjectname= $_POST['subjectname'];
 
          // update database table
-         $query = "update tk_subjects set subjectName='$subjectname' where subject_id=$subjectid";
+         $query = "update tk_subjects set subject_name='$subjectname' where subject_id=$subjectid";
          if (!$result = mysqli_query($DB, $query)){
              exit (mysqli_error($DB));
          }

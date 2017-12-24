@@ -14,7 +14,7 @@
             </thead>
             <tbody>';
 
-    $query= 'select * from tk_courses order by coursename';
+    $query= 'select * from tk_courses order by course_name';
 
     if (!$result = $DB->query($query)){
         exit(mysqli_error($DB));
@@ -22,7 +22,7 @@
     if ($result->num_rows > 0){
         foreach ($result  as $course){
              $data .= '<tr>';
-            $data .= '<td>'.$course['coursename'].'</td>';
+            $data .= '<td>'.$course['course_name'].'</td>';
             $data .= '<td>'.$course['description'].'</td>';
             $data .= '<td><a title="Edit" onclick="getCourseDetails('.$course['course_id'].')" data-toggle="modal" data-target="#edit_course_modal" data-backdrop="false"
                             data-href="http://localhost/user/editadvanced.php?id=2&amp;course='.$course['course_id'].'">
@@ -45,7 +45,7 @@
         $number = 1;
         while ($row = mysqli_fetch_assoc($result)){
             $data .= '<tr>
-                    <td>'.$row['coursename'].'</td>
+                    <td>'.$row['course_name'].'</td>
                     <td>'.$row['description'].'</td>
                     <td><a title="Edit"
                         href="http://localhost/user/editadvanced.php?id=2&amp;course=1"><img

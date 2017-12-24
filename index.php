@@ -48,8 +48,8 @@ require_once $abs_doc_root . $app_root . '/include/header.php';
                     <li><a href="index.php"><i class="fa fa-dashboard fa-fw"></i>网站首页</a></li>
                     <li><a href="#"><i class="fa fa-wrench fa-fw"></i>课程管理<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
-                            <li><a href="">用户</a></li>
-                            <li><a href="<?php echo $CFG->wwwroot.'/subject/subject.php'?>">知识点</a></li>
+                            <li><a href="<?=$qb_url_root?>/course/course.php">课程</a></li>
+                            <li><a href="<?=$qb_url_root?>/subject/subject.php">知识点</a></li>
                             <li><a href="">组卷规则</a></li>
                             <li><a href="">题库</a></li>
                         </ul></li>

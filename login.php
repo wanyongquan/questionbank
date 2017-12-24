@@ -54,7 +54,7 @@ require_once '/include/header.php';
                 <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
             </button>
             <img style="margin: 10px 2px 2px 10px; float: left;" height="53" width="80" src="<?php echo $CFG->wwwroot.'/images/question.png'?>" alt="question bank" />
-            <a class="navbar-brand" href="index.php">燕子题库</a>
+            <a class="navbar-brand" href="index2.php">燕子题库</a>
         </div>
         <!-- /.navbar-header -->
         <div class="collapse navbar-collapse navbar-top-menu-collapse navbar-right">

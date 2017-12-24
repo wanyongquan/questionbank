@@ -106,7 +106,7 @@ if (isset ( $_SESSION['username'])){
                     if ($courses->num_rows >0){
                         foreach ($courses as $course){
                             $courseselected = ($course_id == $course['course_id']) ? "selected": "";
-                            echo  '<option value="'.$course['course_id'].'" '.$courseselected.' >'.$course['coursename'].'</option>';
+                            echo  '<option value="'.$course['course_id'].'" '.$courseselected.' >'.$course['course_name'].'</option>';
                         }
                     }
                 ?>    
@@ -128,7 +128,7 @@ if (isset ( $_SESSION['username'])){
             if ($result->num_rows >0){
                 foreach ($result as $row){
                     $selected = ($subject_id == $row['subject_id']) ? "selected": "";
-                    echo  '<option value="'.$row['subject_id'].'" '.$selected.' >'.$row['subjectName'].'</option>';
+                    echo  '<option value="'.$row['subject_id'].'" '.$selected.' >'.$row['subject_name'].'</option>';
                 }
             }
             ?>

@@ -21,3 +21,15 @@ function getQuestionAnswers($questionId){
     $result = mysqli_query($DB, $sql);
     return $result;
 }
+
+function getQuestionsByCourseId($courseId){
+    global $DB;
+    $sql = "select question_id, question_name,qtype,point,username as createdBy,createdDate,";
+    $sql .= " subject_name, dictionary_value as difficultyLevel";
+    $sql .= " from tk_questions left join tk_subjects on tk_questions.subject_id = tk_subjects.subject_id ";
+    $sql .= " left join tk_users on tk_questions.createdby = tk_users.uid ";
+    $sql .= " left join bs_dictionaryitems as dicts on tk_questions.difficultylevel_id = dicts.dictionary_id ";
+    $sql .= " where tk_questions.course_id=".$courseId;
+    $result = mysqli_query($DB, $sql);
+    return $result;
+}

@@ -10,7 +10,7 @@
         <div class="collapse navbar-collapse navbar-top-menu-collapse navbar-left">
             <ul class="nav navbar-nav">
                 <li>
-                    <a href=<?php echo $CFG->wwwroot."/index.php"?>>首页</a>
+                    <a href=<?php echo $CFG->wwwroot."/index2.php"?>>首页</a>
                 </li>
                 <li class="dropdown active">
                     <a href="#" id="coursemgmt" class="dropdown-toggle" data-toggle="dropdown" role="menu" aria-haspopup="true" aria-expanded="false"> 系统管理<span class="caret"></span>

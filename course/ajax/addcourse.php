@@ -8,7 +8,7 @@
         $coursename = $_POST['coursename'];
         $description = $_POST['description'];
 
-        $query = "insert into tk_courses(coursename, description) values ('$coursename', '$description')";
+        $query = "insert into tk_courses(course_name, description) values ('$coursename', '$description')";
         if (!$result = mysqli_query($DB, $query)) {
             exit (mysqli_error($DB));
         }

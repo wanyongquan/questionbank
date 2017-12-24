@@ -4,7 +4,7 @@
 
 function reloadQuestions(){
 	
-    $.ajax({
+/*    $.ajax({
         url:'ajax/getQuestions.php',
         type:'get',
         dataType:'text',
@@ -15,12 +15,12 @@ function reloadQuestions(){
         error:function(xhr){
             alert(xhr.responseText);
         }
-    })
+    })*/
 }
 
 $(document).ready(function(){
     // reload the question table
-    reloadQuestions();
+    //reloadQuestions();
     
     // submit the choice form
     $("#btnAddQuestion").on('click', function(){
@@ -43,16 +43,19 @@ function choosequestiontype(){
         data:$("#choose_questiontype_form").serialize(),
         success:function(data, status){
             // clear radio state
-            
+            //alert('choose type , done');
             $('input[name="questiontype"]').prop('checked',false);
             // close the modal dialog;
             
             $("#choose_questiontype_modal").modal("hide");
             
             // redirect
-            
+            //alert('redirect url:' + data);
             window.location= data;
-            }
+            },
+        error:function(data){
+            alert('error');
+        }
         });
 }
 

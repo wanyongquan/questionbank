@@ -1,12 +1,11 @@
 <?php
-    session_start();
     
     include_once '../../config.php';
     
     if (!empty($_POST ) && isset($_POST['questiontype'])){
         $questiontype = $_POST['questiontype'];
         $_SESSION['questiontype'] = $questiontype;
-        
+        $courseId = $_POST['courseid'];
         $forwardurl = "";
         switch($questiontype){
             case "multichoice":
@@ -16,7 +15,7 @@
                 $forwardurl = "fillblank/edit.php";
                 break;
             case "shortanswer":
-                $forwardurl ="shortanswer/edit.php";
+                $forwardurl ="shortanswer/edit.php?courseid=".$courseId;
                 break;
             case "truefalse":
                 $forwardurl ="truefalse/edit.php";
