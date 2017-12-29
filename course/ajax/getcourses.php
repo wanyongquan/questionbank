@@ -4,12 +4,12 @@
 
     // write the table header
 
-    $data = '<table class="table table-striped table-hover">
+    $data = '<table class="table table-striped table-bordered table-hover">
             <thead>
              <tr>
                 <th>课程名称</th>
                 <th>描述</th>
-                <th>操作</th>
+                <th></th>
              </tr>
             </thead>
             <tbody>';
@@ -24,13 +24,11 @@
              $data .= '<tr>';
             $data .= '<td>'.$course['course_name'].'</td>';
             $data .= '<td>'.$course['description'].'</td>';
-            $data .= '<td><a title="Edit" onclick="getCourseDetails('.$course['course_id'].')" data-toggle="modal" data-target="#edit_course_modal" data-backdrop="false"
+            $data .= '<td><div class="hidden-sm hidden-xs action-buttons"><a title="编辑" onclick="getCourseDetails('.$course['course_id'].')" data-toggle="modal" data-target="#edit_course_modal" data-backdrop="false"
                             data-href="http://localhost/user/editadvanced.php?id=2&amp;course='.$course['course_id'].'">
-                            <img src="'. $CFG->wwwroot.'/images/gear.png"
-                                alt="edit" class="iconsmall" /></a>
-                        <a class="delete_product" data-id="'.$course['course_id'].'"  data-toggle="modal" data-target="#delete_course_modal" data-backdrop="false">
-                            <i class="glyphicon glyphicon-trash"></i></a></td>';
-
+                            <span class="green"><i class="ace-icon fa fa-pencil bigger-120"></i></span></a>
+                        <a title="删除" class="delete_product" data-id="'.$course['course_id'].'"  data-toggle="modal" data-target="#delete_course_modal" data-backdrop="false">
+                            <span class="red"><i class="ace-icon fa fa-trash-o bigger-120"></i></span></a></div></td>';
             $data .= '</tr>';
         }
     }else{

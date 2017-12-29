@@ -54,7 +54,7 @@ require_once '/include/header.php';
                 <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
             </button>
             <img style="margin: 10px 2px 2px 10px; float: left;" height="53" width="80" src="<?php echo $CFG->wwwroot.'/images/question.png'?>" alt="question bank" />
-            <a class="navbar-brand" href="index2.php">燕子题库</a>
+            <a class="navbar-brand" href="index2.php">燕老师题库</a>
         </div>
         <!-- /.navbar-header -->
         <div class="collapse navbar-collapse navbar-top-menu-collapse navbar-right">
@@ -108,7 +108,7 @@ require_once '/include/header.php';
             
             echo htmlspecialchars ( $_SERVER ['PHP_SELF'] );
             ?>" method="post">
-                <h2 class="form-signin-heading">欢迎使用燕子题库</h2>
+                <h2 class="form-signin-heading">欢迎使用燕老师题库</h2>
                 <h4 class="form-signin-heading"><?php echo $error; ?></h4>
                 <label for="inputEmail">用户名:</label>
                 <input type="text" id="inputEmail" class="form-control" name="username" placeholder="username" required autofocus>

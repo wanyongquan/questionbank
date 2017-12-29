@@ -45,13 +45,14 @@ function reloadSubjects(){
 function getSubjectDetails(id){
 	// add subject id to hidden field
 	$("#hidden_subject_id").val(id);
+	
 	$.post("ajax/getSubjectDetails.php",
 		{subjectid:id},
 		function(data, status){
 			// parse data in json
 			var subject = JSON.parse(data);
 			// assign existing data to modal popup
-			$("#edit_subject_name").val(subject.subjectName);
+			$("#edit_subject_name").val(subject.subject_name);
 			
 		}
 	);

@@ -44,75 +44,154 @@ if (null != $questionId) {
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<!-- the above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-<!-- Bootstrap core CSS -->
-<link href="../../lib/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<!-- MetisMenu CSS -->
-<link href="../../lib/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
-<!-- SB Admin 2 CSS -->
-<link href="../../lib/sb-admin-2/css/sb-admin-2.css" rel="stylesheet">
-<!-- Morris Charts CSS -->
-<link href="../../lib/vendor/morrisjs/morris.css" rel="stylesheet">
-<!-- Font Awesome CSS -->
-<link href="../../lib/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-<!-- Custom css -->
-<link href="../../css/footer.css" rel="stylesheet">
-<link href="../../css/all.css" rel="stylesheet">
-<title>燕子题库</title>
+  <?php 
+      require '../../include/header.php';
+  ?>
 </head>
-<body>
-    <div id="wrapper">
-            <?php
-            require_once $abs_doc_root . $app_root . '/include/navigation.php';
-            ?>
-        <div id="page-wrapper">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h2 class="page-header">TODO: put breadcrumb here: 首页>题库管理>课程名称</h2>
-                </div>
+<body class="no-skin">
+    <?php 
+        require_once '../../include/navigation.php';
+    ?>
+    <div class="main-container ace-save-state" id="main-container">
+        <script type="text/javascript">
+            try{ace.settings.loadState('main-container')}catch(e){}
+        </script>
+        <div id="sidebar" class="sidebar responsive ace-save-state">
+            <script type="text/javascript">
+                try{ace.settings.loadState('sidebar')}catch(e){}
+            </script>
+            <ul class="nav nav-list">
+                <li class="">
+                    <a href="<?php echo $qb_url_root?>/index2.php"> <i class="menu-icon fa fa-tachometer"></i> <span class="menu-text">Dashboard</span>
+                    </a> <b class="arrow"></b>
+                </li>
+                <?php if ($user->isLoggedIn() ){ //if logged in?>
+                <li class="">
+                    <a href="#" class="dropdown-toggle"><i class="menu-icon fa fa-right"></i><span class="menu-text">我的课程</span><b class="arrow fa fa-angle-down"></b></a>
+                    <b class="arrow"></b> 
+                    <!-- todo: course list -->
+                    <ul class="submenu">
+                    <?php $allCourses = getAllCourses ();
+                          foreach ( $allCourses as $course ) {?>
+                          <li class="">
+                            <a href="<?php echo $qb_url_root.'/question/question.php?courseid='.$course['course_id']?>"><i class="menu-icon fa fa-caret-right"></i><?php echo $course['course_name']?></a>
+                            <b class="arrow"></b>
+                          </li>
+                    <?php }?>
+                    </ul>
+                </li>
+                <?php }?>
+                <li class="">
+                    <a href="#" class="dropdown-toggle"> <i class="menu-icon fa fa-desktop"></i> <span class="menu-text">系统管理</span> <b class="arrow fa fa-angle-down"></b>
+                    </a> <b class="arrow"></b>
+                    <ul class="submenu">
+                        <li class="">
+                            <a href="<?php echo $qb_url_root?>/course/course.php"> <i class="menu-icon fa fa-caret-right"></i> 课程 
+                            </a>
+                            <b class="arrow"></b>
+                        </li>
+                        <li class="">
+                            <a href="#"> <i class="menu-icon fa fa-caret-right"></i> 用户
+                            </a>
+                            <b class="arrow"></b>
+                        </li>
+                    </ul>
+                </li>
+                <li class="active open">
+                    <a href="#" class="dropdown-toggle">
+                        <i class="menu-icon fa fa-list"></i><span class="menu-text">课程管理</span>
+                        <b class="arrow fa fa-angle-down"></b>
+                    </a> 
+                    <b class="arrow"></b>
+                    <ul class="submenu">
+                            <li class="">
+                                <a href="<?=$qb_url_root?>/subject/subject.php">
+                                    <i class="menu-icon fa fa-caret-right"></i>
+                                    知识点
+                                </a>
+                                <b class="arrow"></b>
+                            </li>
+                            <li class="active">
+                                <a href="<?php echo $qb_url_root.'/question/question.php?courseid=5'?>">
+                                    <i class="menu-icon fa fa-caret-right"></i>
+                                    题库
+                                </a>
+                                <b class="arrow"></b>
+                            </li>
+                            <li class="">
+                                <a href="jqgrid.html">
+                                    <i class="menu-icon fa fa-caret-right"></i>
+                                    组卷规则
+                                </a>
+                                <b class="arrow"></b>
+                            </li>
+                        </ul>
+                </li>
+            </ul>
+            <!-- /.nav-list -->
+            <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+                <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
             </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            添加简答题
-                        </div>
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <form name="question_form" id="question_form" class="form-horizontal" role="form" method="post" onsubmit="return onSubmitQForm();" data-toggle="validator">
-                                        <fieldset>
-                                            <legend>概要</legend>
-                                            <input type="hidden" name="hidden_question_id" id="hidden_question_id" value="<?php echo (!empty($questionId) ? $questionId: '')?>"> <input type="hidden" value="shortanswer" name="qtype">
-                                            <input type="hidden" name="courseid" value="<?php echo $courseid?>">
-                                            <div id="item_question_name" class="form-group">
-                                                <div class="col-sm-2 control-label">
-                                                    <label for="question_name">题目名称</label>
-                                                </div>
-                                                <div class="col-sm-8 col-lg-8">
-                                                    <input id="question_name" name="question_name" class="form-control" required value="<?php echo !empty($question_name) ? $question_name: ''?>"></input>
-                                                    <div class="help-block with-errors"></div>
-                                                </div>
+        </div>
+         <!-- /.sidebar -->
+         <div class="main-content">
+            <div class="main-content-inner">
+                <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+                    <ul class="breadcrumb">
+                        <li>
+                            <i class="ace-icon fa fa-home home-icon"></i>
+                            <a href="#">首页</a>
+                        </li>
+                        <li>
+                            <a href="#">课程管理</a>
+                        </li>
+                        <li>
+                            <a href="#">course_name</a>
+                        </li>
+                        <li class="active">short anwser</li>
+                    </ul>
+                </div>
+                <!-- /.breadcrumbs -->
+                <div class="page-content">
+                    <div class="page-header">
+                        <h1>short anser<small><i class="ace-icon fa fa-angle-double-right"></i>course_name</small></h1>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="clearfix">
+                                <div class="pull-right tableTools-container">
+                                </div>
+                            </div>
+                            <div>
+                                <form name="question_form" id="question_form" class="form-horizontal" role="form" method="post" onsubmit="return onSubmitQForm();" data-toggle="validator">
+                                    <fieldset>
+                                        <legend>概要</legend>
+                                        <input type="hidden" name="hidden_question_id" id="hidden_question_id" value="<?php echo (!empty($questionId) ? $questionId: '')?>"> <input type="hidden" value="shortanswer" name="qtype"> <input type="hidden" name="courseid" value="<?php echo $courseid?>">
+                                        <div id="item_question_name" class="form-group">
+                                            <div class="col-sm-2 control-label">
+                                                <label for="question_name">题目名称</label>
                                             </div>
-                                            <div id="item_question_body" class="form-group">
-                                                <div class="col-sm-2 control-label">
-                                                    <label for="question_text">题干</label>
-                                                </div>
-                                                <div class="col-sm-8 col-lg-8">
-                                                    <textarea id="question_body" name="question_body" rows="5" class="field  form-control" required><?php echo !empty($qbody) ? $qbody:''?></textarea>
-                                                    <div class="help-block with-errors"></div>
-                                                </div>
+                                            <div class="col-sm-8 col-lg-8">
+                                                <input id="question_name" name="question_name" class="form-control" required value="<?php echo !empty($question_name) ? $question_name: ''?>"></input>
+                                                <div class="help-block with-errors"></div>
                                             </div>
-                                            <div class="form-group ">
-                                                <div class="col-sm-2 control-label">
-                                                    <label for="subject_list">知识点</label>
-                                                </div>
-                                                <div class="col-sm-8 col-lg-8">
-                                                    <select id="subject_list" name="subject_id" class="form-control">
-                                                        <option value="">--请选择知识点--</option>
+                                        </div>
+                                        <div id="item_question_body" class="form-group">
+                                            <div class="col-sm-2 control-label">
+                                                <label for="question_text">题干</label>
+                                            </div>
+                                            <div class="col-sm-8 col-lg-8">
+                                                <textarea id="question_body" name="question_body" rows="5" class="field  form-control" required><?php echo !empty($qbody) ? $qbody:''?></textarea>
+                                                <div class="help-block with-errors"></div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group ">
+                                            <div class="col-sm-2 control-label">
+                                                <label for="subject_list">知识点</label>
+                                            </div>
+                                            <div class="col-sm-8 col-lg-8">
+                                                <select id="subject_list" name="subject_id" class="form-control">
+                                                    <option value="">--请选择知识点--</option>
                 <?php
                 $query = "select * from tk_subjects order by subject_name;";
                 
@@ -126,15 +205,15 @@ if (null != $questionId) {
                 }
                 ?>
                 </select>
-                                                </div>
                                             </div>
-                                            <div class="form-group">
-                                                <div class="col-sm-2 control-label">
-                                                    <label for="difficultylevel_list">难度</label>
-                                                </div>
-                                                <div class="col-sm-8 col-lg-8">
-                                                    <select id="difficultylevel_list" name="difficultyLevel_id" class="form-control">
-                                                        <option value="">--请选择难度--</option>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-sm-2 control-label">
+                                                <label for="difficultylevel_list">难度</label>
+                                            </div>
+                                            <div class="col-sm-8 col-lg-8">
+                                                <select id="difficultylevel_list" name="difficultyLevel_id" class="form-control">
+                                                    <option value="">--请选择难度--</option>
                 <?php
                 $query = 'select * from vw_difficultylevels';
                 
@@ -148,64 +227,55 @@ if (null != $questionId) {
                 }
                 ?>
                 </select>
-                                                </div>
                                             </div>
-                                            <div id="item_question_mark" class="form-group">
-                                                <div class="col-sm-2 control-label">
-                                                    <label for="question_mark">分数</label>
-                                                </div>
-                                                <div class="col-sm-3">
-                                                    <input id="question_mark" name="question_mark" class="form-control" value="<?php echo !empty($point) ? $point: ''?>">
-                                                    <div class="help-block with-errors"></div>
-                                                </div>
+                                        </div>
+                                        <div id="item_question_mark" class="form-group">
+                                            <div class="col-sm-2 control-label">
+                                                <label for="question_mark">分数</label>
                                             </div>
-                                        </fieldset>
-                                        <fieldset>
-                                            <legend>答案</legend>
-                                            <div id="item_question_answer1" class="form-group">
-                                                <div class="col-sm-2 control-label">
-                                                    <label for="answer_content1">答案1</label>
-                                                </div>
+                                            <div class="col-sm-3">
+                                                <input id="question_mark" name="question_mark" class="form-control" value="<?php echo !empty($point) ? $point: ''?>">
+                                                <div class="help-block with-errors"></div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                    <fieldset>
+                                        <legend>答案</legend>
+                                        <div id="item_question_answer1" class="form-group">
+                                            <div class="col-sm-2 control-label">
+                                                <label for="answer_content1">答案1</label>
+                                            </div>
                 <?php
                 $answers = getQuestionAnswers ( $questionId );
                 
                 ?>
                 <div class="col-sm-8 col-lg-8">
-                                                    <textarea id="answer_content1" name="answer_content1" class="field  form-control" rows="5" required><?php echo !empty($qbody) ? $qbody:'';?></textarea>
-                                                    <div class="help-block with-errors"></div>
-                                                </div>
-                                            </div>
-                                        </fieldset>
-                                        <div class="form-group">
-                                            <div class="col-sm-8 col-sm-offset-2">
-                                                <button type="submit" class="btn btn-success">保存</button>
-                                                <button type="button" class="btn btn-default" onclick="history.back();">取消</button>
+                                                <textarea id="answer_content1" name="answer_content1" class="field  form-control" rows="5" required><?php echo !empty($qbody) ? $qbody:'';?></textarea>
+                                                <div class="help-block with-errors"></div>
                                             </div>
                                         </div>
-                                    </form>
-                                </div>
+                                    </fieldset>
+                                    <div class="form-group">
+                                        <div class="col-sm-8 col-sm-offset-2">
+                                            <button type="submit" class="btn btn-success">保存</button>
+                                            <button type="button" class="btn btn-default" onclick="history.back();">取消</button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
+                    <!-- /.row -->
                 </div>
+                <!-- /.page-content -->
             </div>
-        </div>
-        <!-- /.page-wrapper -->
+         </div>
+         <!-- /.main-content -->
     </div>
-    <!-- /.wrapper -->
 
-    <!-- jQuery -->
-    <script src="<?=$qb_url_root?>/lib/vendor/jquery/jquery.min.js"></script>
-    <!-- Bootstrap Core JavaScript -->
-    <script src="<?=$qb_url_root?>/lib/vendor/bootstrap/js/bootstrap.min.js"></script>
-    <!-- Metis Menu Plugin JavaScript -->
-    <script src="<?=$qb_url_root?>/lib/vendor/metisMenu/metisMenu.min.js"></script>
-    <!-- Morris Charts JavaScript -->
-    <script src="<?=$qb_url_root?>/lib/vendor/raphael/raphael.min.js"></script>
-    <script src="<?=$qb_url_root?>/lib/vendor/morrisjs/morris.min.js"></script>
-    <script src="<?=$qb_url_root?>/lib/vendor/data/morris-data.js"></script>
-    <!-- Sb Admin 2 Theme JavaScript -->
-    <script src="<?=$qb_url_root?>/lib/sb-admin-2/js/sb-admin-2.js"></script>
+    <?php
+    require '../../include/scripts.php';
+    ?>
     <!-- Form validation JavaScript -->
     <script src="<?=$qb_url_root?>/script/form-validator.min.js" type="text/javascript"></script><script src="../../lib/bootstrapValidator/js/bootstrapValidator.js" type="text/javascript"></script>
     <script src="<?=$qb_url_root?>/lib/jqueryvalidation/jquery.validate.js" type="text/javascript"></script>

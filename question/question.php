@@ -263,6 +263,7 @@ error_reporting ( 1 );
     <?php 
       require '../include/scripts.php';
       ?>
+    <script src="<?=$qb_url_root?>/script/form-validator.min.js" type="text/javascript"></script>
     <script src="question.js" type="text/javascript"></script>
 </body>
 </html>
