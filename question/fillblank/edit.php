@@ -31,7 +31,7 @@
             
             $point = $row['point'];
             $subject_id= $row['subject_id'];
-            $difficultylevelid = $row['difficultylevel_id'];
+            $$difficultylevelIdevelId = $row['difficultylevel_id'];
         }
     }
 ?>

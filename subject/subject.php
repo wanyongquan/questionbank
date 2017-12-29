@@ -7,60 +7,159 @@ error_reporting ( 1 );
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>燕子题库</title>
-<!-- Bootstrap core CSS -->
-<link href="../lib/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<!-- MetisMenu CSS -->
-<link href="../lib/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
-<!-- SB Admin 2 CSS -->
-<link href="../lib/sb-admin-2/css/sb-admin-2.css" rel="stylesheet">
-<!-- Font Awesome CSS -->
-<link href="../lib/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-<!-- Custom css -->
-<link href="../css/footer.css" rel="stylesheet">
-<link href="../css/all.css" rel="stylesheet">
+ <?php 
+      require '../include/header.php';
+  ?>
 </head>
-<body>
-    <div id="wrapper">
-        <?php
-        require_once $abs_doc_root . $app_root . '/include/navigation.php';
-        ?>
-        <div id="page-wrapper">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1 class="page-header">知识点管理</h1>
-                </div>
+<body class="no-skin">
+    <?php 
+        require_once '../include/navigation.php';
+    ?>
+    <div class="main-container ace-save-state" id="main-container">
+        <script type="text/javascript">
+            try{ace.settings.loadState('main-container')}catch(e){}
+        </script>
+        <div id="sidebar" class="sidebar responsive ace-save-state">
+            <script type="text/javascript">
+                try{ace.settings.loadState('sidebar')}catch(e){}
+            </script>
+            <ul class="nav nav-list">
+                <li class="">
+                    <a href="<?php echo $qb_url_root?>/index2.php"> <i class="menu-icon fa fa-tachometer"></i> <span class="menu-text">Dashboard</span>
+                    </a> <b class="arrow"></b>
+                </li>
+                <?php if ($user->isLoggedIn() ){ //if logged in?>
+                <li class="">
+                    <a href="#" class="dropdown-toggle"><i class="menu-icon fa fa-right"></i><span class="menu-text">我的课程</span><b class="arrow fa fa-angle-down"></b></a>
+                    <b class="arrow"></b> 
+                    <!-- todo: course list -->
+                    <ul class="submenu">
+                    <?php $allCourses = getAllCourses ();
+                          foreach ( $allCourses as $course ) {?>
+                          <li class="">
+                            <a href="<?php echo $qb_url_root.'/question/question.php?courseid='.$course['course_id']?>"><i class="menu-icon fa fa-caret-right"></i><?php echo $course['course_name']?></a>
+                            <b class="arrow"></b>
+                          </li>
+                    <?php }?>
+                    </ul>
+                </li>
+                <?php }?>
+                <li class="">
+                    <a href="#" class="dropdown-toggle"> <i class="menu-icon fa fa-desktop"></i> <span class="menu-text">系统管理</span> <b class="arrow fa fa-angle-down"></b>
+                    </a> <b class="arrow"></b>
+                    <ul class="submenu">
+                        <li class="">
+                            <a href="<?php echo $qb_url_root?>/course/course.php"> <i class="menu-icon fa fa-caret-right"></i> 课程 
+                            </a>
+                            <b class="arrow"></b>
+                        </li>
+                        <li class="">
+                            <a href="#"> <i class="menu-icon fa fa-caret-right"></i> 用户
+                            </a>
+                            <b class="arrow"></b>
+                        </li>
+                    </ul>
+                </li>
+                <li class="active open">
+                    <a href="#" class="dropdown-toggle">
+                        <i class="menu-icon fa fa-list"></i><span class="menu-text">课程管理</span>
+                        <b class="arrow fa fa-angle-down"></b>
+                    </a> 
+                    <b class="arrow"></b>
+                    <ul class="submenu">
+                            <li class="active">
+                                <a href="<?=$qb_url_root?>/subject/subject.php">
+                                    <i class="menu-icon fa fa-caret-right"></i>
+                                    知识点
+                                </a>
+                                <b class="arrow"></b>
+                            </li>
+                            <li class="">
+                                <a href="<?php echo $qb_url_root.'/question/question.php?courseid=5'?>">
+                                    <i class="menu-icon fa fa-caret-right"></i>
+                                    题库
+                                </a>
+                                <b class="arrow"></b>
+                            </li>
+                            <li class="">
+                                <a href="jqgrid.html">
+                                    <i class="menu-icon fa fa-caret-right"></i>
+                                    组卷规则
+                                </a>
+                                <b class="arrow"></b>
+                            </li>
+                        </ul>
+                </li>
+            </ul>
+            <!-- /.nav-list -->
+            <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+                <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
             </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            知识点
-                            <div class="pull-right">
-                                <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#add_subject_modal" data-backdrop="false">新增知识点</button>
-                            </div>
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="subject_content">
-                                        <!-- subject content table starts here -->
-                                    </div>
+        </div>
+        <!--  /.sidebar -->
+        <div class="main-content">
+            <div class="main-content-inner">
+                <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+                    <ul class="breadcrumb">
+                        <li>
+                            <i class="ace-icon fa fa-home home-icon"></i>
+                            <a href="#">首页</a>
+                        </li>
+                        <li>
+                            <a href="#">课程管理</a>
+                        </li>
+                        <li>
+                            <a href="#">Course_name</a>
+                        </li>
+                        <li class="active">subject</li>
+                    </ul>
+                </div>
+                <!-- /.breadcrumbs -->
+                <div class="page-content">
+                    <div class="page-header">
+                        <h1>subject<small><i class="ace-icon fa fa-angle-double-right"></i>CRUD</small></h1>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="clearfix">
+                                <div class="pull-right tableTools-container">
+                                    <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#add_subject_modal" data-backdrop="false">新增知识点</button>
                                 </div>
                             </div>
+                            <div>
+                                <table id="simple-table" class="table table-striped table-hover table-bordered">
+                                    <thead>
+                                    <tr><th>章节</th><th></th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php 
+                                            $subjects = getSubjects();
+                                            if (isset($subjects)){
+                                                foreach ($subjects as $subject){
+                                                    echo '<tr>';
+                                                    echo '<td>'.$subject['subject_name'].'</td>';
+                                                    echo '<td><div class="hidden-sm hidden-xs action-buttons">';
+                                                    echo ' <a title="编辑" onclick="getSubjectDetails(' . $subject ['subject_id'] . ')" data-toggle="modal" data-target="#edit_subject_modal" data-backdrop="false" >
+                                                            <span class="green"><i class="ace-icon fa fa-pencil bigger-120"></i></span></a>';
+                                                    echo '<a title="删除" class="delete_product" data-id="' . $subject ['subject_id'] . '" data-toggle="modal" data-target="#delete_subject_modal" data-backdrop="false">
+                                                            <span class="red"><i class="ace-icon fa fa-trash-o bigger-120"></i></span></a></div></td>';
+                                                    echo '</tr>';
+                                                }
+                                            };
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.table-wrapper -->
                         </div>
                     </div>
                 </div>
+                <!--  /.page-content -->
             </div>
-            <!-- /.row -->
         </div>
-        <!-- /.page-wrapper -->
+        <!-- /.main-content" -->
     </div>
-    <!-- /.wrapper -->
+    
     <!-- Modal dialog for add new subject -->
     <div id="add_subject_modal" class="modal fade" role="dialog">
         <div class="modal-dialog">

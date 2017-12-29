@@ -1,5 +1,6 @@
 <?php
-include ('session.php');
+
+    include 'config.php';
 error_reporting ( 0 );
 
 if (! isset ( $_SESSION ['username'] )) {
@@ -13,47 +14,143 @@ if (! isset ( $_SESSION ['username'] )) {
 
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>燕子题库</title>
-    <!-- Bootstrap core CSS -->
-    <link href="lib/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <!-- MetisMenu CSS -->
-    <link href="lib/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
-    <!-- SB Admin 2 CSS -->
-    <link href="lib/sb-admin-2/css/sb-admin-2.css" rel="stylesheet">
-    <!-- Font Awesome CSS -->
-    <link href="lib/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <!-- Custom css -->
-    <link href="css/footer.css" rel="stylesheet">
-    <link href="css/all.css" rel="stylesheet">
+  <?php 
+      require 'include/header.php';
+  ?>
 </head>
-<body>
-    <div id="wrapper">
-        <?php
-        require_once $abs_doc_root . $app_root . '/include/navigation.php';
-        ?>
-        <div id="page-wrapper">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1 class="page-header">仪表盘</h1>
+<body class="no-skin">
+    <div id="navbar" class="navbar navbar-default ace-save-state">
+        <div class="navbar-container ace-save-state" id="navbar-container">
+            <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
+                <span class="sr-only">Toggle sidebar</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+            </button>
+            <div class="navbar-header pull-left">
+                <a href="<?php echo $qb_url_root?>/index2.php" class="navbar-brand"> <small><i class="fa fa-leaf"></i>燕子题库</small>
+                </a>
+           </div>
+<!--             <div class="navbar-buttons navbar-header pull-left" role="navigation">
+                <ul class="nav ace-nav">
+                    <li class="dropdown-modal">
+                        <a href="" class="dropdown-toggle" data-toggle="dropdown"> Administration </a>
+                    </li>
+                </ul>
+            </div> -->
+            <div class="navbar-buttons navbar-header pull-right" role="navigation">
+                <ul class="nav ace-nav">
+                    <li class="light-blue dropdown-modal">
+                        <a data-toggle="dropdown" href="#" class="dropdown-toggle"> <span class="user-info"> <small>Welcome,</small>管理员
+                        </span> <i class="ace-icon fa fa-caret-down"></i>
+                        </a>
+                        <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+                        <?php if ($user->isLoggedIn() ){ //if logged in?>
+                        <li>
+                                <a href="#"> <i class="ace-icon fa fa-cog"></i> Settings
+                                </a>
+                            </li>
+                            <li>
+                                <a href="profile.html"> <i class="ace-icon fa fa-user"></i> Profile
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="#"> <i class="ace-icon fa fa-power-off"></i> Logout
+                                </a>
+                            </li>
+                        <?php } else { // no one is logged in, display default items?>
+                        <li>
+                                <a href="#"> <i class="ace-icon fa fa-power-on"></i> LogIn
+                                </a>
+                            </li>
+                         <?php } ?>
+                    </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-container -->
+    </div>
+    <!-- /.navbar -->
+    <div class="main-container ace-save-state" id="main-container">
+        <script type="text/javascript">
+            try{ace.settings.loadState('main-container')}catch(e){}
+        </script>
+        <div id="sidebar" class="sidebar responsive ace-save-state">
+            <script type="text/javascript">
+            try{ace.settings.loadState('sidebar')}catch(e){}
+            </script>
+            <ul class="nav nav-list">
+                <li class="active">
+                    <a href="<?php echo $qb_url_root?>/index2.php"> <i class="menu-icon fa fa-tachometer"></i> <span class="menu-text">Dashboard</span>
+                    </a> <b class="arrow"></b>
+                </li>
+                <li class="">
+                    <a href="#" class="dropdown-toggle"> <i class="menu-icon fa fa-desktop"></i> <span class="menu-text">Administration</span> <b class="arrow fa fa-angle-down"></b>
+                    </a> <b class="arrow"></b>
+                    <ul class="submenu">
+                        <li class="">
+                            <a href="<?=$qb_url_root?>/course/course.php"> <i class="menu-icon fa fa-caret-right"></i> 课程 
+                            </a>
+                            <b class="arrow"></b>
+                        </li>
+                        <li class="">
+                            <a href="#"> <i class="menu-icon fa fa-caret-right"></i> 用户
+                            </a>
+                            <b class="arrow"></b>
+                        </li>
+                    </ul>
+                </li>
+                <li class="">
+                    <a href="#" class="dropdown-toggle">
+                            <i class="menu-icon fa fa-list"></i>
+                            <span class="menu-text">课程管理 </span>
+
+                            <b class="arrow fa fa-angle-down"></b>
+                        </a>
+                        <b class="arrow"></b>
+                        <ul class="submenu">
+                            <li class="">
+                                <a href="tables.html">
+                                    <i class="menu-icon fa fa-caret-right"></i>
+                                    Simple &amp; Dynamic
+                                </a>
+                                <b class="arrow"></b>
+                            </li>
+                            <li class="">
+                                <a href="jqgrid.html">
+                                    <i class="menu-icon fa fa-caret-right"></i>
+                                    jqGrid plugin
+                                </a>
+                                <b class="arrow"></b>
+                            </li>
+                        </ul>
+                    </li>
+            </ul>
+            <!-- /.nav-list -->
+            <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+                <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+            </div>
+        </div>
+        <!-- /.sidebar -->
+        <div class="main-content">
+            <div class="main-content-inner">
+                <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+                    <ul class="breadcrumb">
+                        <li>
+                            <i class="ace-icon fa fa-home home-icon"></i>
+                            <a href="#">Home</a>
+                        </li>
+                        <li>
+                            <a href="#">Dashboard</a>
+                    </ul>
                 </div>
             </div>
         </div>
-        <!-- /.page-wrapper -->
     </div>
-    <!-- /.wrapper -->
+     <?php 
+      require 'include/scripts.php';
+      ?>
     
-    <!-- jQuery -->
-    <script src="lib/vendor/jquery/jquery.min.js"></script>
-    <!-- Bootstrap Core JavaScript -->
-    <script src="lib/vendor/bootstrap/js/bootstrap.min.js"></script>
-    <!-- Metis Menu Plugin JavaScript -->
-    <script src="lib/vendor/metisMenu/metisMenu.min.js"></script>
-    <!-- Sb Admin 2 Theme JavaScript -->
-    <script src="lib/sb-admin-2/js/sb-admin-2.js"></script>
     </body>
 </html>

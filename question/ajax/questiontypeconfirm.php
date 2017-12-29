@@ -9,16 +9,16 @@
         $forwardurl = "";
         switch($questiontype){
             case "multichoice":
-                $forwardurl = "multichoice/edit.php";
+                $forwardurl = "multichoice/edit.php?courseid=".$courseId;
                 break;
             case "fillblank":
-                $forwardurl = "fillblank/edit.php";
+                $forwardurl = "fillblank/edit.php?courseid=".$courseId;
                 break;
             case "shortanswer":
                 $forwardurl ="shortanswer/edit.php?courseid=".$courseId;
                 break;
             case "truefalse":
-                $forwardurl ="truefalse/edit.php";
+                $forwardurl ="truefalse/edit.php?courseid=".$courseId;
                 break;
         }
         echo $forwardurl;

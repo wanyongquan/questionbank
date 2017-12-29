@@ -13,50 +13,127 @@ error_reporting ( 1 );
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>燕子题库</title>
-<!-- the above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-<!-- Bootstrap core CSS -->
-<link href="../lib/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<!-- MetisMenu CSS -->
-<link href="../lib/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
-<!-- SB Admin 2 CSS -->
-<link href="../lib/sb-admin-2/css/sb-admin-2.css" rel="stylesheet">
-<!-- Morris Charts CSS -->
-<link href="../lib/vendor/morrisjs/morris.css" rel="stylesheet">
-<!-- Font Awesome CSS -->
-<link href="../lib/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-<!-- Custom css -->
-<link href="../css/footer.css" rel="stylesheet">
-<link href="../css/all.css" rel="stylesheet">
+  <?php 
+      require '../include/header.php';
+  ?>
 </head>
-<body>
-    <div id="wrapper">
-            <?php
-            require_once $abs_doc_root . $app_root . '/include/navigation.php';
-            ?>
-        
-        <div id="page-wrapper">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h2 class="page-header">TODO: 首页>课程>课程名称>题库</h2>
-                </div>
+<body class="no-skin">
+    <?php 
+        require_once '../include/navigation.php';
+    ?>
+    <div class="main-container ace-save-state" id="main-container">
+        <script type="text/javascript">
+            try{ace.settings.loadState('main-container')}catch(e){}
+        </script>
+        <div id="sidebar" class="sidebar responsive ace-save-state">
+            <script type="text/javascript">
+                try{ace.settings.loadState('sidebar')}catch(e){}
+            </script>
+            <ul class="nav nav-list">
+                <li class="">
+                    <a href="<?php echo $qb_url_root?>/index2.php"> <i class="menu-icon fa fa-tachometer"></i> <span class="menu-text">Dashboard</span>
+                    </a> <b class="arrow"></b>
+                </li>
+                <?php if ($user->isLoggedIn() ){ //if logged in?>
+                <li class="">
+                    <a href="#" class="dropdown-toggle"><i class="menu-icon fa fa-right"></i><span class="menu-text">我的课程</span><b class="arrow fa fa-angle-down"></b></a>
+                    <b class="arrow"></b> 
+                    <!-- todo: course list -->
+                    <ul class="submenu">
+                    <?php $allCourses = getAllCourses ();
+                          foreach ( $allCourses as $course ) {?>
+                          <li class="">
+                            <a href="<?php echo $qb_url_root.'/question/question.php?courseid='.$course['course_id']?>"><i class="menu-icon fa fa-caret-right"></i><?php echo $course['course_name']?></a>
+                            <b class="arrow"></b>
+                          </li>
+                    <?php }?>
+                    </ul>
+                </li>
+                <?php }?>
+                <li class="">
+                    <a href="#" class="dropdown-toggle"> <i class="menu-icon fa fa-desktop"></i> <span class="menu-text">系统管理</span> <b class="arrow fa fa-angle-down"></b>
+                    </a> <b class="arrow"></b>
+                    <ul class="submenu">
+                        <li class="">
+                            <a href="<?php echo $qb_url_root?>/course/course.php"> <i class="menu-icon fa fa-caret-right"></i> 课程 
+                            </a>
+                            <b class="arrow"></b>
+                        </li>
+                        <li class="">
+                            <a href="#"> <i class="menu-icon fa fa-caret-right"></i> 用户
+                            </a>
+                            <b class="arrow"></b>
+                        </li>
+                    </ul>
+                </li>
+                <li class="active open">
+                    <a href="#" class="dropdown-toggle">
+                        <i class="menu-icon fa fa-list"></i><span class="menu-text">课程管理</span>
+                        <b class="arrow fa fa-angle-down"></b>
+                    </a> 
+                    <b class="arrow"></b>
+                    <ul class="submenu">
+                            <li class="">
+                                <a href="<?=$qb_url_root?>/subject/subject.php">
+                                    <i class="menu-icon fa fa-caret-right"></i>
+                                    知识点
+                                </a>
+                                <b class="arrow"></b>
+                            </li>
+                            <li class="active">
+                                <a href="<?php echo $qb_url_root.'/question/question.php?courseid=5'?>">
+                                    <i class="menu-icon fa fa-caret-right"></i>
+                                    题库
+                                </a>
+                                <b class="arrow"></b>
+                            </li>
+                            <li class="">
+                                <a href="jqgrid.html">
+                                    <i class="menu-icon fa fa-caret-right"></i>
+                                    组卷规则
+                                </a>
+                                <b class="arrow"></b>
+                            </li>
+                        </ul>
+                </li>
+            </ul>
+            <!-- /.nav-list -->
+            <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+                <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
             </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            题库
-                            <div class="pull-right">
-                                <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#choose_questiontype_modal" data-backdrop="false">新增试题</button>
+        </div>
+        <!-- /.sidebar -->
+        <div class="main-content">
+            <div class="main-content-inner">
+                <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+                    <ul class="breadcrumb">
+                        <li>
+                            <i class="ace-icon fa fa-home home-icon"></i>
+                            <a href="#">首页</a>
+                        </li>
+                        <li>
+                            <a href="#">课程管理</a>
+                        </li>
+                        <li>
+                            <a href="#">题库</a>
+                        </li>
+                        <li class="active">course_name</li>
+                    </ul>
+                </div>
+                <!-- /.breadcrumbs -->
+                <div class="page-content">
+                    <div class="page-header">
+                        <h1>题库<small><i class="ace-icon fa fa-angle-double-right"></i>course_name</small></h1>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-xs-12">         
+                            <div class="clearfix">
+                                <div class="pull-right tableTools-container">
+                                    <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#choose_questiontype_modal" data-backdrop="false">新增试题</button>
+                                </div>
                             </div>
-                        </div>
-                        <div class="panel-body">
-                            <div class="question_content">
-                                <!-- question content table starts here -->
-                                <table class="table table-striped table-hover">
+                            <div>
+                        <table id="simple-table" class="table table-striped table-hover table-bordered">
                                     <thead>
                                         <tr><th>名称</th><th>题型</th><th>难度</th><th>知识点</th><th>分数</th><th>创建人</th><th>创建日期</th><th>操作</th></thead>
                                     <tbody>                                      
@@ -71,24 +148,24 @@ error_reporting ( 1 );
                                         echo '<td>'.$question['point'].'</td>';
                                         echo '<td>'.$question['createdBy'].'</td>';
                                         echo '<td>'.$question['createdDate'].'</td>';
-                                        echo '<td><a title="Edit" href="#"><i class="fa fa-edit fa-fw"></i>编辑</a>&nbsp;&nbsp;';
-                                        echo '<a  data-id="'.$question['question_id'].'" data-toggle="modal" data-target="#delete_question_modal"
-                           data-backdrop="false"><i class="fa fa-trash-o fa-fw"></i>删除</a></td>';
+                                        echo '<td><a title="编辑" href="'.$question['qtype'].'/edit.php?courseid='.$courseId.'&id='.$question['question_id'].'"><span class="green"><i class="ace-icon fa fa-pencil bigger-120"></i></span></a>&nbsp;&nbsp;';
+                                        echo '<a title="删除" data-id="'.$question['question_id'].'" data-toggle="modal" data-target="#delete_question_modal"  data-backdrop="false"><span class="red"><i class="ace-icon fa fa-trash-o bigger-120"></i></span></a></td>';
                                         echo '</tr>';
                                     }
                                 }
                                 ?>
                                     </tbody>
                                 </table>
-                            </div>
+                                </div>
+                                <!-- /.table-wrapper -->
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- /.page-wrapper -->
     </div>
-    <!-- /.wrapper -->
+    <!-- /.main-container -->
+    
     <!--  Modal dialog for add question -->
     <div id="choose_questiontype_modal" class="modal fade" role="dialog">
         <div class="modal-dialog">
@@ -183,20 +260,9 @@ error_reporting ( 1 );
     </div>
     <!--  end of modal -->
     <!--  end of modal delete -->
-    <!-- jQuery -->
-    <script src="<?=$qb_url_root?>/lib/vendor/jquery/jquery.min.js"></script>
-    <!-- Bootstrap Core JavaScript -->
-    <script src="<?=$qb_url_root?>/lib/vendor/bootstrap/js/bootstrap.min.js"></script>
-    <!-- Metis Menu Plugin JavaScript -->
-    <script src="<?=$qb_url_root?>/lib/vendor/metisMenu/metisMenu.min.js"></script>
-    <!-- Morris Charts JavaScript -->
-    <script src="<?=$qb_url_root?>/lib/vendor/raphael/raphael.min.js"></script>
-    <script src="<?=$qb_url_root?>/lib/vendor/morrisjs/morris.min.js"></script>
-    <script src="<?=$qb_url_root?>/lib/vendor/data/morris-data.js"></script>
-    <!-- Sb Admin 2 Theme JavaScript -->
-    <script src="<?=$qb_url_root?>/lib/sb-admin-2/js/sb-admin-2.js"></script>
-    <!-- Form validation JavaScript -->
-    <script src="<?=$qb_url_root?>/script/form-validator.min.js" type="text/javascript"></script>
+    <?php 
+      require '../include/scripts.php';
+      ?>
     <script src="question.js" type="text/javascript"></script>
 </body>
 </html>

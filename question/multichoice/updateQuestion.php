@@ -9,7 +9,7 @@
         $question_id = $_POST['hidden_question_id'];
         $qtype = $_POST['qtype'];
         $qbody = $_POST['question_body'];
-        $difficultyLevel_id = $_POST['difficultyLevel_id'];
+        $difficultyLevelId = $_POST['difficultyLevelId'];
         $subject_id = $_POST['subject_id'];
         $qmark = $_POST['question_mark'];
         $user_id = $_SESSION['userid'];
@@ -21,7 +21,7 @@
         $updatedDate = null;
         $updatedBy = $user_id;
         $query = "update tk_questions set subject_id=$subject_id ,";
-        $query .= " difficultyLevel_id = $difficultyLevel_id,";
+        $query .= " difficultyLevel_id = $difficultyLevelId,";
         $query .= " question_body = '$qbody',";
         $query .= " point = $qmark ";
         $query .= " where question_id=$question_id ;";

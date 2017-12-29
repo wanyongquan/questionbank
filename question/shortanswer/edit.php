@@ -15,7 +15,7 @@ $question_name = null;
 $qbody = null;
 $point = null;
 $subject_id = null;
-$difficultylevelid = null;
+$difficultyLevelId = null;
 $quesion_answer = null;
 if (! empty ( $_GET ['id'] )) {
     $questionId = $_REQUEST ['id'];
@@ -36,7 +36,7 @@ if (null != $questionId) {
         $point = $row ['point'];
         
         $subject_id = $row ['subject_id'];
-        $difficultylevelid = $row ['difficultylevel_id'];
+        $difficultyLevelId = $row ['difficultylevel_id'];
     
     }
 }
@@ -47,7 +47,6 @@ if (null != $questionId) {
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<!-- the above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 <!-- the above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 <!-- Bootstrap core CSS -->
 <link href="../../lib/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -143,7 +142,7 @@ if (null != $questionId) {
                 
                 if ($result->num_rows > 0) {
                     foreach ( $result as $row ) {
-                        $selected = ($difficultylevel_id == $row ['dictionary_id']) ? "selected" : "";
+                        $selected = ($difficultyLevelId == $row ['dictionary_id']) ? "selected" : "";
                         echo '<option value="' . $row ['dictionary_id'] . '"' . $selected . ' >' . $row ['dictionary_value'] . '</option>';
                     }
                 }
@@ -156,7 +155,7 @@ if (null != $questionId) {
                                                     <label for="question_mark">分数</label>
                                                 </div>
                                                 <div class="col-sm-3">
-                                                    <input id="question_mark" name="question_mark" class="form-control" value="<?php echo !empty($point) ? $point: ''?>"> </input>
+                                                    <input id="question_mark" name="question_mark" class="form-control" value="<?php echo !empty($point) ? $point: ''?>">
                                                     <div class="help-block with-errors"></div>
                                                 </div>
                                             </div>
@@ -208,7 +207,8 @@ if (null != $questionId) {
     <!-- Sb Admin 2 Theme JavaScript -->
     <script src="<?=$qb_url_root?>/lib/sb-admin-2/js/sb-admin-2.js"></script>
     <!-- Form validation JavaScript -->
-    <script src="<?=$qb_url_root?>/script/form-validator.min.js" type="text/javascript"></script>
+    <script src="<?=$qb_url_root?>/script/form-validator.min.js" type="text/javascript"></script><script src="../../lib/bootstrapValidator/js/bootstrapValidator.js" type="text/javascript"></script>
+    <script src="<?=$qb_url_root?>/lib/jqueryvalidation/jquery.validate.js" type="text/javascript"></script>
     <script src="formutil.js" type="text/javascript"></script>
 </body>
 </html>

@@ -31,8 +31,27 @@ $(document).ready(function(){
     $("#delete_question_modal").on('show.bs.modal', function(e){
     	$(this).find('.btn-ok').attr('data-id', $(e.relatedTarget).data('id'));
     });
+/*    $("body").on("beforeunload",function(){
+        alert("body beforeunload 事件触发 - 展示页面二");
+      });*/
+/*    $(window).bind('beforeunload',function(){
+        return '您输入的内容尚未保存，确定离开此页面吗？';
+   });*/
+    //$(window).on('beforeunload',function(){return'Your own message goes here...';});
+    $(window).on("beforeunload", function(event){
+        //alert('unload');
+        //console.log("window beforeunload")
+        //event.returnValue="before unload";
+        $.ajax({
+            url:'quit.php',
+            async:false
+            
+        })
+        //return " iam return";
+    });
     
 });
+
 
 // get the question type that user choose and forward to create question page;
 function choosequestiontype(){

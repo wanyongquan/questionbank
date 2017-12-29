@@ -33,3 +33,4 @@ function getQuestionsByCourseId($courseId){
     $result = mysqli_query($DB, $sql);
     return $result;
 }
+

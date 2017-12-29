@@ -68,3 +68,10 @@ function getAllCourses(){
     $result = mysqli_query($DB, $sql);
     return $result;
 }
+
+function getSubjects(){
+    global $DB;
+    $sql = "select subject_id, subject_name from tk_subjects order by subject_name ";
+    $result = mysqli_query($DB, $sql);
+    return $result;
+}

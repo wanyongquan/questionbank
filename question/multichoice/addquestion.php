@@ -1,15 +1,15 @@
 <?php
-    session_start();
     require_once '../../config.php';
     require_once '../../lib/datelib.php';
     // get the form data submited by POST
+    $courseId = $_POST['courseid'];
     if (isset($_POST['qtype']) && isset($_POST['question_body'])){
         $qtype= $_POST['qtype'];
         $question_name = $_POST['question_name'];
         $question_body= $_POST['question_body'];
-        $course_id = $_POST['qitem_course_id'];
+       
         $subject_id = $_POST['subject_id'];
-        $difficultyLevel_id = $_POST['difficultyLevel_id'];
+        $difficultyLevelId = $_POST['difficultyLevel_id'];
         $question_mark = $_POST['question_mark'];
         $user_id = $_SESSION['userid'];
 
@@ -22,8 +22,8 @@
             $query .= " course_id, subject_id,";
             $query .= " difficultylevel_id, qtype, createdDate, createdBy)";
             $query .= " values('$question_name','$question_body',$question_mark ,";
-            $query .= $course_id ."," . $subject_id .",";
-            $query .= " $difficultyLevel_id , '$qtype', '$now', $user_id);";
+            $query .= $courseId ."," . $subject_id .",";
+            $query .= " $difficultyLevelId , '$qtype', '$now', $user_id);";
 
             $result = mysqli_query($DB, $query) or die(exit(mysqli_error($DB)));
             $question_id =  $DB->insert_id;

@@ -16,7 +16,7 @@
     $point = null;
     $course_id=null;
     $subject_id=null;
-    $difficultylevelid = null;
+    $$difficultylevelIdevelId = null;
     
     if (!empty($_GET['id'])){
         $id = $_REQUEST['id'];
@@ -40,7 +40,7 @@
             $point = $row['point'];
             $course_id = $row['course_id'];
             $subject_id= $row['subject_id'];
-            $difficultylevelid = $row['difficultylevel_id'];
+            $$difficultylevelIdevelId = $row['difficultylevel_id'];
         }
     }
 ?>

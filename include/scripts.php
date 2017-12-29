@@ -1,11 +1,16 @@
-<?php
-  //Question Bank 0.1
-?>
-<script src="<?=$app_root?>/lib/vendor/jquery/jquery.min.js"></script>
-<!-- Bootstrap core JavaScript -->
-<script src="<?=$app_root?>/lib/vendor/bootstrap/js/bootstrap.min.js"></script>
-<!--  metisMenu Plugin JavaScript -->
-<script src="<?=$app_root?>/lib/vendor/metisMenu/metisMenu.min.js"></script>
-<!-- SB Admin 2 JavaScript -->
-<script src="<?=$app_root?>/lib/sb-admin-2/js/sb-admin-2.js"></script>
-<script src="<?=$app_root?>/script/form-validator.min.js" type="text/javascript"></script>
+<!-- basic scripts -->
+<!--[if !IE]> -->
+<script src="<?php echo $qb_url_root?>/lib/ace/assets/js/jquery-2.1.4.min.js"></script>
+<!-- <![endif]-->
+<!--[if IE]>
+<script src="<?php echo $qb_url_root?>/lib/ace/assets/js/jquery-1.11.3.min.js"></script>
+<![endif]-->
+<script type="text/javascript">
+            if('ontouchstart' in document.documentElement) document.write("<script src='<?php echo $qb_url_root?>/lib/ace/assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+</script>
+<script src="<?php echo $qb_url_root?>/lib/ace/assets/js/bootstrap.min.js"></script>
+<!-- page specific plugin scripts -->
+<!-- ace scripts -->
+<script src="<?php echo $qb_url_root?>/lib/ace/assets/js/ace-elements.min.js"></script>
+<script src="<?php echo $qb_url_root?>/lib/ace/assets/js/ace.min.js"></script>
+<!-- inline scripts related to this page -->
