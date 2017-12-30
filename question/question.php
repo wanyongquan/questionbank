@@ -6,8 +6,8 @@ include_once '../lib/datelib.php';
 include_once 'lib.php';
 
 error_reporting ( 1 );
-    $courseId = $_REQUEST['courseid'];
-    $questions = getQuestionsByCourseId($courseId);
+    $courseid = $_REQUEST['courseid'];
+    $questions = getQuestionsByCourseId($courseid);
     
 ?>
 <!DOCTYPE html>
@@ -74,21 +74,21 @@ error_reporting ( 1 );
                     <b class="arrow"></b>
                     <ul class="submenu">
                             <li class="">
-                                <a href="<?=$qb_url_root?>/subject/subject.php">
+                                <a href="<?=$qb_url_root?>/subject/subject.php?courseid=<?=$courseid ?>">
                                     <i class="menu-icon fa fa-caret-right"></i>
                                     知识点
                                 </a>
                                 <b class="arrow"></b>
                             </li>
                             <li class="active">
-                                <a href="<?php echo $qb_url_root.'/question/question.php?courseid=5'?>">
+                                <a href="<?= $qb_url_root?>/question/question.php?courseid=<?=$courseid ?>">
                                     <i class="menu-icon fa fa-caret-right"></i>
                                     题库
                                 </a>
                                 <b class="arrow"></b>
                             </li>
                             <li class="">
-                                <a href="jqgrid.html">
+                                <a href="<?=$qb_url_root?>/rule/view.php?courseid=<?= $courseid?>">
                                     <i class="menu-icon fa fa-caret-right"></i>
                                     组卷规则
                                 </a>
@@ -148,7 +148,7 @@ error_reporting ( 1 );
                                         echo '<td>'.$question['point'].'</td>';
                                         echo '<td>'.$question['createdBy'].'</td>';
                                         echo '<td>'.$question['createdDate'].'</td>';
-                                        echo '<td><a title="编辑" href="'.$question['qtype'].'/edit.php?courseid='.$courseId.'&id='.$question['question_id'].'"><span class="green"><i class="ace-icon fa fa-pencil bigger-120"></i></span></a>&nbsp;&nbsp;';
+                                        echo '<td><a title="编辑" href="'.$question['qtype'].'/edit.php?courseid='.$courseid.'&id='.$question['question_id'].'"><span class="green"><i class="ace-icon fa fa-pencil bigger-120"></i></span></a>&nbsp;&nbsp;';
                                         echo '<a title="删除" data-id="'.$question['question_id'].'" data-toggle="modal" data-target="#delete_question_modal"  data-backdrop="false"><span class="red"><i class="ace-icon fa fa-trash-o bigger-120"></i></span></a></td>';
                                         echo '</tr>';
                                     }
@@ -177,7 +177,7 @@ error_reporting ( 1 );
                 </div>
                 <div class="modal-body">
                     <form id="choose_questiontype_form" method="post" class="form-horizontal" role="form" data-toggle="validator">
-                        <input type="hidden" name="courseid" value="<?php echo $courseId?>">
+                        <input type="hidden" name="courseid" value="<?php echo $courseid?>">
                         <div class="row">
                             <div class="col-sm-5 col-md-5 navbar-default ">
                                 <div class="sidebar-nav">

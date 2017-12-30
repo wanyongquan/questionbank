@@ -1,223 +1,230 @@
 <?php
 
-    include_once '../config.php';
+include_once '../config.php';
 
-    include_once '../session.php';
-    include_once '../lib/dblib.php';
-    
-    if (isset($_SESSION['ruletype'])){
-        $ruletype = $_SESSION['ruletype'];
-    }
+include_once '../session.php';
+include_once '../lib/dblib.php';
 
-    $id = null;
-    $rule_id=null;
-    $rule_name= null;
-    $qbody = null;
-    $point = null;
-    $course_id=null;
-    $subject_id=null;
-    $$difficultylevelIdevelId = null;
-    
-    if (!empty($_GET['id'])){
-        $id = $_REQUEST['id'];
-    }
 
-    if (null != $id ){
-        // for edit a existing rule
-        // get rule details and show on page
-        $query = "select * from tk_rules "
-                ." left join tk_subjects on tk_subjects.subject_id = tk_rules.subject_id"
-                ." left join vw_difficultylevels on vw_difficultylevels.dictionary_id = tk_rules.difficultylevel_id"
-                . " where tk_rules.rule_id=$id" ;
-        $result = mysqli_query($DB, $query);
-        if (!$result ){
-            //error
-        }else{
-            $row = mysqli_fetch_assoc($result);
-            $rule_id= $row['rule_id'];
-            $rule_name= $row['rule_name'];
-            $qbody = $row['rule_body'];
-            $point = $row['point'];
-            $course_id = $row['course_id'];
-            $subject_id= $row['subject_id'];
-            $$difficultylevelIdevelId = $row['difficultylevel_id'];
-        }
+$id = null;
+$rule_id = null;
+$rule_name = null;
+
+if (isset ( $_REQUEST ['courseid'] )) {
+    $courseid = $_REQUEST ['courseid'];
+}
+
+if (null != $id) {
+    // for edit a existing rule
+    // get rule details and show on page
+    $query = "select * from tk_rules " . " left join tk_subjects on tk_subjects.subject_id = tk_rules.subject_id" . " left join vw_difficultylevels on vw_difficultylevels.dictionary_id = tk_rules.difficultylevel_id" . " where tk_rules.rule_id=$id";
+    $result = mysqli_query ( $DB, $query );
+    if (! $result) {
+        // error
+    } else {
+        $row = mysqli_fetch_assoc ( $result );
+        $rule_id = $row ['rule_id'];
+        $rule_name = $row ['rule_name'];
+        $qbody = $row ['rule_body'];
+        $point = $row ['point'];
+        $course_id = $row ['course_id'];
+        $subject_id = $row ['subject_id'];
+        $$difficultylevelIdevelId = $row ['difficultylevel_id'];
     }
+}
 ?>
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width,initial-scale=1">
-        <!-- the above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-        <!-- Bootstrap core CSS -->
-        <link
-            href="<?php echo $CFG->wwwroot.'/bootstrap/css/bootstrap.min.css'?>"
-            rel="stylesheet">
-        <link href="../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
-        <link href="../../css/bootstrap.css" rel="stylesheet">
-        <link href="../../css/nav-sidebar.css" rel="stylesheet">
-        <link href="../../lib/bootstrapValidator/css/bootstrapValidator.css">
-        <link href="../../css/all.css" rel="stylesheet">
-        <title>Question Bank</title>
-    </head>
-<body>
-    <?php
-    /**
-     * Display menus for logged in users
-     */
-if (isset ( $_SESSION['username'])){
-         include '../include/menus.php';
-        }?>
-    <div id="content" class="container">
-      <div class="page-header"><h2>修改组卷规则</h2></div>
-      <form name="rule_form" id="rule_form"  class="form-horizontal" 
-        role="form" method="post" onsubmit="return onSubmitQForm();">
-        
-        <fieldset>
-            <legend>基本信息</legend>
-            <input type="hidden" name="hidden_rule_id" id="hidden_rule_id" value="<?php echo (!empty($id) ? $id: '')?>">
-          <div class="row">
-            <div class="col-lg-12"> 
-           <div class="col-sm-2 control-label">
-             <label for="rule_name">规则名称</label>
-            </div>            
-           <div class="col-sm-4 col-md-6 col-lg-10" >
-            <div id="item_rule_name" class="form-group">
-                <input id="rule_name" name="rule_name"
-                    class="form-control"  required 
-                    value="<?php echo !empty($rule_name) ? $rule_name: ''?>"></input>
-                <div class="help-block with-errors"></div>
-            </div>
-           </div>
-          </div>
-         </div><!-- end of row -->
-         <div class="row"> 
-          <div class="col-lg-12">
-           <div class="col-sm-2 control-label">
-             <label for="exam_time">考试时间</label>
-            </div>
-           <div class="col-sm-4 col-md-6 col-lg-10" >
-            <div id="item_exam_time" class="form-group">
-                <input id="exam_time" name="exam_time"
-                    class="form-control"  required 
-                    value="<?php echo !empty($exam_time) ? $exam_time: ''?>"></input>
-                <div class="help-block with-errors"></div>
-            </div>
-         </div>
-         </div>
-         </div> <!-- end of row -->
-         <div class="row">
-           <div class="col-lg-12">
-             <div class="col-sm-2 control-label">
-             </div>
-             <div class="col-sm-4 col-md-6 col-lg-10">
-             <div class="form-group">
-               <button type="submit" class="btn btn-primary">保存</button>
-             </div>
-           </div>
-           </div>
-        </div>
-       </fieldset>  
-     </form> <!-- end of rule general info form -->
-     <form>  
-       <fieldset>
-         <legend>规则内容</legend>  
-         <div class="col-lg-12">
-         <div id="item_rule_options" class="form-group">
-           <div class="col-sm-3 col-md-3 col-lg-3">
-           <div class="panel panel-default">
-             <div class="panel-heading"><label>type</label></div>
-            <div class="panel-body">
-                <select id="qtype_opt" name="qtype_opt">
-                  <option>choice</option>
-                  <option>short answer</option>
-                </select>
-            </div>
-            </div>
-           </div>
-           <div class="col-sm-3 col-lg-3">
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <label>subject</label>
-              </div>
-              <div class="panel-body">
-                <select id="qsubject_opt" name="qsubject_opt">
-                  <option>chap1</option>
-                  <option>chap2</option>
-                </select> 
-              </div>
-            </div>
-           </div>
-           <div class="col-sm-3 col-lg-3">
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <label>numbers</label>
-              </div>
-              <div class="panel-body">
-                <input type="text" id="qnumbers_opt" name="qnumbers_opt" size="5">
-              </div>
-            </div>
-           </div>
-           <div class="col-sm-3 col-lg-3">
-             <div class="panel panel-default">
-              <div class="panel-heading">
-                <label>level</label>
-              </div>
-              <div class="panel-body">
-                <select id="qlevel_opt" name="qlevel_opt">
-                   <option>easy</option>
-                   <option>hard</option>
-                 </select> 
-              </div>
-            </div>
-           </div>
-         </div>
-         </div>
-         </fieldset>
-         
-           <div class="col-sm-3 col-lg-12">
-             <div class="form-group">
-               <button type="submit" class="btn btn-primary">新增</button>
-             </div>
-           </div>
-                       
-
-      </form>
-      <div class="row">
-        <div class="col-lg-12">
-          <table class="table table-striped table-hover">
-                <thead>
-                   <tr><th>type</th><th>subject</th><th>numbers</th><th>level</th><th>actions</th> </tr>
-                </thead>
-                <tbody>
-                  <tr><td>single choice</td><td>1st chapter</td><td>5</td><td>middle</td><th>remove</th></tr>
-                </tbody>
-            </table>
-            
-        </div>
+<html>
+<head>
+  <?php
+require '../include/header.php';
+?>
+</head>
+<body class="no-skin">
+  <div class="main-container ace-save-state" id="main-container">
+    <script type="text/javascript">
+            try{ace.settings.loadState('main-container')}catch(e){}
+        </script>
+    <div id="sidebar" class="sidebar responsive ace-save-state">
+      <script type="text/javascript">
+                try{ace.settings.loadState('sidebar')}catch(e){}
+            </script>
+      <ul class="nav nav-list">
+        <li class="">
+          <a href="<?php echo $qb_url_root?>/index2.php"> <i class="menu-icon fa fa-tachometer"></i> <span class="menu-text">Dashboard</span>
+          </a> <b class="arrow"></b>
+        </li>
+                <?php if ($user->isLoggedIn() ){ //if logged in?>
+                <li class="">
+          <a href="#" class="dropdown-toggle"><i class="menu-icon fa fa-right"></i><span class="menu-text">我的课程</span><b class="arrow fa fa-angle-down"></b></a> <b class="arrow"></b>
+          <!-- todo: course list -->
+          <ul class="submenu">
+                    <?php
+                    
+$allCourses = getAllCourses ();
+                    foreach ( $allCourses as $course ) {
+                        ?>
+                          <li class="">
+              <a href="<?php echo $qb_url_root.'/question/question.php?courseid='.$course['course_id']?>"><i class="menu-icon fa fa-caret-right"></i><?php echo $course['course_name']?></a> <b class="arrow"></b>
+            </li>
+                    <?php }?>
+                    </ul>
+        </li>
+                <?php }?>
+                <li class="">
+          <a href="#" class="dropdown-toggle"> <i class="menu-icon fa fa-desktop"></i> <span class="menu-text">系统管理</span> <b class="arrow fa fa-angle-down"></b>
+          </a> <b class="arrow"></b>
+          <ul class="submenu">
+            <li class="">
+              <a href="<?php echo $qb_url_root?>/course/course.php"> <i class="menu-icon fa fa-caret-right"></i> 课程
+              </a> <b class="arrow"></b>
+            </li>
+            <li class="">
+              <a href="#"> <i class="menu-icon fa fa-caret-right"></i> 用户
+              </a> <b class="arrow"></b>
+            </li>
+          </ul>
+        </li>
+        <li class="active open">
+          <a href="#" class="dropdown-toggle"> <i class="menu-icon fa fa-list"></i><span class="menu-text">课程管理</span> <b class="arrow fa fa-angle-down"></b>
+          </a> <b class="arrow"></b>
+          <ul class="submenu">
+            <li class="">
+              <a href="<?=$qb_url_root?>/subject/subject.php"> <i class="menu-icon fa fa-caret-right"></i> 知识点
+              </a> <b class="arrow"></b>
+            </li>
+            <li class="">
+              <a href="<?php echo $qb_url_root.'/question/question.php?courseid=5'?>"> <i class="menu-icon fa fa-caret-right"></i> 题库
+              </a> <b class="arrow"></b>
+            </li>
+            <li class="active">
+              <a href="<?=$qb_url_root?>/rule/view.php"> <i class="menu-icon fa fa-caret-right"></i> 组卷规则
+              </a> <b class="arrow"></b>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <!-- /.nav-list -->
+      <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+        <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
       </div>
-       <div class="col-sm-3 col-lg-12">
-         <div class="form-group">
-           <button type="submit" class="btn btn-primary">保存</button>
-         </div>
-       </div>
     </div>
-   <!--  <footer class="footer">
-      <div class="container">
-        <p class="text-muted">Copyright.</p>
+    <!--  /.sidebar -->
+    <div class="main-content">
+      <div class="main-content-inner">
+        <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+          <ul class="breadcrumb">
+            <li>
+              <i class="ace-icon fa fa-home home-icon"></i> <a href="#">首页</a>
+            </li>
+            <li>
+              <a href="#">课程管理</a>
+            </li>
+            <li>
+              <a href="#">Course_name</a>
+            </li>
+            <li class="active">subject</li>
+          </ul>
+        </div>
+        <!-- /.breadcrumbs -->
+        <div class="page-content">
+          <div class="page-header">
+            <h1>
+              组卷规则<small><i class="ace-icon fa fa-angle-double-right"></i>CRUD</small>
+            </h1>
+          </div>
+          <div class="row">
+            <form class="form-horizontal" role="form" method ="post" action="ajax/ruleupdate.php" >
+              <fieldset>
+                <legend>基本信息</legend>
+                <input type="hidden" name="courseid" value="<?= $courseid?>">
+                <div class="form-group">
+                  <label class="col-sm-3 control-label no-padding-right" for="field-name">规则名称</label>
+                  <div class="col-sm-9">
+                    <input type="text" name="field-name" class="col-xs-10 col-sm-5" />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-3 control-label no-padding-right" for="field-desc">说明</label>
+                  <div class="col-sm-9">
+                    <input type="text" name="field-desc" class="form-control" />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-3 control-label no-padding-right" for="difficulty">试卷难度</label>
+                  <div class="col-sm-9">
+                    <div class="radio">
+                      <label>
+                        <input name="field-difficulty" type="radio" class="ace" /> <span class="lbl"> Easy</span>
+                      </label>
+                      <label>
+                        <input name="field-difficulty" type="radio" class="ace" /> <span class="lbl"> Hard</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-3 control-label no-padding-right" for="field-desc">题型</label>
+                  <div class="col-sm-9">
+                    <div class="checkbox">
+                      <label>
+                        <input name="field-checkbox-1" type="checkbox" class="ace" /> <span class="lbl">填空题</span>
+                      </label>
+                      <label>
+                        <input name="field-checkbox-2" type="checkbox" class="ace" /> <span class="lbl">选择题</span>
+                      </label>
+                      <label>
+                        <input name="field-checkbox-4" type="checkbox" class="ace" /> <span class="lbl">简答题</span>
+                      </label>
+                      <label>
+                        <input name="field-checkbox-8" type="checkbox" class="ace" /> <span class="lbl">综合题</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </fieldset>
+              <fieldset>
+              <legend>题型、题量设置</legend>
+                <div class="form-group">
+                  <label class="col-sm-3 control-label no-padding-right" for="field-name">简答题</label>
+                  <div class="col-sm-9">
+                    <input type="text" id="field-shortanswer" name="field-number-1" class="" />道题<span class="help-button"><i class="ace-icon fa fa-trash-o bigger-120"></i></span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-3 control-label no-padding-right" for="field-name">选择题</label>
+                  <div class="col-sm-9">
+                    <input type="text" id="field-choice" name="field-number-2" class="" />道题<span class="help-button"><i class="ace-icon fa fa-trash-o bigger-120"></i></span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-3 control-label no-padding-right" for="field-name">填空题</label>
+                  <div class="col-sm-9">
+                    <input type="text" id="field-fillblank" name="field-number-4" class="" />道题<span class="help-button"><i class="ace-icon fa fa-trash-o bigger-120"></i></span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-sm-9 col-sm-offset-3">
+                    <button type="submit" class="btn btn-primary">保存</button>
+                    <button type="button" class="btn btn-default" onclick="history.back();">取消</button>
+                  </div>
+                </div>
+              </fieldset>
+              
+            </form>
+          </div>
+          
+        </div>
       </div>
-    </footer> -->
-      <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="../lib/jquery/jquery-3.1.1.min.js"></script>
-    <script src="../../bootstrap/js/bootstrap.min.js"></script>
-    
-    <!-- <script src="../../script/form-validator.min.js" type="text/javascript"></script> -->
-    <script src="script.js" type="text/javascript"></script>
-    <script src="../../lib/jqueryvalidation/jquery.validate.js" type="text/javascript"></script>
-    <script src="../../lib/bootstrapValidator/js/bootstrapValidator.js" type="text/javascript"></script>
-  </body>
+    </div>
+    <!-- /.main-content -->
+  </div>
+  <!-- /.main-container -->    
+   
+     <?php
+    require '../include/scripts.php';
+    ?>
+    <script src="../lib/jqueryvalidation/jquery.validate.js" type="text/javascript"></script>
+    <script src="../lib/bootstrapValidator/js/bootstrapValidator.js" type="text/javascript"></script>
+</body>
 </html>

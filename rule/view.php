@@ -12,9 +12,11 @@ if (! isset ( $_SESSION ['username'] )) {
     $_GLOBALs ['message'] = "You are logged out.";
     header ( 'Location:' . $CFG->wwwroot . '/login.php' );
 }
+
+$courseid = $_REQUEST['courseid'];
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <?php 
       require '../include/header.php';
@@ -101,11 +103,11 @@ if (! isset ( $_SESSION ['username'] )) {
                     </ul>
                 </li>
                 <?php }?>
-                <li class="active open">
+                <li class="">
                     <a href="#" class="dropdown-toggle"> <i class="menu-icon fa fa-desktop"></i> <span class="menu-text">系统管理</span> <b class="arrow fa fa-angle-down"></b>
                     </a> <b class="arrow"></b>
                     <ul class="submenu">
-                        <li class="active">
+                        <li class="">
                             <a href="<?php echo $qb_url_root?>/course/course.php"> <i class="menu-icon fa fa-caret-right"></i> 课程 
                             </a>
                             <b class="arrow"></b>
@@ -117,7 +119,7 @@ if (! isset ( $_SESSION ['username'] )) {
                         </li>
                     </ul>
                 </li>
-                <li class="">
+                <li class="active open">
                     <a href="#" class="dropdown-toggle">
                             <i class="menu-icon fa fa-list"></i>
                             <span class="menu-text">课程管理</span>
@@ -126,21 +128,21 @@ if (! isset ( $_SESSION ['username'] )) {
                         <b class="arrow"></b>
                         <ul class="submenu">
                             <li class="">
-                                <a href="<?=$qb_url_root?>/subject/subject.php">
+                                <a href="<?=$qb_url_root?>/subject/subject.php?courseid=<?= $courseid?>">
                                     <i class="menu-icon fa fa-caret-right"></i>
                                     知识点
                                 </a>
                                 <b class="arrow"></b>
                             </li>
                             <li class="">
-                                <a href="http://localhost/questionbank/question/question.php?courseid=5">
+                                <a href="http://localhost/questionbank/question/question.php?courseid=<?= $courseid?>">
                                     <i class="menu-icon fa fa-caret-right"></i>
                                     题库
                                 </a>
                                 <b class="arrow"></b>
                             </li>
-                            <li class="">
-                                <a href="<?=$qb_url_root?>/rule/view.php?courseid=5">
+                            <li class="active">
+                                <a href="<?=$qb_url_root?>/rule/view.php?courseid=<?= $courseid?>">
                                     <i class="menu-icon fa fa-caret-right"></i>
                                     组卷规则
                                 </a>
@@ -164,27 +166,53 @@ if (! isset ( $_SESSION ['username'] )) {
                             <a href="#">首页</a>
                         </li>
                         <li>
-                            <a href="#">系统管理</a>
+                            <a href="#">课程</a>
                         </li>
-                        <li class="active">课程</li>
+                        <li>
+                            <a href="#">course name</a>
+                        </li>
+                        <li class="active">组卷规则</li>
                     </ul>
                 </div>
                 <!-- /.breadcrumbs -->
                 <div class="page-content">
                     <div class="page-header">
-                    <h1>课程
-                        <small><i class="ace-icon fa fa-angle-double-right"></i>新增、编辑、删除课程</small>
+                    <h1>组卷规则
+                        <small><i class="ace-icon fa fa-angle-double-right"></i>新增、编辑、删除组卷规则</small>
                     </h1>
                     </div>
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="clearfix">
                                 <div class="pull-right tableTools-container">
-                                    <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#add_new_course_modal" data-backdrop="false">新增课程</button>
+                                    <a href="<?php echo $qb_url_root?>/rule/edit.php?courseid=<?= $courseid?>" class="btn btn-primary btn-xs">新建组卷规则</a>
                                 </div>
                             </div>
-                            <div class="coursescontent">    
+                            <div>    
                                 <!-- getCourses() table starts here -->
+                                <p>rule table goes here</p>
+                                <table id="simple-table" class="table table-striped table-hover table-bordered">
+                                    <thead>
+                                    <tr><th>组卷规则</th><th></th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php 
+                                            $rules = getRules($courseid);
+                                            if (isset($rules)){
+                                                foreach ($rules as $rule){
+                                                    echo '<tr>';
+                                                    echo '<td>'.$rule['name'].'</td>';
+                                                    echo '<td><div class="hidden-sm hidden-xs action-buttons">';
+                                                    echo ' <a title="编辑" onclick="getSubjectDetails(' . $rule ['id'] . ')" data-toggle="modal" data-target="#edit_subject_modal" data-backdrop="false" >
+                                                            <span class="green"><i class="ace-icon fa fa-pencil bigger-120"></i></span></a>';
+                                                    echo '<a title="删除" class="delete_product" data-id="' . $rule ['id'] . '" data-toggle="modal" data-target="#delete_subject_modal" data-backdrop="false">
+                                                            <span class="red"><i class="ace-icon fa fa-trash-o bigger-120"></i></span></a></div></td>';
+                                                    echo '</tr>';
+                                                }
+                                            };
+                                        ?>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>

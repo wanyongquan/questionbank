@@ -68,10 +68,23 @@ function getAllCourses(){
     $result = mysqli_query($DB, $sql);
     return $result;
 }
-
+/**
+ * Return subjects with specified course id;
+ */
 function getSubjects(){
     global $DB;
     $sql = "select subject_id, subject_name from tk_subjects order by subject_name ";
+    $result = mysqli_query($DB, $sql);
+    return $result;
+}
+/**
+ * Retrun paper rules with specified course id;
+ * @param courseid
+ * @return rules array
+ */
+function getRules($courseid){
+    global $DB;
+    $sql = "select id, name from tk_paper_rules where course_id = $courseid order by name ";
     $result = mysqli_query($DB, $sql);
     return $result;
 }

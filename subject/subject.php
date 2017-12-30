@@ -82,7 +82,7 @@ error_reporting ( 1 );
                                 <b class="arrow"></b>
                             </li>
                             <li class="">
-                                <a href="jqgrid.html">
+                                <a href="<?=$qb_url_root?>/rule/view.php">
                                     <i class="menu-icon fa fa-caret-right"></i>
                                     组卷规则
                                 </a>
