@@ -12,7 +12,6 @@ if (! isset ( $_SESSION ['username'] )) {
     $_GLOBALs ['message'] = "You are logged out.";
     header ( 'Location:' . $CFG->wwwroot . '/login.php' );
 }
-
 $courseid = $_REQUEST['courseid'];
 ?>
 <!DOCTYPE html>
@@ -75,20 +74,20 @@ $courseid = $_REQUEST['courseid'];
     </div>
     <!-- /.navbar -->
     <div class="main-container ace-save-state" id="main-container">
-        <script type="text/javascript">
-            try{ace.settings.loadState('main-container')}catch(e){}
-        </script>
-        <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+    <div class="breadcrumbs ace-save-state" id="breadcrumbs">
       <ul class="breadcrumb">
         <li>
           <i class="ace-icon fa fa-home home-icon"></i> <a href="#">首页</a>
         </li>
         <li>
-          <a href="#">系统管理</a>
+          <a href="#">课程管理</a>
         </li>
         <li class="active">课程</li>
       </ul>
     </div>
+    <script type="text/javascript">
+            try{ace.settings.loadState('main-container')}catch(e){}
+        </script>
         <div id="sidebar" class="sidebar responsive ace-save-state">
             <script type="text/javascript">
             try{ace.settings.loadState('sidebar')}catch(e){}
@@ -99,14 +98,14 @@ $courseid = $_REQUEST['courseid'];
                     </a> <b class="arrow"></b>
                 </li>
                 <?php if ($user->isLoggedIn() ){ //if logged in?>
-                <li class="">
+                <li class="active open">
                     <a href="#" class="dropdown-toggle"><i class="menu-icon fa fa-right"></i><span class="menu-text">我的课程</span><b class="arrow fa fa-angle-down"></b></a>
                     <b class="arrow"></b> 
                     <!-- todo: course list -->
                     <ul class="submenu">
                     <?php $allCourses = getAllCourses ();
                           foreach ( $allCourses as $course ) {?>
-                          <li class="">
+                          <li class="<?php if ($course['course_id'] == $courseid){echo'active';}?>">
                             <a href="<?php echo $qb_url_root.'/question/question.php?courseid='.$course['course_id']?>"><i class="menu-icon fa fa-caret-right"></i><?php echo $course['course_name']?></a>
                             <b class="arrow"></b>
                           </li>
@@ -130,7 +129,7 @@ $courseid = $_REQUEST['courseid'];
                         </li>
                     </ul>
                 </li>
-                <li class="active open">
+                <li class="">
                     <a href="#" class="dropdown-toggle">
                             <i class="menu-icon fa fa-list"></i>
                             <span class="menu-text">课程管理</span>
@@ -139,21 +138,21 @@ $courseid = $_REQUEST['courseid'];
                         <b class="arrow"></b>
                         <ul class="submenu">
                             <li class="">
-                                <a href="<?=$qb_url_root?>/subject/subject.php?courseid=<?= $courseid?>">
+                                <a href="<?=$qb_url_root?>/subject/subject.php?courseid=<?=$courseid ?>">
                                     <i class="menu-icon fa fa-caret-right"></i>
                                     知识点
                                 </a>
                                 <b class="arrow"></b>
                             </li>
                             <li class="">
-                                <a href="<?php echo $qb_url_root.'/question/question.php?courseid=5'?>">
+                                <a href="<?= $qb_url_root?>/question/question.php?courseid=<?=$courseid ?>">
                                     <i class="menu-icon fa fa-caret-right"></i>
                                     题库
                                 </a>
                                 <b class="arrow"></b>
                             </li>
-                            <li class="active">
-                                <a href="<?=$qb_url_root?>/rule/view.php?courseid=<?= $courseid?>">
+                            <li class="">
+                                <a href="<?=$qb_url_root?>/rule/view.php?courseid=<?=$courseid ?>">
                                     <i class="menu-icon fa fa-caret-right"></i>
                                     组卷规则
                                 </a>
@@ -179,40 +178,130 @@ $courseid = $_REQUEST['courseid'];
             <div class="main-content-inner">
                 <div class="page-content">
                     <div class="page-header">
-                    <h1>组卷规则
-                        <small><i class="ace-icon fa fa-angle-double-right"></i>新增、编辑、删除组卷规则</small>
+                    <h1>课程
+                        <small><i class="ace-icon fa fa-angle-double-right"></i>Overview</small>
                     </h1>
                     </div>
                     <div class="row">
                         <div class="col-lg-12">
+                          <div class="row">
+                            <div class="col-lg-12">
+                              <a href="<?= $qb_url_root?>/question/question.php?courseid=<?=$courseid ?>"> <span class="btn btn-purple no-border"> <i class="ace-icon fa fa-envelope bigger-130"></i> <span class="bigger-110">录入试题</span>
+                              </span>
+                              </a> 
+                              <a href="<?= $qb_url_root?>/question/zujuan.php?courseid=<?=$courseid ?>"> <span class="btn btn-purple no-border"> <i class="ace-icon fa fa-envelope bigger-130"></i> <span class="bigger-110">手动组卷</span>
+                              </span>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-lg-12">
                             <div class="clearfix">
                                 <div class="pull-right tableTools-container">
-                                    <a href="<?php echo $qb_url_root?>/rule/edit.php?courseid=<?= $courseid?>" class="btn btn-primary btn-xs">新建组卷规则</a>
+                                  
                                 </div>
                             </div>
-                            <div>    
-                                <table id="simple-table" class="table table-striped table-hover table-bordered">
-                                    <thead>
-                                    <tr><th>组卷规则</th><th></th></tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php 
-                                            $rules = getRules($courseid);
-                                            if (isset($rules)){
-                                                foreach ($rules as $rule){
-                                                    echo '<tr>';
-                                                    echo '<td>'.$rule['name'].'</td>';
-                                                    echo '<td><div class="hidden-sm hidden-xs action-buttons">';
-                                                    echo ' <a title="编辑" onclick="getSubjectDetails(' . $rule ['id'] . ')" data-toggle="modal" data-target="#edit_subject_modal" data-backdrop="false" >
-                                                            <span class="green"><i class="ace-icon fa fa-pencil bigger-120"></i></span></a>';
-                                                    echo '<a title="删除" class="delete_product" data-id="' . $rule ['id'] . '" data-toggle="modal" data-target="#delete_subject_modal" data-backdrop="false">
-                                                            <span class="red"><i class="ace-icon fa fa-trash-o bigger-120"></i></span></a></div></td>';
-                                                    echo '</tr>';
-                                                }
-                                            };
-                                        ?>
-                                    </tbody>
-                                </table>
+                            <div class="row">    
+                                <div class="col-lg-3 col-md-6">
+                                  <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                      <div class="row">
+                                        <div class="col-xs-3">
+                                          <i class="fa fa-comments fa-5x"></i>
+                                        </div>
+                                        <div class="col-xs-9 text-right">
+                                          <div class="huge">12</div>
+                                          <div>Chapters</div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <!-- /.panel-heading -->
+                                    <a href="<?=$qb_url_root?>/subject/subject.php?courseid=<?=$courseid ?>">
+                                      <div class="panel-footer">
+                                        <span class="pull-left">View Details</span>
+                                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                        <div class="clearfix"></div>
+                                      </div>
+                                      <!-- /.panel-footer> -->
+                                    </a>
+                                  </div>
+                                  <!-- /.panel-->
+                                </div>
+                                <div class="col-lg-3 col-md-6">
+                                  <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                      <div class="row">
+                                        <div class="col-xs-3">
+                                          <i class="fa fa-comments fa-5x"></i>
+                                        </div>
+                                        <div class="col-xs-9 text-right">
+                                          <div class="huge">80</div>
+                                          <div>Questions</div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <!-- /.panel-heading -->
+                                    <a href="<?= $qb_url_root?>/question/question.php?courseid=<?=$courseid ?>">
+                                      <div class="panel-footer">
+                                        <span class="pull-left">View Details</span>
+                                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                        <div class="clearfix"></div>
+                                      </div>
+                                      <!-- /.panel-footer> -->
+                                    </a>
+                                  </div>
+                                  <!-- /.panel-->
+                                </div>
+                                <div class="col-lg-3 col-md-6">
+                                  <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                      <div class="row">
+                                        <div class="col-xs-3">
+                                          <i class="fa fa-comments fa-5x"></i>
+                                        </div>
+                                        <div class="col-xs-9 text-right">
+                                          <div class="huge">2</div>
+                                          <div>Rules</div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <!-- /.panel-heading -->
+                                    <a href="<?=$qb_url_root?>/rule/view.php?courseid=<?= $courseid?>">
+                                      <div class="panel-footer">
+                                        <span class="pull-left">View Details</span>
+                                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                        <div class="clearfix"></div>
+                                      </div>
+                                      <!-- /.panel-footer> -->
+                                    </a>
+                                  </div>
+                                  <!-- /.panel-->
+                                </div>
+                                <div class="col-lg-3 col-md-6">
+                                  <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                      <div class="row">
+                                        <div class="col-xs-3">
+                                          <i class="fa fa-comments fa-5x"></i>
+                                        </div>
+                                        <div class="col-xs-9 text-right">
+                                          <div class="huge">4</div>
+                                          <div>Papers</div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <!-- /.panel-heading -->
+                                    <a href="#">
+                                      <div class="panel-footer">
+                                        <span class="pull-left">View Details</span>
+                                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                        <div class="clearfix"></div>
+                                      </div>
+                                      <!-- /.panel-footer> -->
+                                    </a>
+                                  </div>
+                                  <!-- /.panel-->
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -220,114 +309,11 @@ $courseid = $_REQUEST['courseid'];
             </div>
         </div>
     </div>
-      <!--  Modal dialog for add new course  -->
-    <div id="add_new_course_modal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <!--  Modal dialog content -->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">新增 课程</h4>
-                </div>
-                <div class="modal-body">
-                    <form id="addCourseForm" class="form-horizontal" role="form" method="post" data-toggle="validator">
-                        <div class="form-group">
-                            <div class="controls">
-                                <label for="first_name" class="col-xs-3 col-md-3 control-label">课程名称</label>
-                                <div class="col-xs-6 col-md-6">
-                                    <input type="text" id="coursename" placeholder="请输入课程名称" class="form-control" required data-error="Please enter course name" />
-                                    <div class="help-block with-errors"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="last_name" class="col-xs-3 control-label">描述</label>
-                            <div class="col-xs-6">
-                                <input type="text" id="description" placeholder="Description" class="form-control" />
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                    <button type="submit" class="btn btn-primary" id="btnAddCourse">保存</button>
-                </div>
-                <!-- End of modal footer -->
-            </div>
-            <!-- End of modal content -->
-        </div>
-        <!-- End of modal dialog -->
-    </div>
-    <!-- End of Modal -->
-    <!--  end of modal new course-->
-    <!-- Modal dialog for edit course -->
-    <div id="edit_course_modal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal dialog content -->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <h4 class="modal-title" id="myModalLabel">编辑 课程</h4>
-                    <input type="hidden" id="hidden_course_id">
-                </div>
-                <div class="modal-body">
-                    <form id="edit_course_form" class="form-horizontal" role="form" method="post" data-toggle="validator">
-                        <div class="form-group">
-                            <label for="edit-coursename" class="col-xs-3">课程名称</label>
-                            <div class="col-xs-6">
-                                <input type="text" id="edit_coursename" placeholder="Course Name" class="form-control" required />
-                                <div class="help-block with-errors"></div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="edit-coursedescription" class="col-xs-3">描述</label>
-                            <div class="col-xs-6">
-                                <input type="text" id="edit_coursedescription" placeholder="Description" class="form-control" />
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <!-- end of moal body -->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                    <button type="button" class="btn btn-primary" id="btnEditCourse">保存</button>
-                </div>
-                <!--  end of modal-footer -->
-            </div>
-            <!--  end of modal content -->
-        </div>
-        <!--  end of modal dialog -->
-    </div>
-    <!--  end of modal  -->
-    <!--  End of modal dialog for edit course -->
-    <!--  Modal dialog for delete course  -->
-    <div id="delete_course_modal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <!--  Modal dialog content -->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">删除课程</h4>
-                </div>
-                <div class="modal-body">
-                    <p>你确定要删除本课程吗?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                    <a class="btn btn-danger btn-ok" onclick="deleteCourse(this)">删除</a>
-                </div>
-                <!--  end of modal-footer -->
-            </div>
-            <!--  end of modal-content -->
-        </div>
-        <!--  end of modal-dialog -->
-    </div>
+
      <?php 
       require '../include/scripts.php';
       ?>
-    <script src="course.js" type="text/javascript"> </script>
+    <script src="question.js" type="text/javascript"> </script>
     
     </body>
 </html>

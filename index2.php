@@ -76,17 +76,41 @@ if (! isset ( $_SESSION ['username'] )) {
         <script type="text/javascript">
             try{ace.settings.loadState('main-container')}catch(e){}
         </script>
+    <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+      <ul class="breadcrumb">
+        <li>
+          <i class="ace-icon fa fa-home home-icon"></i> <a href="#">首页</a>
+        </li>
+        <li class="active">仪表板</li>
+      </ul>
+    </div>
         <div id="sidebar" class="sidebar responsive ace-save-state">
             <script type="text/javascript">
             try{ace.settings.loadState('sidebar')}catch(e){}
             </script>
             <ul class="nav nav-list">
-                <li class="active">
-                    <a href="<?php echo $qb_url_root?>/index2.php"> <i class="menu-icon fa fa-tachometer"></i> <span class="menu-text">Dashboard</span>
+                <li class="active ">
+                    <a href="<?php echo $qb_url_root?>/index2.php"> <i class="menu-icon fa fa-tachometer"></i> <span class="menu-text">仪表板</span>
                     </a> <b class="arrow"></b>
                 </li>
+                <?php if ($user->isLoggedIn() ){ //if logged in?>
                 <li class="">
-                    <a href="#" class="dropdown-toggle"> <i class="menu-icon fa fa-desktop"></i> <span class="menu-text">Administration</span> <b class="arrow fa fa-angle-down"></b>
+                    <a href="#" class="dropdown-toggle"><i class="menu-icon fa fa-right"></i><span class="menu-text">我的课程</span><b class="arrow fa fa-angle-down"></b></a>
+                    <b class="arrow"></b> 
+                    <!-- todo: course list -->
+                    <ul class="submenu">
+                    <?php $allCourses = getAllCourses ();
+                          foreach ( $allCourses as $course ) {?>
+                          <li class="">
+                            <a href="<?php echo $qb_url_root.'/question/view.php?courseid='.$course['course_id']?>"><i class="menu-icon fa fa-caret-right"></i><?php echo $course['course_name']?></a>
+                            <b class="arrow"></b>
+                          </li>
+                    <?php }?>
+                    </ul>
+                </li>
+                <?php }?>
+                <li class="">
+                    <a href="#" class="dropdown-toggle"> <i class="menu-icon fa fa-desktop"></i> <span class="menu-text">系统管理</span> <b class="arrow fa fa-angle-down"></b>
                     </a> <b class="arrow"></b>
                     <ul class="submenu">
                         <li class="">
@@ -101,31 +125,6 @@ if (! isset ( $_SESSION ['username'] )) {
                         </li>
                     </ul>
                 </li>
-                <li class="">
-                    <a href="#" class="dropdown-toggle">
-                            <i class="menu-icon fa fa-list"></i>
-                            <span class="menu-text">课程管理 </span>
-
-                            <b class="arrow fa fa-angle-down"></b>
-                        </a>
-                        <b class="arrow"></b>
-                        <ul class="submenu">
-                            <li class="">
-                                <a href="tables.html">
-                                    <i class="menu-icon fa fa-caret-right"></i>
-                                    Simple &amp; Dynamic
-                                </a>
-                                <b class="arrow"></b>
-                            </li>
-                            <li class="">
-                                <a href="<?=$qb_url_root?>/rule/view.php">
-                                    <i class="menu-icon fa fa-caret-right"></i>
-                                    组卷规则
-                                </a>
-                                <b class="arrow"></b>
-                            </li>
-                        </ul>
-                    </li>
             </ul>
             <!-- /.nav-list -->
             <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
@@ -135,17 +134,7 @@ if (! isset ( $_SESSION ['username'] )) {
         <!-- /.sidebar -->
         <div class="main-content">
             <div class="main-content-inner">
-                <div class="breadcrumbs ace-save-state" id="breadcrumbs">
-                    <ul class="breadcrumb">
-                        <li>
-                            <i class="ace-icon fa fa-home home-icon"></i>
-                            <a href="#">Home</a>
-                        </li>
-                        <li>
-                            <a href="#">Dashboard</a>
-                    </ul>
-                </div>
-            </div>
+             </div>
         </div>
     </div>
      <?php 

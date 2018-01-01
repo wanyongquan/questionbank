@@ -45,13 +45,27 @@ require '../include/header.php';
     <script type="text/javascript">
             try{ace.settings.loadState('main-container')}catch(e){}
         </script>
+        <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+      <ul class="breadcrumb">
+        <li>
+          <i class="ace-icon fa fa-home home-icon"></i> <a href="#">首页</a>
+        </li>
+        <li>
+          <a href="#">课程管理</a>
+        </li>
+        <li>
+          <a href="#">【课程名称】</a>
+        </li>
+        <li class="active">组卷规则</li>
+      </ul>
+    </div>
     <div id="sidebar" class="sidebar responsive ace-save-state">
       <script type="text/javascript">
                 try{ace.settings.loadState('sidebar')}catch(e){}
             </script>
       <ul class="nav nav-list">
         <li class="">
-          <a href="<?php echo $qb_url_root?>/index2.php"> <i class="menu-icon fa fa-tachometer"></i> <span class="menu-text">Dashboard</span>
+          <a href="<?php echo $qb_url_root?>/index2.php"> <i class="menu-icon fa fa-tachometer"></i> <span class="menu-text">仪表板</span>
           </a> <b class="arrow"></b>
         </li>
                 <?php if ($user->isLoggedIn() ){ //if logged in?>
@@ -90,15 +104,19 @@ $allCourses = getAllCourses ();
           </a> <b class="arrow"></b>
           <ul class="submenu">
             <li class="">
-              <a href="<?=$qb_url_root?>/subject/subject.php"> <i class="menu-icon fa fa-caret-right"></i> 知识点
+              <a href="<?=$qb_url_root?>/subject/subject.php?courseid=<?=$courseid ?>"> <i class="menu-icon fa fa-caret-right"></i> 知识点
               </a> <b class="arrow"></b>
             </li>
             <li class="">
-              <a href="<?php echo $qb_url_root.'/question/question.php?courseid=5'?>"> <i class="menu-icon fa fa-caret-right"></i> 题库
+              <a href="<?php echo $qb_url_root?>/question/question.php?courseid=<?=$courseid ?>"> <i class="menu-icon fa fa-caret-right"></i> 题库
               </a> <b class="arrow"></b>
             </li>
             <li class="active">
-              <a href="<?=$qb_url_root?>/rule/view.php"> <i class="menu-icon fa fa-caret-right"></i> 组卷规则
+              <a href="<?=$qb_url_root?>/rule/view.php?courseid=<?=$courseid ?>"> <i class="menu-icon fa fa-caret-right"></i> 组卷规则
+              </a> <b class="arrow"></b>
+            </li>
+            <li class="">
+              <a href="<?=$qb_url_root?>/question/zujuan.php?courseid=<?=$courseid ?>"> <i class="menu-icon fa fa-caret-right"></i> 手动组卷
               </a> <b class="arrow"></b>
             </li>
           </ul>
@@ -112,21 +130,6 @@ $allCourses = getAllCourses ();
     <!--  /.sidebar -->
     <div class="main-content">
       <div class="main-content-inner">
-        <div class="breadcrumbs ace-save-state" id="breadcrumbs">
-          <ul class="breadcrumb">
-            <li>
-              <i class="ace-icon fa fa-home home-icon"></i> <a href="#">首页</a>
-            </li>
-            <li>
-              <a href="#">课程管理</a>
-            </li>
-            <li>
-              <a href="#">Course_name</a>
-            </li>
-            <li class="active">subject</li>
-          </ul>
-        </div>
-        <!-- /.breadcrumbs -->
         <div class="page-content">
           <div class="page-header">
             <h1>
@@ -163,7 +166,11 @@ $allCourses = getAllCourses ();
                     </div>
                   </div>
                 </div>
-                <div class="form-group">
+                
+              </fieldset>
+              <fieldset>
+              <legend>题型、题量设置</legend>
+              <div class="form-group">
                   <label class="col-sm-3 control-label no-padding-right" for="field-desc">题型</label>
                   <div class="col-sm-9">
                     <div class="checkbox">
@@ -182,9 +189,6 @@ $allCourses = getAllCourses ();
                     </div>
                   </div>
                 </div>
-              </fieldset>
-              <fieldset>
-              <legend>题型、题量设置</legend>
                 <div class="form-group">
                   <label class="col-sm-3 control-label no-padding-right" for="field-name">简答题</label>
                   <div class="col-sm-9">

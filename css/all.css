@@ -9,3 +9,6 @@
 .table a:not(.btn), table a:not(.btn) {
     text-decoration: underline;
 }
+.huge {
+  font-size: 40px;
+}

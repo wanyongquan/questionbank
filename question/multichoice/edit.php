@@ -5,13 +5,12 @@ include_once '../../config.php';
 include_once '../../session.php';
 include_once '../../lib/dblib.php';
 
-$courseId = $_REQUEST['courseid'];
+$courseid = $_REQUEST['courseid'];
 $id = null;
 $question_id = null;
 $question_name = null;
 $qbody = null;
 $point = null;
-$course_id = null;
 $subject_id = null;
 $difficultyLevelId = null;
 
@@ -53,13 +52,24 @@ if (null != $id) {
         <script type="text/javascript">
             try{ace.settings.loadState('main-container')}catch(e){}
         </script>
+        <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+      <ul class="breadcrumb">
+        <li>
+          <i class="ace-icon fa fa-home home-icon"></i> <a href="#">首页</a>
+        </li>
+        <li>
+          <a href="#">系统管理</a>
+        </li>
+        <li class="active">课程</li>
+      </ul>
+    </div>
         <div id="sidebar" class="sidebar responsive ace-save-state">
             <script type="text/javascript">
                 try{ace.settings.loadState('sidebar')}catch(e){}
             </script>
             <ul class="nav nav-list">
                 <li class="">
-                    <a href="<?php echo $qb_url_root?>/index2.php"> <i class="menu-icon fa fa-tachometer"></i> <span class="menu-text">Dashboard</span>
+                    <a href="<?php echo $qb_url_root?>/index2.php"> <i class="menu-icon fa fa-tachometer"></i> <span class="menu-text">仪表板</span>
                     </a> <b class="arrow"></b>
                 </li>
                 <?php if ($user->isLoggedIn() ){ //if logged in?>
@@ -71,7 +81,7 @@ if (null != $id) {
                     <?php $allCourses = getAllCourses ();
                           foreach ( $allCourses as $course ) {?>
                           <li class="">
-                            <a href="<?php echo $qb_url_root.'/question/question.php?courseid='.$course['course_id']?>"><i class="menu-icon fa fa-caret-right"></i><?php echo $course['course_name']?></a>
+                            <a href="<?php echo $qb_url_root.'/question/view.php?courseid='.$course['course_id']?>"><i class="menu-icon fa fa-caret-right"></i><?php echo $course['course_name']?></a>
                             <b class="arrow"></b>
                           </li>
                     <?php }?>
@@ -102,23 +112,30 @@ if (null != $id) {
                     <b class="arrow"></b>
                     <ul class="submenu">
                             <li class="">
-                                <a href="<?=$qb_url_root?>/subject/subject.php">
+                                <a href="<?=$qb_url_root?>/subject/subject.php?courseid=<?=$courseid ?>">
                                     <i class="menu-icon fa fa-caret-right"></i>
                                     知识点
                                 </a>
                                 <b class="arrow"></b>
                             </li>
                             <li class="active">
-                                <a href="<?php echo $qb_url_root.'/question/question.php?courseid=5'?>">
+                                <a href="<?php echo $qb_url_root?>/question/question.php?courseid=<?=$courseid ?>">
                                     <i class="menu-icon fa fa-caret-right"></i>
                                     题库
                                 </a>
                                 <b class="arrow"></b>
                             </li>
                             <li class="">
-                                <a href="<?=$qb_url_root?>/rule/view.php">
+                                <a href="<?=$qb_url_root?>/rule/view.php?courseid=<?=$courseid ?>">
                                     <i class="menu-icon fa fa-caret-right"></i>
                                     组卷规则
+                                </a>
+                                <b class="arrow"></b>
+                            </li>
+                            <li class="">
+                                <a href="<?=$qb_url_root?>/question/zujuan.php?courseid=<?=$courseid ?>">
+                                    <i class="menu-icon fa fa-caret-right"></i>
+                                    手动组卷
                                 </a>
                                 <b class="arrow"></b>
                             </li>
@@ -133,22 +150,6 @@ if (null != $id) {
         <!--  /.sidebar -->
         <div class="main-content">
             <div class="main-content-inner">
-                <div class="breadcrumbs ace-save-state" id="breadcrumbs">
-                    <ul class="breadcrumb">
-                        <li>
-                            <i class="ace-icon fa fa-home home-icon"></i>
-                            <a href="#">首页</a>
-                        </li>
-                        <li>
-                            <a href="#">课程管理</a>
-                        </li>
-                        <li>
-                            <a href="#">course_name</a>
-                        </li>
-                        <li class="active">multi choice</li>
-                    </ul>
-                </div>
-                <!-- /.breadcrumbs -->
                 <div class="page-content">
                     <div class="page-header">
                         <h1>选择题<small><i class="ace-icon fa fa-angle-double-right"></i>course_name</small></h1>
@@ -163,7 +164,7 @@ if (null != $id) {
                                 <form name="question_form" id="question_form" class="form-horizontal" role="form" method="post" onsubmit="return onSubmitQForm();">
                                     <fieldset>
                                         <legend>概要</legend>
-                                        <input type="hidden" name="hidden_question_id" id="hidden_question_id" value="<?php echo (!empty($id) ? $id: '')?>"> <input type="hidden" name="courseid" value="<?php echo $courseId?>">
+                                        <input type="hidden" name="hidden_question_id" id="hidden_question_id" value="<?php echo (!empty($id) ? $id: '')?>"> <input type="hidden" name="courseid" value="<?php echo $courseid?>">
                                         <div id="item_question_name" class="form-group">
                                             <div class="col-sm-2 control-label">
                                                 <label for="question_name">题目名称</label>

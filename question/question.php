@@ -25,13 +25,27 @@ error_reporting ( 1 );
         <script type="text/javascript">
             try{ace.settings.loadState('main-container')}catch(e){}
         </script>
+        <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+      <ul class="breadcrumb">
+        <li>
+          <i class="ace-icon fa fa-home home-icon"></i> <a href="#">首页</a>
+        </li>
+        <li>
+          <a href="#">课程管理</a>
+        </li>
+        <li>
+          <a href="#">【课程名称】</a>
+        </li>
+        <li class="active">题库</li>
+      </ul>
+    </div>
         <div id="sidebar" class="sidebar responsive ace-save-state">
             <script type="text/javascript">
                 try{ace.settings.loadState('sidebar')}catch(e){}
             </script>
             <ul class="nav nav-list">
                 <li class="">
-                    <a href="<?php echo $qb_url_root?>/index2.php"> <i class="menu-icon fa fa-tachometer"></i> <span class="menu-text">Dashboard</span>
+                    <a href="<?php echo $qb_url_root?>/index2.php"> <i class="menu-icon fa fa-tachometer"></i> <span class="menu-text">仪表板</span>
                     </a> <b class="arrow"></b>
                 </li>
                 <?php if ($user->isLoggedIn() ){ //if logged in?>
@@ -43,7 +57,7 @@ error_reporting ( 1 );
                     <?php $allCourses = getAllCourses ();
                           foreach ( $allCourses as $course ) {?>
                           <li class="">
-                            <a href="<?php echo $qb_url_root.'/question/question.php?courseid='.$course['course_id']?>"><i class="menu-icon fa fa-caret-right"></i><?php echo $course['course_name']?></a>
+                            <a href="<?php echo $qb_url_root.'/question/view.php?courseid='.$course['course_id']?>"><i class="menu-icon fa fa-caret-right"></i><?php echo $course['course_name']?></a>
                             <b class="arrow"></b>
                           </li>
                     <?php }?>
@@ -94,6 +108,13 @@ error_reporting ( 1 );
                                 </a>
                                 <b class="arrow"></b>
                             </li>
+                            <li class="">
+                                <a href="<?=$qb_url_root?>/question/zujuan.php?courseid=<?=$courseid ?>">
+                                    <i class="menu-icon fa fa-caret-right"></i>
+                                    手动组卷
+                                </a>
+                                <b class="arrow"></b>
+                            </li>
                         </ul>
                 </li>
             </ul>
@@ -104,23 +125,6 @@ error_reporting ( 1 );
         </div>
         <!-- /.sidebar -->
         <div class="main-content">
-            <div class="main-content-inner">
-                <div class="breadcrumbs ace-save-state" id="breadcrumbs">
-                    <ul class="breadcrumb">
-                        <li>
-                            <i class="ace-icon fa fa-home home-icon"></i>
-                            <a href="#">首页</a>
-                        </li>
-                        <li>
-                            <a href="#">课程管理</a>
-                        </li>
-                        <li>
-                            <a href="#">题库</a>
-                        </li>
-                        <li class="active">course_name</li>
-                    </ul>
-                </div>
-                <!-- /.breadcrumbs -->
                 <div class="page-content">
                     <div class="page-header">
                         <h1>题库<small><i class="ace-icon fa fa-angle-double-right"></i>course_name</small></h1>
@@ -143,7 +147,7 @@ error_reporting ( 1 );
                                         echo '<tr>';
                                         echo '<td>'.$question['question_name'].'</td>';
                                         echo '<td>'.$question['qtype'].'</td>';
-                                        echo '<td>'.$question['difficultyLevel'].'</td>';
+                                        echo '<td>'.$question['difficulty'].'</td>';
                                         echo '<td>'.$question['subject_name'].'</td>';
                                         echo '<td>'.$question['point'].'</td>';
                                         echo '<td>'.$question['createdBy'].'</td>';
