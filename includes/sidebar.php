@@ -7,7 +7,7 @@
                     
                   </li>
                   <li><a href="<?php echo $qb_url_root?>/question/question.php"><i class="fa fa-graduation-cap"></i> 试题 </a> </li>
-                  <li><a href="<?php echo $qb_url_root?>/admin/zujuan.php"><i class="fa fa-pencil-square-o"></i> 组卷 </a> </li>
+                  <li><a href="<?php echo $qb_url_root?>/zujuan/zujuan.php"><i class="fa fa-pencil-square-o"></i> 组卷 </a> </li>
 
                 </ul>
               </div>
