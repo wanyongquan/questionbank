@@ -10,7 +10,7 @@ if (! isset ( $_SESSION ['username'] )) {
 } else if (isset ( $_REQUEST ['logout'] )) {
     unset ( $_SESSION ['username'] );
     $_GLOBALs ['message'] = "You are logged out.";
-    header ( 'Location:' . $CFG->wwwroot . '/login.php' );
+    header ( 'Location:' . $CFG->wwwroot . '/login.php?returnurl=question/questions.php' );
 }
 $courseid = $_REQUEST['courseid'];
 ?>
@@ -28,7 +28,7 @@ $courseid = $_REQUEST['courseid'];
                 <span class="sr-only">Toggle sidebar</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
             </button>
             <div class="navbar-header pull-left">
-                <a href="<?php echo $qb_url_root?>/index2.php" class="navbar-brand"> <small><i class="fa fa-leaf"></i>燕老师题库</small>
+                <a href="<?php echo $qb_url_root?>/index2.php" class="navbar-brand"> <small><i class="fa fa-leaf"></i><?php echo get_string('title'); ?></small>
                 </a>
            </div>
 <!--             <div class="navbar-buttons navbar-header pull-left" role="navigation">

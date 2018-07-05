@@ -27,7 +27,7 @@ if (! isset ( $_SESSION ['username'] )) {
                 <span class="sr-only">Toggle sidebar</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
             </button>
             <div class="navbar-header pull-left">
-                <a href="<?php echo $qb_url_root?>/index2.php" class="navbar-brand"> <small><i class="fa fa-leaf"></i>燕老师题库</small>
+                <a href="<?php echo $qb_url_root?>/index2.php" class="navbar-brand"> <small><i class="fa fa-leaf"></i><?php echo get_string('title'); ?></small>
                 </a>
            </div>
 <!--             <div class="navbar-buttons navbar-header pull-left" role="navigation">
@@ -50,7 +50,7 @@ if (! isset ( $_SESSION ['username'] )) {
                                 </a>
                             </li>
                             <li>
-                                <a href="profile.html"> <i class="ace-icon fa fa-user"></i> Profile
+                                <a href="profile.html"> <i class="ace-icon fa fa-user"></i>User Profile
                                 </a>
                             </li>
                             <li class="divider"></li>

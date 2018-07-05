@@ -27,7 +27,7 @@ if (! isset ( $_SESSION ['username'] )) {
                 <span class="sr-only">Toggle sidebar</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
             </button>
             <div class="navbar-header pull-left">
-                <a href="<?php echo $qb_url_root?>/index2.php" class="navbar-brand"> <small><i class="fa fa-leaf"></i>燕老师题库</small>
+                <a href="<?php echo $qb_url_root?>/index2.php" class="navbar-brand"> <small><i class="fa fa-leaf"></i><?php echo get_string('title'); ?></small>
                 </a>
            </div>
 <!--             <div class="navbar-buttons navbar-header pull-left" role="navigation">
@@ -76,7 +76,7 @@ if (! isset ( $_SESSION ['username'] )) {
         <script type="text/javascript">
             try{ace.settings.loadState('main-container')}catch(e){}
         </script>
-    <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+    <div class="breadcrumbs ace-save-state" id="breadcrumbs"> 
       <ul class="breadcrumb">
         <li>
           <i class="ace-icon fa fa-home home-icon"></i> <a href="#">首页</a>
@@ -114,7 +114,7 @@ if (! isset ( $_SESSION ['username'] )) {
                     </a> <b class="arrow"></b>
                     <ul class="submenu">
                         <li class="">
-                            <a href="<?=$qb_url_root?>/course/course.php"> <i class="menu-icon fa fa-caret-right"></i> 课程 
+                            <a href="course/course.php"> <i class="menu-icon fa fa-caret-right"></i> 课程 
                             </a>
                             <b class="arrow"></b>
                         </li>

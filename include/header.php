@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 <!-- the above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 <meta name="description" content="">
-<title>燕老师题库</title>
+<title><?php echo get_string('title'); ?></title>
 <!-- Bootstrap core CSS -->
 <link rel="stylesheet" href="<?php echo $qb_url_root?>/lib/ace/assets/css/bootstrap.min.css">
 <link rel="stylesheet" href="<?php echo $qb_url_root?>/lib/ace/assets/font-awesome/4.5.0/css/font-awesome.min.css">

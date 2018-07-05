@@ -1,11 +1,33 @@
 <?php
+/*
+ * ****************************************************
+ * ** Yan Lao Shi Question Management System        ***
+ * **-----------------------------------------------***
+ * ** Developer: Wan Yongquan                       ***
+ * ** Title: Choice  Question                       ***
+ * ** Function: Add,Edit,Delete                     ***
+ * ****************************************************
+ */
 
-include_once '../../config.php';
+/*
+ * ***********************************************
+ * ---------------*
+ * PHP goes here  *
+ * ---------------*
+ 
+    Case 1: add new question
+    Case 2: Edit a question
+ *************************************************
+ */
+require_once '../../config.php';
 
-include_once '../../session.php';
-include_once '../../lib/dblib.php';
+require_once '../../includes/html_header.php';
+
 
 $courseid = $_REQUEST['courseid'];
+if (isset($_REQUEST['qid'])){
+    $qid = $_REQUEST['qid'];
+}
 $id = null;
 $question_id = null;
 $question_name = null;
@@ -14,320 +36,311 @@ $point = null;
 $subject_id = null;
 $difficultyLevelId = null;
 
-if (! empty ( $_GET ['id'] )) {
-    $id = $_REQUEST ['id'];
-}
 
-if (null != $id) {
-    // for edit a existing question
-    // get question details and show on page
-    $query = "select * from tk_questions " . " left join tk_subjects on tk_subjects.subject_id = tk_questions.subject_id" . " left join vw_difficultylevels on vw_difficultylevels.dictionary_id = tk_questions.difficultylevel_id" . " where tk_questions.question_id=$id";
-    $result = mysqli_query ( $DB, $query );
-    if (! $result) {
-        // error
-    } else {
-        $row = mysqli_fetch_assoc ( $result );
-        $question_id = $row ['question_id'];
-        $question_name = $row ['question_name'];
-        $qbody = $row ['question_body'];
-        $point = $row ['point'];
-        $course_id = $row ['course_id'];
-        $subject_id = $row ['subject_id'];
-        $difficultyLevelId = $row ['difficultylevel_id'];
+global $DB;
+
+if (null != $courseid) {
+    
+    if (!empty($qid)){
+        // --------------Case 2---- edit a existing question----------
+        // get question details and show on page
+        //$query = "select * from tk_questions " . " left join tk_subjects on tk_subjects.subject_id = tk_questions.subjectid" . " left join vw_difficultylevels on vw_difficultylevels.dictionary_id = tk_questions.difficultylevel_id" . " where tk_questions.question_id=$courseid";
+        $result = getQuestionDetails($qid);
+        if (! $result) {
+            die(mysqli_error($DB));
+        } else {
+            $row = mysqli_fetch_assoc ( $result );
+            $question_id = $row ['question_id'];
+            
+            $qbody = $row ['question_body'];
+            $point = $row ['point'];
+            $course_id = $row ['courseid'];
+            $subject_id = $row ['subjectid'];
+            $difficultyLevelId = $row ['difficultylevel_id'];
+            
+            // get list of answers of this question
+            $qanswers = getQuestionAnswers($qid);
+        }
     }
+}else{
+    die("The course does not exist");
 }
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-  <?php 
-      require '../../include/header.php';
-  ?>
-</head>
-<body class="no-skin">
-    <?php 
-        require_once '../../include/navigation.php';
-    ?>
-    <div class="main-container ace-save-state" id="main-container">
-        <script type="text/javascript">
-            try{ace.settings.loadState('main-container')}catch(e){}
-        </script>
-        <div class="breadcrumbs ace-save-state" id="breadcrumbs">
-      <ul class="breadcrumb">
-        <li>
-          <i class="ace-icon fa fa-home home-icon"></i> <a href="#">首页</a>
-        </li>
-        <li>
-          <a href="#">系统管理</a>
-        </li>
-        <li class="active">课程</li>
-      </ul>
-    </div>
-        <div id="sidebar" class="sidebar responsive ace-save-state">
-            <script type="text/javascript">
-                try{ace.settings.loadState('sidebar')}catch(e){}
-            </script>
-            <ul class="nav nav-list">
-                <li class="">
-                    <a href="<?php echo $qb_url_root?>/index2.php"> <i class="menu-icon fa fa-tachometer"></i> <span class="menu-text">仪表板</span>
-                    </a> <b class="arrow"></b>
-                </li>
-                <?php if ($user->isLoggedIn() ){ //if logged in?>
-                <li class="">
-                    <a href="#" class="dropdown-toggle"><i class="menu-icon fa fa-right"></i><span class="menu-text">我的课程</span><b class="arrow fa fa-angle-down"></b></a>
-                    <b class="arrow"></b> 
-                    <!-- todo: course list -->
-                    <ul class="submenu">
-                    <?php $allCourses = getAllCourses ();
-                          foreach ( $allCourses as $course ) {?>
-                          <li class="">
-                            <a href="<?php echo $qb_url_root.'/question/view.php?courseid='.$course['course_id']?>"><i class="menu-icon fa fa-caret-right"></i><?php echo $course['course_name']?></a>
-                            <b class="arrow"></b>
-                          </li>
-                    <?php }?>
-                    </ul>
-                </li>
-                <?php }?>
-                <li class="">
-                    <a href="#" class="dropdown-toggle"> <i class="menu-icon fa fa-desktop"></i> <span class="menu-text">系统管理</span> <b class="arrow fa fa-angle-down"></b>
-                    </a> <b class="arrow"></b>
-                    <ul class="submenu">
-                        <li class="">
-                            <a href="<?php echo $qb_url_root?>/course/course.php"> <i class="menu-icon fa fa-caret-right"></i> 课程 
-                            </a>
-                            <b class="arrow"></b>
-                        </li>
-                        <li class="">
-                            <a href="#"> <i class="menu-icon fa fa-caret-right"></i> 用户
-                            </a>
-                            <b class="arrow"></b>
-                        </li>
-                    </ul>
-                </li>
-                <li class="active open">
-                    <a href="#" class="dropdown-toggle">
-                        <i class="menu-icon fa fa-list"></i><span class="menu-text">课程管理</span>
-                        <b class="arrow fa fa-angle-down"></b>
-                    </a> 
-                    <b class="arrow"></b>
-                    <ul class="submenu">
-                            <li class="">
-                                <a href="<?=$qb_url_root?>/subject/subject.php?courseid=<?=$courseid ?>">
-                                    <i class="menu-icon fa fa-caret-right"></i>
-                                    知识点
-                                </a>
-                                <b class="arrow"></b>
-                            </li>
-                            <li class="active">
-                                <a href="<?php echo $qb_url_root?>/question/question.php?courseid=<?=$courseid ?>">
-                                    <i class="menu-icon fa fa-caret-right"></i>
-                                    题库
-                                </a>
-                                <b class="arrow"></b>
-                            </li>
-                            <li class="">
-                                <a href="<?=$qb_url_root?>/rule/view.php?courseid=<?=$courseid ?>">
-                                    <i class="menu-icon fa fa-caret-right"></i>
-                                    组卷规则
-                                </a>
-                                <b class="arrow"></b>
-                            </li>
-                            <li class="">
-                                <a href="<?=$qb_url_root?>/question/zujuan.php?courseid=<?=$courseid ?>">
-                                    <i class="menu-icon fa fa-caret-right"></i>
-                                    手动组卷
-                                </a>
-                                <b class="arrow"></b>
-                            </li>
-                        </ul>
-                </li>
-            </ul>
-            <!--  /.nav-list -->
-            <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
-                <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
-            </div>
-        </div>
-        <!--  /.sidebar -->
-        <div class="main-content">
-            <div class="main-content-inner">
-                <div class="page-content">
-                    <div class="page-header">
-                        <h1>选择题<small><i class="ace-icon fa fa-angle-double-right"></i>course_name</small></h1>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="clearfix">
-                                <div class="pull-right tableTools-container">
-                                </div>
-                            </div>
-                            <div>
-                                <form name="question_form" id="question_form" class="form-horizontal" role="form" method="post" onsubmit="return onSubmitQForm();">
-                                    <fieldset>
-                                        <legend>概要</legend>
-                                        <input type="hidden" name="hidden_question_id" id="hidden_question_id" value="<?php echo (!empty($id) ? $id: '')?>"> <input type="hidden" name="courseid" value="<?php echo $courseid?>">
-                                        <div id="item_question_name" class="form-group">
-                                            <div class="col-sm-2 control-label">
-                                                <label for="question_name">题目名称</label>
-                                            </div>
-                                            <div class="col-sm-8 col-lg-8">
-                                                <input id="question_name" name="question_name" class="form-control" required value="<?php echo !empty($question_name) ? $question_name: ''?>"></input>
-                                                <div class="help-block with-errors"></div>
-                                            </div>
-                                        </div>
-                                        <div id="item_question_body" class="form-group">
-                                            <div class="col-sm-2 control-label">
-                                                <label for="question_text">题干</label>
-                                            </div>
-                                            <div class="col-sm-8 col-lg-8">
-                                                <textarea id="question_body" name="question_body" rows="5" class="field  form-control" required><?php echo !empty($qbody) ? $qbody:''?></textarea>
-                                                <input type="hidden" value="multichoice" name="qtype">
-                                                <div class="help-block with-errors"></div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group ">
-                                            <div class="col-sm-2 control-label">
-                                                <label for="subject_list">知识点</label>
-                                            </div>
-                                            <div class="col-sm-8">
-                                                <select id="qitem_subject_id" name="subject_id" class="form-control">
-                                                    <option value="">--请选择知识点--</option>
-                                                    <?php
-                                                    $query = "select * from tk_subjects order by subject_name;";
-                                                    
-                                                    $result = $DB->query ( $query ) or die ( exit ( mysqli_error ( $DB ) ) );
-                                                    
-                                                    if ($result->num_rows > 0) {
-                                                        foreach ( $result as $row ) {
-                                                            $selected = ($subject_id == $row ['subject_id']) ? "selected" : "";
-                                                            echo '<option value="' . $row ['subject_id'] . '" ' . $selected . ' >' . $row ['subject_name'] . '</option>';
-                                                        }
-                                                    }
-                                                    ?>
-                                                    </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="col-sm-2 control-label">
-                                                <label for="difficultylevel_list">难度</label>
-                                            </div>
-                                            <div class="col-sm-8">
-                                                <select id="difficultylevel_list" name="difficultyLevel_id" class="form-control">
-                                                    <option value="">--请选择难度--</option>
-                                                    <?php
-                                                    $query = 'select * from vw_difficultylevels';
-                                                    
-                                                    $result = $DB->query ( $query ) or die ( exit ( mysqli_error ( $DB ) ) );
-                                                    
-                                                    if ($result->num_rows > 0) {
-                                                        foreach ( $result as $row ) {
-                                                            $selected = ($difficultyLevelId == $row ['dictionary_id']) ? "selected" : "";
-                                                            echo '<option value="' . $row ['dictionary_id'] . '"' . $selected . ' >' . $row ['dictionary_value'] . '</option>';
-                                                        }
-                                                    }
-                                                    ?>
-                                                    </select>
-                                            </div>
-                                        </div>
-                                        <div id="item_question_mark" class="form-group">
-                                            <div class="col-sm-2 control-label">
-                                                <label for="question_mark">分数</label>
-                                            </div>
-                                            <div class="col-sm-3">
-                                                <input id="question_mark" name="question_mark" class="form-control" value="<?php echo !empty($point) ? $point: ''?>"></input>
-                                                <div class="help-block with-errors"></div>
-                                            </div>
-                                        </div>
-                                    </fieldset>
-                                    <fieldset>
-                                        <legend>选项</legend>
-           
-            <?php
-            if (! empty ( $question_id )) {
-                $query = "select * from tk_question_answers where question_id=" . $question_id;
-                
-                $answerresult = $DB->query ( $query );
-                
-                if ($answerresult->num_rows > 0) {
-                    $optionorder = 1;
-                    $checked = null;
-                    foreach ( $answerresult as $answerrow ) {
-                        $qanswer_id = $answerrow ['id'];
-                        $optionvalue = (! empty ( $answerrow ['answer'] )) ? $answerrow ['answer'] : '';
-                        $checked = ($answerrow ['iscorrectanswer'] == 1) ? 'checked' : '';
-                        ?>
-                
-         <div class=" form-group">
-                                            <div class="col-sm-2 col-lg-2 control-label qitem_title">
-                                                <label for="qitem_answer<?php echo $optionorder;?>">选项<?php echo $optionorder;?></label>
-                                                <input type="hidden" name="qanswer_id<?php echo $optionorder;?>" value="<?php echo $qanswer_id;?>">
-                                            </div>
-                                            <div class="col-sm-8 col-lg-8 qitem_content">
-                                                <div class="col-sm-8 col-lg-8">
-                                                    <textarea type="text" id="qitem_answer<?php echo $optionorder;?>" name="qitem_answer<?php echo $optionorder;?>" required class="form-control" 
-                       value="<?php echo $optionvalue;?>" row="3"></textarea>
-                                                    <div class="help-block with-errors"></div>
-                                                </div>
-                                                <div class="col-sm-8 col-lg-8">
-                                                    <label for="check_option<?php echo $optionorder;?>">
-                                                        <input type="checkbox" id="check_option<?php echo $optionorder;?>" name="check_options[]" value="<?php echo $optionorder;?>" <?php echo $checked;?>>本选项是正确答案
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-               
-      <?php
-                        $optionorder ++;
-                    }
-                }
-            } else {
-                
-                for($index = 1; $index <= 4; $index += 1) {
-                    ?>
-        <div class=" form-group qitem">
-                                            <div class="col-sm-2 col-lg-2 control-label qitem_title">
-                                                <label for="qitem_answer<?php echo $index;?>">选项<?php echo $index;?></label>
-                                            </div>
-                                            <div class="col-sm-10 col-lg-10 qitem_content">
-                                                <div class="col-sm-10 col-lg-8">
-                                                    <input type="text" id="qitem_answer<?php echo $index;?>" name="qitem_answer<?php echo $index;?>" required class="form-control"></input>
-                                                    <div class="help-block with-errors"></div>
-                                                </div>
-                                                <div class="col-sm-10 col-lg-8">
-                                                    <label class="checkbox" for="check_option<?php echo $index;?>">
-                                                        <input type="checkbox" id="check_option<?php echo $index;?>" name="check_options[<?php echo $index;?>]">本选项是正确答案
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
+    <div class="container body">
+      <div class="main_container">
+        <?php require_once $abs_doc_root.$qb_url_root.'/includes/menu.php';?>
+        
+        <!-- top navigation -->
+        <?php   require_once $abs_doc_root.$qb_url_root."/includes/topnavigation.php";  ?>
+        <!-- /top navigation -->
 
-<?php
-                }
-            }
-            ?>     
-            
-         </fieldset>
-                                    <div class="form-group">
-                                        <div class="col-sm-8 col-sm-offset-2">
-                                            <button type="submit" class="btn btn-success">保存</button>
-                                            <button type="button" class="btn btn-default" onclick="history.back();">取消</button>
-                                        </div>
+        <!-- page content -->
+        <div class="right_col" role="main">
+          <div class="">
+            <div class="page-title">
+              <div class="title_left">
+                <h3>编辑试题</h3>
+              </div>
+
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="row">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>选择题<small><i class="ace-icon fa fa-angle-double-right"></i> for course_name</small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                          <li><a href="#">Settings 1</a>
+                          </li>
+                          <li><a href="#">Settings 2</a>
+                          </li>
+                        </ul>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                  <br>
+                      <div class="class col-sm-12">
+                         <form name="question_form" id="question_form" class="form-horizontal form-label-left" role="form" method="post" onsubmit="return onSubmitQForm();">
+                           <input type="hidden" name="courseid" id="courseid" value="<?php echo $courseid?>">
+                            <input type="hidden" name="questionid" id="questionid" value="<?php if (isset($qid)){echo $qid;}?>">
+                           <input type="hidden" value="multichoice" name="qtype">
+                           <input name="returnurl" type="hidden" value="<?=$qb_url_root ?>/question/admin_questions.php?courseid=<?=$courseid ?>" />
+                                <div id="item_question_body" class="form-group">
+                                   <label class="control-label col-md-2 col-sm-2 col-xs-12" >题干</label>
+                                    <div class="col-sm-9 col-md-9 col-xs-12">
+                                        <textarea id="question_body" name="question_body" rows="5" class="field  form-control" required><?php echo !empty($qbody) ? $qbody:''?></textarea>
+                                        
+                                        <div class="help-block with-errors"></div>
                                     </div>
-                                </form>
-                            </div>
-                        </div>
+                                </div>
+                  <div id="item_question_mark" class="form-group">
+                    <label class="control-label col-md-2 col-sm-2 col-xs-12" >分数</label>
+                    <div class="col-sm-9 col-md-9 col-xs-12">
+                        <input id="question_mark" name="question_mark" class="form-control" value="<?php echo !empty($point) ? $point: ''?>"></input>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                    <div class="col-sm-3">
+                        
                     </div>
                 </div>
+                    <div class="form-group ">
+                       <label class="control-label col-md-2 col-sm-2 col-xs-12" >知识点</label> 
+                        <div class="col-sm-9 col-md-9 col-xs-12">
+                            <select id="qitem_subject_id" name="subject_id" class="form-control">
+                                <option value="">--请选择知识点--</option>
+                                <?php
+                                $query = "select * from tk_subjects order by subjectname;";
+                                
+                                $result = $DB->query ( $query ) or die ( exit ( mysqli_error ( $DB ) ) );
+                                
+                                if ($result->num_rows > 0) {
+                                    foreach ( $result as $row ) {
+                                        $selected = ($subject_id == $row ['subject_id']) ? "selected" : "";
+                                        echo '<option value="' . $row ['subject_id'] . '" ' . $selected . ' >' . $row ['subjectname'] . '</option>';
+                                    }
+                                }
+                                ?>
+                              </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-2 col-sm-2 col-xs-12" >难度</label> 
+                        <div class="col-sm-9 col-md-9 col-xs-12">
+                            <select id="difficultylevel_list" name="difficultyLevel_id" class="form-control">
+                                <option value="">--请选择难度--</option>
+                                <?php
+                                $query = 'select * from vw_difficultylevels';
+                                
+                                $result = $DB->query ( $query ) or die ( exit ( mysqli_error ( $DB ) ) );
+                                
+                                if ($result->num_rows > 0) {
+                                    foreach ( $result as $row ) {
+                                        $selected = ($difficultyLevelId == $row ['dictionary_id']) ? "selected" : "";
+                                        echo '<option value="' . $row ['dictionary_id'] . '"' . $selected . ' >' . $row ['dictionary_value'] . '</option>';
+                                    }
+                                }
+                                ?>
+                                </select>
+                        </div>
+                    </div>     
+                  <fieldset>     
+                  <legend>选项</legend>        
+                      <div class="well" style="overflow:auto">  
+                         <div id="option_a" class="form-group">
+                           
+                             <?php 
+                             if (isset($qanswers)){
+                               foreach ($qanswers as $vl){
+                                   if ($vl['answerlabel'] == 'A'){
+                                       $qanswerid_a = $vl['id'];
+                                       $answertext_a = $vl['answer'];
+                                       $iscorrect_a = $vl['iscorrectanswer'];
+                                   }
+                                   
+                               }
+                             }
+                            ?>  
+                               <label class="control-label col-md-2 col-sm-2 col-xs-12" >选项A</label>
+                                 <input type="hidden" name="qanswer_a" value="<?=(!empty($qanswerid_a))?$qanswerid_a:'' ?>">
+                                <div class="col-sm-9 col-md-9 col-xs-12">
+                                    <input type="text" name="optiona" class="form-control" required 
+                                    value="<?= (!empty($answertext_a))? $answertext_a:'' ?>">
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                                <label class="control-label col-md-2 col-sm-2 col-xs-12" ></label>
+                                 <div class="col-sm-9 col-md-9 col-xs-12">
+                                    <label><input type="checkbox" id="is_correct_a" name="is_correct_a"  
+                                    <?=(!empty($iscorrect_a))? "checked":'' ?>>本选项是正确答案</label>
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                          </div>
+                        </div>  
+                    
+                          <div id="option_b" class="form-group">
+                            <div class="well" style="overflow:auto">
+                           <?php 
+                           if (isset($qanswers)){
+                               foreach ($qanswers as $vl){
+                                   if ($vl['answerlabel'] == 'B'){
+                                       $qanswerid_b = $vl['id'];
+                                       $answertext_b = $vl['answer'];
+                                       $iscorrect_b = $vl['iscorrectanswer'];
+                                   }
+                                   
+                               }
+                           }
+                            ?>   
+                               <label class="control-label col-md-2 col-sm-2 col-xs-12" >选项B</label>
+                                <input type="hidden" name="qanswer_b" value="<?=(!empty($qanswerid_b))?$qanswerid_b:'' ?>">
+                                <div class="col-sm-9 col-md-9 col-xs-12">
+                                    <input type="text" name="optionb" class="form-control" required 
+                                    value="<?= !empty($answertext_b)? $answertext_b:'' ?>">
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                                <label class="control-label col-md-2 col-sm-2 col-xs-12" ></label>
+                                 <div class="col-sm-9 col-md-9 col-xs-12">
+                                    <label><input type="checkbox" id="is_correct_b" name="is_correct_b" 
+                                    value="B" <?= !empty($iscorrect_b)? "checked":'' ?>>本选项是正确答案</label>
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                             </div>
+                          </div>  
+                          <div id="option_c" class="form-group">
+                            <div class="well" style="overflow:auto">
+                                <?php 
+                                if (isset($qanswers)){
+                                   foreach ($qanswers as $vl){
+                                       if ($vl['answerlabel'] == 'C'){
+                                           $qanswerid_c = $vl['id'];
+                                           $answertext_c = $vl['answer'];
+                                           $iscorrect_c = $vl['iscorrectanswer'];
+                                       }
+                                       
+                                   }
+                                }
+                                ?> 
+                               <label class="control-label col-md-2 col-sm-2 col-xs-12" >选项C</label>
+                                <input type="hidden" name="qanswer_c" value="<?=(!empty($qanswerid_c))?$qanswerid_c:'' ?>">
+                                <div class="col-sm-9 col-md-9 col-xs-12">
+                                    <input type="text" name="optionc" class="form-control" required
+                                    value="<?= !empty($answertext_c)? $answertext_c:'' ?>">
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                                <label class="control-label col-md-2 col-sm-2 col-xs-12" ></label>
+                                 <div class="col-sm-9 col-md-9 col-xs-12">
+                                    <label><input type="checkbox" id="is_correct_c" name="is_correct_c" value="C" 
+                                    <?= !empty($iscorrect_c)? "checked":'' ?>>本选项是正确答案</label>
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                              </div>
+                          </div>  
+                          <div id="option_d" class="form-group">
+                            <div class="well" style="overflow:auto">
+                                <?php
+                                if (isset($qanswers)){
+                                   foreach ($qanswers as $vl){
+                                       if ($vl['answerlabel'] == 'D'){
+                                           $qanswerid_d = $vl['id'];
+                                           $answertext_d = $vl['answer'];
+                                           $iscorrect_d = $vl['iscorrectanswer'];
+                                       }
+                                       
+                                   }
+                                }
+                                ?> 
+                               <label class="control-label col-md-2 col-sm-2 col-xs-12" >选项D</label>
+                                <input type="hidden" name="qanswer_d" value="<?=(!empty($qanswerid_d))?$qanswerid_d:'' ?>">
+                                <div class="col-sm-9 col-md-9 col-xs-12">
+                                    <input type="text" name="optiond" class="form-control" required
+                                    value="<?=!empty($answertext_d)? $answertext_d:'' ?>">
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                                <label class="control-label col-md-2 col-sm-2 col-xs-12" ></label>
+                                 <div class="col-sm-9 col-md-9 col-xs-12">
+                                    <label><input type="checkbox" id="is_correct_d" name="is_correct_d" value="D"
+                                    <?= !empty($iscorrect_d)? "checked":'' ?> >本选项是正确答案</label>
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                              </div>
+                          </div>   
+                </fieldset>
+                        <div class="form-group">
+                            <div class="col-sm-8 col-sm-offset-2">
+                                <button type="submit" name="savechoice" class="btn btn-primary">保存</button>
+                                <a class="btn btn-warning" href="<?php echo $qb_url_root?>/question/admin_questions.php?courseid=<?=$courseid ?>">Cancel</a>
+                            </div>
+                        </div>
+                    </form>
+                    
+                      </div>
+                     
+                      
+                  </div><!-- /x_content -->
+                </div>
+              </div>
             </div>
+          </div>
         </div>
-    </div>
-    <!-- /.main-container" -->
+        <!-- /page content -->
 
-   <?php
-    require '../../include/scripts.php';
-    ?>
+        <!-- footer content -->
+        <footer>
+          <div class="pull-right">
+            <?php echo get_string('title'); ?> 技术支持：Wan Yongquan
+          </div>
+          <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+      </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="<?php echo $qb_url_root?>/vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="<?php echo $qb_url_root?>/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="<?php echo $qb_url_root?>/vendors/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="<?php echo $qb_url_root?>/vendors/nprogress/nprogress.js"></script>
+    
+    <!-- Custom Theme Scripts -->
+    <script src="<?php echo $qb_url_root?>/js/custom.min.js"></script>
+    
     <!-- Form validation JavaScript -->
+    <script src="<?=$qb_url_root?>/script/form-validator.min.js" type="text/javascript"></script><script src="../../lib/bootstrapValidator/js/bootstrapValidator.js" type="text/javascript"></script>
     <script src="<?=$qb_url_root?>/lib/jqueryvalidation/jquery.validate.js" type="text/javascript"></script>
-    <script src="<?=$qb_url_root?>/script/form-validator.min.js" type="text/javascript"></script>
     <script src="formutil.js" type="text/javascript"></script>
-</body>
+  </body>
 </html>
+

@@ -8,7 +8,7 @@
             <span class="icon-bar"></span>
           </button>
           <img style="margin:10px 2px 2px 10px;float:left;" height="53" width="80" 
-          src="<?php echo $CFG->wwwroot.'/images/question.png'?>" alt="question bank"/>
+          src="images/question.png" alt="question bank"/>
           <a class="navbar-brand" href="index.php">Question Bank</a>
           
         </div>

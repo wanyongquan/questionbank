@@ -38,10 +38,13 @@ function addCourse(){
 // get courses
 function reloadCourses(){
 	$.get("ajax/getCourses.php", {}, function(data, status){
-		$(".coursescontent").html(data);
+		//$(".coursescontent").html(data);
 	});
+	
+   
 }
 
+// update form field with course detail information when edit modal dialog is shown;
 function getCourseDetails(id){
 	// add course_id to the hidden field for furture usage
 	$("#hidden_course_id").val(id);

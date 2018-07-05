@@ -1,186 +1,133 @@
 <?php
-include ('../session.php');
-error_reporting ( 0 );
+/**
+ * Yan Lao Shi Ti Ku
+ * An PHP Question Bank Management System
+ * @author Wanyongquan
+ */
+/*
+ * This page is user management dashboard. it shows all users in a grid .
+ */
+require_once 'config.php';
 
-require_once '../config.php';
-
-if (! isset ( $_SESSION ['username'] )) {
-    $_GLOBALS ['message'] = 'Session Timeout. Click here to <a href=\"' . $CFG->wwwroot . '\login.php\">Log in</a>';
-
-} else if (isset ( $_REQUEST ['logout'] )) {
-    unset ( $_SESSION ['username'] );
-    $_GLOBALs ['message'] = "You are logged out.";
-    header ( 'Location:' . $CFG->wwwroot . '/login.php' );
-}
+require_once 'includes/html_header.php';
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-  <?php
-require '../include/header.php';
-?>
-</head>
-<body class="no-skin">
-  <div id="navbar" class="navbar navbar-default ace-save-state">
-    <div class="navbar-container ace-save-state" id="navbar-container">
-      <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
-        <span class="sr-only">Toggle sidebar</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
-      </button>
-      <div class="navbar-header pull-left">
-        <a href="<?php echo $qb_url_root?>/index2.php" class="navbar-brand"> <small><i class="fa fa-leaf"></i>燕老师题库</small>
-        </a>
-      </div>
-      <!--             <div class="navbar-buttons navbar-header pull-left" role="navigation">
-                <ul class="nav ace-nav">
-                    <li class="dropdown-modal">
-                        <a href="" class="dropdown-toggle" data-toggle="dropdown"> Administration </a>
-                    </li>
-                </ul>
-            </div> -->
-      <div class="navbar-buttons navbar-header pull-right" role="navigation">
-        <ul class="nav ace-nav">
-          <li class="light-blue dropdown-modal">
-            <a data-toggle="dropdown" href="#" class="dropdown-toggle"> <span class="user-info"> <small>Welcome,</small>管理员
-            </span> <i class="ace-icon fa fa-caret-down"></i>
-            </a>
-            <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
-                        <?php if ($user->isLoggedIn() ){ //if logged in?>
-                        <li>
-                <a href="#"> <i class="ace-icon fa fa-cog"></i> Settings
-                </a>
-              </li>
-              <li>
-                <a href="profile.html"> <i class="ace-icon fa fa-user"></i> Profile
-                </a>
-              </li>
-              <li class="divider"></li>
-              <li>
-                <a href="#"> <i class="ace-icon fa fa-power-off"></i> Logout
-                </a>
-              </li>
-                        <?php } else { // no one is logged in, display default items?>
-                        <li>
-                <a href="#"> <i class="ace-icon fa fa-power-on"></i> LogIn
-                </a>
-              </li>
-                         <?php } ?>
-                    </ul>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <!-- /.navbar-container -->
-  </div>
-  <!-- /.navbar -->
-  <div class="main-container ace-save-state" id="main-container">
-    <script type="text/javascript">
-            try{ace.settings.loadState('main-container')}catch(e){}
-        </script>
-    <div class="breadcrumbs ace-save-state" id="breadcrumbs">
-      <ul class="breadcrumb">
-        <li>
-          <i class="ace-icon fa fa-home home-icon"></i> <a href="#">首页</a>
-        </li>
-        <li>
-          <a href="#">系统管理</a>
-        </li>
-        <li class="active">课程</li>
-      </ul>
-    </div>
-    <!-- /.breadcrumbs -->
-    <div id="sidebar" class="sidebar responsive ace-save-state">
-      <script type="text/javascript">
-            try{ace.settings.loadState('sidebar')}catch(e){}
-            </script>
-      <ul class="nav nav-list">
-        <li class="">
-          <a href="<?php echo $qb_url_root?>/index2.php"> <i class="menu-icon fa fa-tachometer"></i> <span class="menu-text">仪表板</span>
-          </a> <b class="arrow"></b>
-        </li>
-                <?php if ($user->isLoggedIn() ){ //if logged in?>
-                <li class="">
-          <a href="#" class="dropdown-toggle"><i class="menu-icon fa fa-right"></i><span class="menu-text">我的课程</span><b class="arrow fa fa-angle-down"></b></a> <b class="arrow"></b>
-          <!-- todo: course list -->
-          <ul class="submenu">
-                    <?php
-                    
-                    $allCourses = getAllCourses ();
-                    foreach ( $allCourses as $course ) {
-                        ?>
-                          <li class="">
-              <a href="<?php echo $qb_url_root.'/question/question.php?courseid='.$course['course_id']?>"><i class="menu-icon fa fa-caret-right"></i><?php echo $course['course_name']?></a> <b class="arrow"></b>
-            </li>
-                    <?php }?>
-                    </ul>
-        </li>
-                <?php }?>
-                <li class="active open">
-          <a href="#" class="dropdown-toggle"> <i class="menu-icon fa fa-desktop"></i> <span class="menu-text">系统管理</span> <b class="arrow fa fa-angle-down"></b>
-          </a> <b class="arrow"></b>
-          <ul class="submenu">
-            <li class="active">
-              <a href="<?php echo $qb_url_root?>/course/course.php"> <i class="menu-icon fa fa-caret-right"></i> 课程
-              </a> <b class="arrow"></b>
-            </li>
-            <li class="">
-              <a href="#"> <i class="menu-icon fa fa-caret-right"></i> 用户
-              </a> <b class="arrow"></b>
-            </li>
-          </ul>
-        </li>
-        <li class="">
-          <a href="#" class="dropdown-toggle"> <i class="menu-icon fa fa-list"></i> <span class="menu-text">课程管理</span> <b class="arrow fa fa-angle-down"></b>
-          </a> <b class="arrow"></b>
-          <ul class="submenu">
-            <li class="">
-              <a href="<?=$qb_url_root?>/subject/subject.php?courseid=<?=$courseid ?>"> <i class="menu-icon fa fa-caret-right"></i> 知识点
-              </a> <b class="arrow"></b>
-            </li>
-            <li class="">
-              <a href="<?php echo $qb_url_root?>/question/question.php?courseid=<?=$courseid ?>"> <i class="menu-icon fa fa-caret-right"></i> 题库
-              </a> <b class="arrow"></b>
-            </li>
-            <li class="">
-              <a href="<?=$qb_url_root?>/rule/view.php?courseid=<?=$courseid ?>"> <i class="menu-icon fa fa-caret-right"></i> 组卷规则
-              </a> <b class="arrow"></b>
-            </li>
-          </ul>
-        </li>
-      </ul>
-      <!-- /.nav-list -->
-      <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
-        <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
-      </div>
-    </div>
-    <!-- /.sidebar -->
-    <div class="main-content">
-      <div class="main-content-inner">
-         <div class="page-content">
-          <div class="page-header">
-            <h1>
-              课程 <small><i class="ace-icon fa fa-angle-double-right"></i>新增、编辑、删除课程</small>
-            </h1>
-          </div>
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="clearfix">
-                <div class="pull-right tableTools-container">
-                  <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#add_new_course_modal" data-backdrop="false">新增课程</button>
-                </div>
+    <div class="container body">
+      <div class="main_container">
+        <div class="col-md-3 left_col">
+          <div class="left_col scroll-view">
+            <div class="navbar nav_title" style="border: 0;">
+              <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>Administrator</span></a>
+            </div>
+			
+            <div class="clearfix"></div>
+
+            <!-- menu profile quick info -->
+            <div class="profile clearfix">
+              <div class="profile_pic">
+                <img src="<?php echo $qb_url_root?>/images/img.jpg" alt="..." class="img-circle profile_img">
               </div>
-              <div>
-                <!-- getCourses() table starts here -->
+              <div class="profile_info">
+                <span>Welcome,</span>
+                <h2>Super Admin</h2>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+            <!-- /menu profile quick info -->
+
+            <br />
+
+            <!-- sidebar menu -->
+            <?php require_once "includes/sidebar.php"?>
+            <!-- /sidebar menu -->
+
+            <!-- /menu footer buttons -->
+            <div class="sidebar-footer hidden-small">
+              <a data-toggle="tooltip" data-placement="top" title="Settings">
+                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+              </a>
+              <a data-toggle="tooltip" data-placement="top" title="FullScreen">
+                <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+              </a>
+              <a data-toggle="tooltip" data-placement="top" title="Lock">
+                <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+              </a>
+              <a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">
+                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+              </a>
+            </div>
+            <!-- /menu footer buttons -->
+          </div>
+        </div>
+
+        <!-- top navigation -->
+        <?php    require_once 'includes/topnavigation.php;'  ?>
+        <!-- /top navigation -->
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+          <div class="">
+            <div class="page-title">
+              <div class="title_left">
+                <h3>Page Title</h3>
+              </div>
+
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="row">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Plain Page</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                          <li><a href="#">Settings 1</a>
+                          </li>
+                          <li><a href="#">Settings 2</a>
+                          </li>
+                        </ul>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                      Add content to the page ...
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
+        <!-- /page content -->
+
+        <!-- footer content -->
+        <footer>
+          <div class="pull-right">
+            <?php echo get_string('title'); ?> 技术支持：Wan Yongquan
+          </div>
+          <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
       </div>
     </div>
-  </div>
 
-     <?php
-    require '../include/scripts.php';
-    ?>
-    <script src="course.js" type="text/javascript"> </script>
-</body>
+    <!-- jQuery -->
+    <script src="<?php echo $qb_url_root?>/vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="<?php echo $qb_url_root?>/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="<?php echo $qb_url_root?>/vendors/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="<?php echo $qb_url_root?>/vendors/nprogress/nprogress.js"></script>
+    
+    <!-- Custom Theme Scripts -->
+    <script src="<?php echo $qb_url_root?>/js/custom.min.js"></script>
+  </body>
 </html>

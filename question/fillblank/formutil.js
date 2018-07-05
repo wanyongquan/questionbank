@@ -115,7 +115,7 @@ $(document).ready(function(e){
 });
 
 function onSubmitQForm(){
-    var qid = $("#hidden_question_id").val();
+    var qid = $("#questionid").val();
     
     if (qid == null || qid==""){
         // add page

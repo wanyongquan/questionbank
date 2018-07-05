@@ -1,0 +1,22 @@
+/* centered columns styles */
+.row-centered {
+  text-align:center;
+}
+.col-centered {
+  display:inline-block;
+  float:none;
+  /* reset the text-align */
+  text-align:center;
+  /* inline-block space fix */
+  margin-right:-4px;
+}
+.row-centered .col-centered {
+  padding: 0px 3px;
+}
+.row-centered .panel {
+  padding: 10px 0px;
+}
+.row-link{
+	color:#337ab7;
+	border:1 solid red;
+}

@@ -1,18 +1,19 @@
 <?php
 
-    session_start();
     require_once '../../config.php';
     require_once '../../lib/datelib.php';
     
     // get the form data
-    if (isset($_POST['hidden_question_id'])){
-        $question_id = $_POST['hidden_question_id'];
+    $returnurl = $_POST['returnurl'];
+    if (isset($_POST['questionid'])){
+        $question_id = $_POST['questionid'];
         $qtype = $_POST['qtype'];
         $qbody = $_POST['question_body'];
-        $difficultyLevelId = $_POST['difficultyLevelId'];
+        $difficultyLevelId = $_POST['difficultyLevel_id'];
         $subject_id = $_POST['subject_id'];
         $qmark = $_POST['question_mark'];
-        $user_id = $_SESSION['userid'];
+        //TODO: use real user id
+        $user_id = 1;// $_SESSION['userid'];
         
         // start the transaction 
         $DB->autocommit(false);
@@ -20,7 +21,7 @@
         // step 1: update table tk_questions
         $updatedDate = null;
         $updatedBy = $user_id;
-        $query = "update tk_questions set subject_id=$subject_id ,";
+        $query = "update tk_questions set subjectid=$subject_id ,";
         $query .= " difficultyLevel_id = $difficultyLevelId,";
         $query .= " question_body = '$qbody',";
         $query .= " point = $qmark ";
@@ -32,32 +33,32 @@
         $stmt = $DB->prepare("update tk_question_answers set answer =?, iscorrectanswer=? where question_id=? and id=?;");
         $stmt->bind_param("ssii", $answer_option, $option_is_true_answer, $question_id, $qanswer_id);
         // option 1
-        $qanswer_id = $_POST['qanswer_id1'];
-        $answer_option = $_POST['qitem_answer1'];
-        $option_is_true_answer = isset($_POST['check_options'][1])? true:false;
+        $qanswer_id = $_POST['qanswer_a'];
+        $answer_option = $_POST['optiona'];
+        $option_is_true_answer = isset($_POST['is_correct_a'])? true:false;
         $stmt->execute();
         
         // option 2
-        $qanswer_id = $_POST['qanswer_id2'];
-        $answer_option = $_POST['qitem_answer2'];
-        $option_is_true_answer = isset($_POST['check_options'][2])? true:false;
+        $qanswer_id = $_POST['qanswer_b'];
+        $answer_option = $_POST['optionb'];
+        $option_is_true_answer = isset($_POST['is_correct_b'])? true:false;
         $stmt->execute();
         
         // option 3
-        $qanswer_id = $_POST['qanswer_id3'];
-        $answer_option = $_POST['qitem_answer3'];
-        $option_is_true_answer = isset($_POST['check_options'][3])? true:false;
+        $qanswer_id = $_POST['qanswer_c'];
+        $answer_option = $_POST['optionc'];
+        $option_is_true_answer = isset($_POST['is_correct_a'])? true:false;
         $stmt->execute();
         
         // option 4
-        $qanswer_id = $_POST['qanswer_id4'];
-        $answer_option = $_POST['qitem_answer4'];
-        $option_is_true_answer = isset($_POST['check_options'][4])? true:false;
+        $qanswer_id = $_POST['qanswer_d'];
+        $answer_option = $_POST['optiond'];
+        $option_is_true_answer = isset($_POST['is_correct_a'])? true:false;
         $stmt->execute();
         // submit
         $stmt->close();
         $DB->commit();
         // redirect
-        header("location:../question.php");
+        header("location:$returnurl");
         
     }

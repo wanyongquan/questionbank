@@ -17,7 +17,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="<?= $qb_url_root.'/course/course.php'?>">课程管理</a>
+                            <a href="course/course.php">课程管理2</a>
                         </li>
                         <li>
                             <a href="<?php echo $CFG->wwwroot.'/subject/subject.php'?>">知识点管理</a>

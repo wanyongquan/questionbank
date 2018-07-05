@@ -13,4 +13,5 @@
 <!-- ace scripts -->
 <script src="<?php echo $qb_url_root?>/lib/ace/assets/js/ace-elements.min.js"></script>
 <script src="<?php echo $qb_url_root?>/lib/ace/assets/js/ace.min.js"></script>
+<script src="<?php echo $qb_url_root?>/lib/js/bootstrap-validator/validator.min.js"></script>
 <!-- inline scripts related to this page -->

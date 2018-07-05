@@ -7,53 +7,38 @@
 
 class User
 {
-    private   $_id, $_username, $_password, $_isLoggedIn, $role;
+    private    $_id, $_username, $_fname, $_lname, $_password_hash, $_isLoggedIn, $role;
     
-    public function username(){
-        return $this->_username;
+    public function __set($property_name, $value){
+        $this->$property_name = $value;
     }
-    public function __construct($user = null)
-    {
-        if (!$user){
-            if (isset($_SESSION['userid'])){
-                $user = $_SESSION['userid'];
-                
-                if($this->find($user)) 
-                {
-                    $this->_isLoggedIn = true;
-                }else{
-                    // logout
-                }
-            }
+    public function __get($property_name){
+        if (isset($this->$property_name)){
+            return $this->$property_name;
         }else{
-            $this->find($user);
+            return null;
         }
+    }
+
+    public function __construct($userid = null, $username = null, $password_hash = null)
+    {
+        
+        $this->_id = $userid;
+        $this->_username = $username;
+        $this->_password_hash = $password_hash;
+        $this->role= null;
     }
     private function _loadPages()
     {
         
     }
-    public function login($username = null, $password=null)
+    public function login_user()
     {
-        if (!$username && !$password && $this->exists())
-        {
-            $_SESSION['userid'] =  $this->_id ;
-            $_SESSION['username'] =  $this->_username ;
-        }else{
-            $founduser = $this->find($username, $password);
-            // find user in DB
-            if ($founduser){
-                $_SESSION['userid'] =  $this->_id ;
-                $_SESSION['username']= $username;
-                $this->_isLoggedIn = true;
-                $this->_username = $username;
-                // todo: if remember me ,set cookie
-                
-                // todo: update user last login info
-                return true;
-            }
-        }
-        return false;
+        $this->_isLoggedIn = true;
+        //序列化并保存到session
+        $_SESSION['loggeduser'] =  $this;
+        
+
     }
     public function exists()
     {
@@ -82,45 +67,15 @@ class User
     {
        
     }
-    public function find($user = null){
-        global $DB;
-        if ($user){
-            $query = "select * from tk_users where";
-            if (is_numeric($user)){
-                $query .= " uid = $user";
-            }else{
-                $query .= " username = '$user'";
-            }
-            
-            $result = mysqli_query($DB, $query);
-            $count = mysqli_num_rows($result);
-            if ($count == 1){
-                while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
-                    $this->_id = $row['uid'];
-                    $this->_username = $row['username'];
-                    return true;
-                }
-            }
+
+    
+    // check password hash
+    public function varify_password( $password){
+        $tmppassword_hash = md5($password );
+        if ($tmppassword_hash == $this->_password_hash){
+            return true;
+        }else
             return false;
-        }
-    }
-    public function find2($username = null, $password = null)
-    {
-        global $DB;
-        if (!$username || !$password)
-            return false;
-        $passwordmd5 = md5($password);
-        $query = "select uid from tk_users where username='$username' and password='$passwordmd5'";
-        $result = mysqli_query($DB, $query);
-        $count = mysqli_num_rows($result);
-        if ($count == 1){
-            while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
-                $this->_id = $row['uid'];
-                $this->_username = $row['username'];
-                return true;
-            }
-        }
-        return false;
     }
 }  
 ?>

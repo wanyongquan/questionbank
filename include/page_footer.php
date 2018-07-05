@@ -1,13 +1,11 @@
 <?php
 // QuestionBank0.1
 ?>
-<div class="footer">
-  <div class="row">
-    <div class="col-sm-12 text-center">
-      <footer>
-        <font color="white"><br>&copy;<?=$copyrightmessage ?> <br> whatever you write here</font>
-      </footer>
-      
-    </div>
-  </div>
-</div>
+    <!-- footer content -->
+    <footer>
+      <div class="pull-right">
+        Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+      </div>
+      <div class="clearfix"></div>
+    </footer>
+    <!-- /footer content -->
