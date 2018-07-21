@@ -7,7 +7,7 @@ function getQuestionInfo($questionId)
     GLOBAL $DB;
     $sql = "select * from tk_questions ";
     $sql.= " left join tk_subjects on tk_subjects.subject_id = tk_questions.subject_id";
-    $sql.= " left join vw_difficultylevels on vw_difficultylevels.dictionary_id = tk_questions.difficultylevel_id";
+    $sql.= " left join vw_difficultylevels on vw_difficultylevels.item_value = tk_questions.difficultylevel_id";
     $sql.= " where tk_questions.question_id=".$questionId ;
     
     $result = mysqli_query($DB, $sql);
@@ -25,10 +25,10 @@ function getQuestionAnswers($questionId){
 function getQuestionsByCourseId($courseId){
     global $DB;
     $sql = "select question_id, question_name, question_body, qtype,point,username as createdBy,createdDate,";
-    $sql .= " subject_name, dictionary_value as difficulty";
+    $sql .= " subject_name, item_name as difficulty";
     $sql .= " from tk_questions left join tk_subjects on tk_questions.subject_id = tk_subjects.subject_id ";
     $sql .= " left join tk_users on tk_questions.createdby = tk_users.uid ";
-    $sql .= " left join bs_dictionaryitems as dicts on tk_questions.difficultylevel_id = dicts.dictionary_id ";
+    $sql .= " left join tk_dictionary_items as dicts on tk_questions.difficultylevel_id = dicts.id ";
     $sql .= " where tk_questions.course_id=".$courseId;
     $result = mysqli_query($DB, $sql);
     return $result;
@@ -36,8 +36,8 @@ function getQuestionsByCourseId($courseId){
 
 function getQuestions($courseid){
     global $DB;
-    $sql = "select question_id, question_name, question_body, qtype, dictionary_value as difficulty ";
-    $sql .= " from tk_questions left join bs_dictionaryitems as dicts on tk_questions.difficultylevel_id = dicts.dictionary_id";
+    $sql = "select question_id, question_name, question_body, qtype, item_name as difficulty ";
+    $sql .= " from tk_questions left join tk_dictionary_items as dicts on tk_questions.difficultylevel_id = dicts.id";
     $sql .= " where course_id = ". $courseid;
     
     $result = mysqli_query($DB, $sql);
@@ -46,10 +46,10 @@ function getQuestions($courseid){
 function getQuestionsByCourseIdAndSubjectId($courseid, $subjectid){
     global $DB;
     $sql = "select question_id, question_name, question_body, qtype, ";
-    $sql .= " subject_name, dictionary_value as difficulty";
+    $sql .= " subject_name, item_name as difficulty";
     $sql .= " from tk_questions left join tk_subjects on tk_questions.subject_id = tk_subjects.subject_id ";
     $sql .= " left join tk_users on tk_questions.createdby = tk_users.uid ";
-    $sql .= " left join bs_dictionaryitems as dicts on tk_questions.difficultylevel_id = dicts.dictionary_id ";
+    $sql .= " left join tk_dictionary_items as dicts on tk_questions.difficultylevel_id = dicts.id ";
     $sql .= " where tk_questions.course_id=" . $courseid ." and tk_subjects.subject_id="  .$subjectid; 
     $result = mysqli_query ( $DB, $sql );
     return $result;

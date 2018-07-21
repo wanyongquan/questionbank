@@ -64,7 +64,7 @@ function getSubjectsByCourseId($courseId){
 function getAllCourses(){
     global $DB;
 
-    $sql = "select course_id, course_name from tk_courses";
+    $sql = "select course_id, coursename from tk_courses";
     $result = mysqli_query($DB, $sql);
     return $result;
 }
@@ -73,7 +73,7 @@ function getAllCourses(){
  */
 function getSubjects(){
     global $DB;
-    $sql = "select subject_id, subject_name from tk_subjects order by subject_name ";
+    $sql = "select subject_id, subjectname from tk_subjects order by subjectname ";
     $result = mysqli_query($DB, $sql);
     return $result;
 }

@@ -19,6 +19,8 @@
  Case 2: Edit a question
  *************************************************
  */
+error_reporting(E_ALL);
+
 require_once '../../config.php';
 
 require_once '../../includes/html_header.php';
@@ -46,7 +48,7 @@ if (null != $courseid) {
     if (!empty($qid)){
         // --------------Case 2---- edit a existing question----------
         // get question details and show on page
-        //$query = "select * from tk_questions " . " left join tk_subjects on tk_subjects.subject_id = tk_questions.subjectid" . " left join vw_difficultylevels on vw_difficultylevels.dictionary_id = tk_questions.difficultylevel_id" . " where tk_questions.question_id=$courseid";
+        //$query = "select * from tk_questions " . " left join tk_subjects on tk_subjects.subject_id = tk_questions.subjectid" . " left join vw_difficultylevels on vw_difficultylevels.item_value = tk_questions.difficultylevel_id" . " where tk_questions.question_id=$courseid";
         $result = getQuestionDetails($qid);
         if (! $result) {
             die(mysqli_error($DB));
@@ -117,7 +119,7 @@ if (null != $courseid) {
                            <input type="hidden" name="courseid" id="courseid" value="<?php echo $courseid?>">
                             <input type="hidden" name="questionid" id="questionid" value="<?php if (isset($qid)){echo $qid;}?>">
                            <input type="hidden" value="shortanswer" name="qtype">
-                           <input name="returnurl" type="hidden" value="<?=$qb_url_root ?>/question/admin_questions.php?courseid=<?=$courseid ?>&qid=<?=$qid ?>"  />
+                           <input name="returnurl" type="hidden" value="<?=$qb_url_root ?>/question/admin_questions.php?courseid=<?=$courseid ?><?=( isset($qid))? '&qid='.$qid : ''; ?>"  />
                                 <div id="item_question_body" class="form-group">
                                    <label class="control-label col-md-2 col-sm-2 col-xs-12" >题干</label>
                                     <div class="col-sm-9 col-md-9 col-xs-12">
@@ -162,14 +164,12 @@ if (null != $courseid) {
                             <select id="difficultylevel_list" name="difficultyLevel_id" class="form-control">
                                 <option value="">--请选择难度--</option>
                                 <?php
-                                $query = 'select * from vw_difficultylevels';
+                                $difficultyData = getDifficultyLevels();
                                 
-                                $result = $DB->query ( $query ) or die ( exit ( mysqli_error ( $DB ) ) );
-                                
-                                if ($result->num_rows > 0) {
-                                    foreach ( $result as $row ) {
-                                        $selected = ($difficultyLevelId == $row ['dictionary_id']) ? "selected" : "";
-                                        echo '<option value="' . $row ['dictionary_id'] . '"' . $selected . ' >' . $row ['dictionary_value'] . '</option>';
+                                if ($difficultyData->num_rows > 0) {
+                                    foreach ( $difficultyData as $row ) {
+                                        $selected = ($difficultyLevelId == $row ['id']) ? "selected" : "";
+                                        echo '<option value="' . $row ['id'] . '"' . $selected . ' >' . $row ['item_name'] . '</option>';
                                     }
                                 }
                                 ?>

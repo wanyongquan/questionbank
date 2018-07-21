@@ -222,8 +222,8 @@ if (null != $questionId) {
                 
                 if ($result->num_rows > 0) {
                     foreach ( $result as $row ) {
-                        $selected = ($difficultyLevelId == $row ['dictionary_id']) ? "selected" : "";
-                        echo '<option value="' . $row ['dictionary_id'] . '"' . $selected . ' >' . $row ['dictionary_value'] . '</option>';
+                        $selected = ($difficultyLevelId == $row ['item_value']) ? "selected" : "";
+                        echo '<option value="' . $row ['item_value'] . '"' . $selected . ' >' . $row ['item_name'] . '</option>';
                     }
                 }
                 ?>

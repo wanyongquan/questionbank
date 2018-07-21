@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `bs_dictionaryitems` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `dictionary_id` int(11) NOT NULL COMMENT 'logical dictionary id',
   `dictionary_type_id` int(11) NOT NULL COMMENT 'dictionary type id',
-  `dictionary_value` varchar(100) NOT NULL COMMENT 'dictionary item value',
+  `item_name` varchar(100) NOT NULL COMMENT 'dictionary item value',
   `itemorder` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `dictionary_type_id` (`dictionary_type_id`)
@@ -48,8 +48,8 @@ TRUNCATE TABLE `bs_dictionaryitems`;
 -- 转存表中的数据 `bs_dictionaryitems`
 --
 
-INSERT INTO `bs_dictionaryitems` (`id`, `dictionary_id`, `dictionary_type_id`, `dictionary_value`, `itemorder`) VALUES(1, 1, 1, 'Easy', 1);
-INSERT INTO `bs_dictionaryitems` (`id`, `dictionary_id`, `dictionary_type_id`, `dictionary_value`, `itemorder`) VALUES(2, 2, 1, 'Hard', 2);
+INSERT INTO `bs_dictionaryitems` (`id`, `dictionary_id`, `dictionary_type_id`, `item_name`, `itemorder`) VALUES(1, 1, 1, 'Easy', 1);
+INSERT INTO `bs_dictionaryitems` (`id`, `dictionary_id`, `dictionary_type_id`, `item_name`, `itemorder`) VALUES(2, 2, 1, 'Hard', 2);
 
 -- --------------------------------------------------------
 
@@ -227,7 +227,7 @@ DROP VIEW IF EXISTS `vw_difficultylevels`;
 CREATE TABLE IF NOT EXISTS `vw_difficultylevels` (
 `dictionary_id` int(11)
 ,`dictionary_type_id` int(11)
-,`dictionary_value` varchar(100)
+,`item_name` varchar(100)
 ,`itemorder` int(11)
 ,`dictionary_type` varchar(100)
 );
@@ -238,7 +238,7 @@ CREATE TABLE IF NOT EXISTS `vw_difficultylevels` (
 --
 DROP TABLE IF EXISTS `vw_difficultylevels`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_difficultylevels` AS select `bs_dictionaryitems`.`dictionary_id` AS `dictionary_id`,`bs_dictionaryitems`.`dictionary_type_id` AS `dictionary_type_id`,`bs_dictionaryitems`.`dictionary_value` AS `dictionary_value`,`bs_dictionaryitems`.`itemorder` AS `itemorder`,`bs_dictionarytypes`.`dictionary_type` AS `dictionary_type` from (`bs_dictionaryitems` left join `bs_dictionarytypes` on((`bs_dictionaryitems`.`dictionary_type_id` = `bs_dictionarytypes`.`id`))) where (`bs_dictionarytypes`.`id` = 1);
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_difficultylevels` AS select `bs_dictionaryitems`.`dictionary_id` AS `dictionary_id`,`bs_dictionaryitems`.`dictionary_type_id` AS `dictionary_type_id`,`bs_dictionaryitems`.`item_name` AS `item_name`,`bs_dictionaryitems`.`itemorder` AS `itemorder`,`bs_dictionarytypes`.`dictionary_type` AS `dictionary_type` from (`bs_dictionaryitems` left join `bs_dictionarytypes` on((`bs_dictionaryitems`.`dictionary_type_id` = `bs_dictionarytypes`.`id`))) where (`bs_dictionarytypes`.`id` = 1);
 
 --
 -- 限制导出的表

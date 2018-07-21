@@ -133,7 +133,7 @@ $courseData = fetchAllCourses();
                                     <a title="编辑" onclick="getCourseDetails(<?=$vl['course_id'] ?>)" data-toggle="modal" data-target="#edit_course_modal" data-backdrop="false"
                                         data-href="http://localhost/user/editadvanced.php?id=2&amp;course=<?=$vl['course_id'] ?>">
                                         <span class="green"><i class="ace-icon fa fa-pencil bigger-120"></i></span></a>
-                                    <a title="删除" class="delete_product" data-id="'.$vl['course_id'].'"  data-toggle="modal" data-target="#delete_course_modal" data-backdrop="false">
+                                    <a title="删除" class="delete_product" data-id="<?=$vl['course_id'] ?>"  data-toggle="modal" data-target="#delete_course_modal" data-backdrop="false">
                                         <span class="red"><i class="ace-icon fa fa-trash-o bigger-120"></i></span></a></div></td>
                                                 
                                 <?php } ?>

@@ -40,7 +40,9 @@ ob_start();
         document.write(unescape("%3Cscript src='<?=$qb_url_root?>/js/jquery.js' type='text/javascript'%3E%3C/script%3E"));
     }
     </script>
-
+     <link href="<?php echo $qb_url_root?>/vendors/select2/dist/css/select2.min.css" rel="stylesheet" />
+     <link href="<?php echo $qb_url_root?>/css/all.css" rel="stylesheet"/>
+     <script src="<?php echo $qb_url_root ?>/js/zx.js" ></script>
   </head>
 
 <body class="nav-md">

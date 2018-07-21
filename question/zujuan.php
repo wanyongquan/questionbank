@@ -1,23 +1,16 @@
 <?php
-include ('../session.php');
 error_reporting ( 0 );
 
 require_once '../config.php';
-require_once 'lib.php';
+require_once '../includes/html_header.php';
 
-if (! isset ( $_SESSION ['username'] )) {
-    $_GLOBALS ['message'] = 'Session Timeout. Click here to <a href=\"' . $CFG->wwwroot . '\login.php\">Log in</a>';
-
-} else if (isset ( $_REQUEST ['logout'] )) {
-    unset ( $_SESSION ['username'] );
-    $_GLOBALs ['message'] = "You are logged out.";
-    header ( 'Location:' . $CFG->wwwroot . '/login.php' );
-}
-$courseid = $_REQUEST['courseid'];
+    $courseid = $_REQUEST['courseid'];
 if (!isset($courseid)){
     $_GLOBALS ['message']='missing paramater';
 }
 ?>
+
+<?php require_once '../lib/dblib.php'; ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -120,7 +113,7 @@ require '../include/header.php';
                     foreach ( $allCourses as $course ) {
                         ?>
                           <li class="">
-              <a href="<?php echo $qb_url_root.'/question/view.php?courseid='.$course['course_id']?>"><i class="menu-icon fa fa-caret-right"></i><?php echo $course['course_name']?></a> <b class="arrow"></b>
+              <a href="<?php echo $qb_url_root.'/question/view.php?courseid='.$course['course_id']?>"><i class="menu-icon fa fa-caret-right"></i><?php echo $course['coursename']?></a> <b class="arrow"></b>
             </li>
                     <?php }?>
                     </ul>
@@ -199,7 +192,7 @@ require '../include/header.php';
                                 foreach ( $subjectsofcourse as $subject ) {
                                     ?>
                                 <li class="tree-item" role="treeitem" data-treeid=<?=$subject['subject_id'] ?>>
-                                <span class="tree-item-name"> <span class="tree-label"><?= $subject['subject_name'] ?></span>
+                                <span class="tree-item-name"> <span class="tree-label"><?= $subject['subjectname'] ?></span>
                                 </span>
                               </li>
                              <?php

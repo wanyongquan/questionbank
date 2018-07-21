@@ -55,3 +55,4 @@ if (isset($_SESSION['loggeduser'])){
 }
 ?>
 <?php require_once '/helpers/questionhelpers.php';?>
+<?php require_once '/lib/gongxinglib.php'; ?>

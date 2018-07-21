@@ -7,6 +7,8 @@
 /*
  * This page is user management dashboard. it shows all users in a grid .
  */
+error_reporting(E_ALL);
+
 require_once '../config.php';
 
 require_once '../includes/html_header.php';

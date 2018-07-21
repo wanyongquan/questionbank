@@ -19,12 +19,18 @@
     Case 2: Edit a question
  *************************************************
  */
-require_once '../../config.php';
+error_reporting(E_ALL);
+?>
+<?php require_once '../../config.php'; ?>
+ 
+<?php require_once '../../includes/html_header.php'; ?>
 
-require_once '../../includes/html_header.php';
+<?php if (!loginRequired($_SERVER['PHP_SELF'])){die();} ?>
 
-
-$courseid = $_REQUEST['courseid'];
+<?php 
+if (isset($_REQUEST['courseid'])){
+    $courseid = $_REQUEST['courseid'];
+}
 if (isset($_REQUEST['qid'])){
     $qid = $_REQUEST['qid'];
 }
@@ -39,12 +45,11 @@ $difficultyLevelId = null;
 
 global $DB;
 
-if (null != $courseid) {
+if (isset( $courseid) ) {
     
     if (!empty($qid)){
         // --------------Case 2---- edit a existing question----------
         // get question details and show on page
-        //$query = "select * from tk_questions " . " left join tk_subjects on tk_subjects.subject_id = tk_questions.subjectid" . " left join vw_difficultylevels on vw_difficultylevels.dictionary_id = tk_questions.difficultylevel_id" . " where tk_questions.question_id=$courseid";
         $result = getQuestionDetails($qid);
         if (! $result) {
             die(mysqli_error($DB));
@@ -63,7 +68,7 @@ if (null != $courseid) {
         }
     }
 }else{
-    die("The course does not exist");
+    header("location:../../index.php", true, 303);
 }
 ?>
     <div class="container body">
@@ -85,7 +90,7 @@ if (null != $courseid) {
             </div>
 
             <div class="clearfix"></div>
-
+           
             <div class="row">
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
@@ -160,14 +165,12 @@ if (null != $courseid) {
                             <select id="difficultylevel_list" name="difficultyLevel_id" class="form-control">
                                 <option value="">--请选择难度--</option>
                                 <?php
-                                $query = 'select * from vw_difficultylevels';
-                                
-                                $result = $DB->query ( $query ) or die ( exit ( mysqli_error ( $DB ) ) );
-                                
-                                if ($result->num_rows > 0) {
-                                    foreach ( $result as $row ) {
-                                        $selected = ($difficultyLevelId == $row ['dictionary_id']) ? "selected" : "";
-                                        echo '<option value="' . $row ['dictionary_id'] . '"' . $selected . ' >' . $row ['dictionary_value'] . '</option>';
+                                $difficultyData = getDifficultyLevels();
+                                  
+                                if ($difficultyData->num_rows > 0) {
+                                    foreach ( $difficultyData as $row ) {
+                                        $selected = ($difficultyLevelId == $row ['id']) ? "selected" : "";
+                                        echo '<option value="' . $row ['id'] . '"' . $selected . ' >' . $row ['item_name'] . '</option>';
                                     }
                                 }
                                 ?>

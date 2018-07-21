@@ -20,13 +20,13 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
          $user->login_user();
          $user->isLoggedIn();
          
-         if (isset($_REQUEST['next'])){
-             $next = $_REQUEST['next'];
+         if (isset($_REQUEST['returnurl'])){
+             $returnurl = $_REQUEST['returnurl'];
          }else{
-             $next = 'index.php';
+             $returnurl = 'index.php';
          }
             // redirect to custom login script
-            header ( "location:$next" );
+         header ( "location:$returnurl" );
             
     }
      else {
@@ -82,7 +82,7 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
                 <div class="panel-body">
                 
             <form method="post" action="<?php echo htmlspecialchars ( $_SERVER ['PHP_SELF'] );?>" >
-              <?php if (isset($next) ){?><input type="hidden" name="next" value="<?=$next ?>">
+              <?php if (isset($returnurl) ){?><input type="hidden" name="returnurl" value="<?=$returnurl ?>">
               <?php } ?>
               <div>
                 <input type="text" name="username" class="form-control" placeholder="Username" required="" />
@@ -100,10 +100,10 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
               <div class="row">
                 
                 <div class="col-md-6 col-sm-6 col-xs-6">
-                  <a href="admin/forgot_password.php" class="col-md-6"><i class="fa fa-wrench"></i>Forget Password? </a>
+                  <a href="admin/forgot_password.php" ><i class="fa fa-wrench"></i>Forget Password? </a>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-6">
-                  <a class="pull-right" href='#signup'><i class="fa fa-plus-square"></i> Register</a>
+                  <a class="to_register" href='#signup'><i class="fa fa-plus-square"></i> Register</a>
                 </div>
                 
                 </div>

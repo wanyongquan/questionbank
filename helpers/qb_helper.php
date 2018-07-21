@@ -314,6 +314,10 @@ if (!function_exists('courseIdExists')){
 
 // Retrieve complete course information by course id
 if (!function_exists('getCourseDetails')){
+    /**
+     * @param int $id , courseid
+     * @return array , associate array of course details;
+     */
     function getCourseDetails($id = NULL){
 
         global $DB;
@@ -344,20 +348,31 @@ if (!function_exists('getCourseSubjects')){
 function getCourseQuestions($courseId){
     global $DB;
     $sql = "select question_id, question_body, qtype,point,username as creator,createdDate,";
-    $sql .= " subjectname, dictionary_value as difficulty";
+    $sql .= " subjectname, item_name as difficulty";
     $sql .= " from tk_questions left join tk_subjects on tk_questions.subjectid = tk_subjects.subject_id ";
-    $sql .= " left join tk_users on tk_questions.creatorid = tk_users.uid ";
-    $sql .= " left join bs_dictionaryitems as dicts on tk_questions.difficultylevel_id = dicts.dictionary_id ";
-    $sql .= " where tk_questions.courseid=".$courseId;
+    $sql .= " left join tk_users on tk_questions.creatorid = tk_users.uid, ";
+    $sql .= " tk_dictionary_types dicts ";
+    $sql .= " left join tk_dictionary_items as dictData on  dicts.id= dictData.type_id  ";
+    $sql .= " where dicts.id = 1 and tk_questions.difficultylevel_id = dictData.id and  tk_questions.courseid=".$courseId;
     $result = mysqli_query($DB, $sql);
+    if (!$result){
+        echo mysqli_error($DB);
+    }
     return $result;
 }
 
 if (!function_exists('getQuestionDetails')){
     function getQuestionDetails($qid){
         global $DB;
-        $querystr = "select * from tk_questions where question_id = $qid";
+        $querystr = "select question_id, question_body, qtype, point, createdDate,";
+        $querystr .= " subjectname, subjectid, tk_questions.courseid, difficultylevel_id, item_name as difficulty ";
+        $querystr .= " from tk_questions left join tk_subjects on tk_questions.subjectid = tk_subjects.subject_id ";
+        $querystr .= " left join tk_dictionary_items as dicts on tk_questions.difficultylevel_id = dicts.id ";
+        $querystr .= " where question_id = $qid";
         $result = mysqli_query($DB, $querystr);
+        if (!$result){
+            echo( mysqli_error($DB));
+        }
         return $result;
     }
 }
@@ -416,5 +431,126 @@ if (!function_exists('checkRole')){
             return false;
         }
         
+    }
+}
+
+
+if (!function_exists('getDifficultyLevels')){
+    function getDifficultyLevels(){
+        global $DB;
+        $querystr = "select dictData.item_name, dictData.item_value, dictData.id from tk_dictionary_items dictData, tk_dictionary_types dicts" ;
+        $querystr .= " where dicts.id = dictData.type_id and dicts.id = 1 order by itemorder";
+        $result = mysqli_query($DB, $querystr);
+        if (!$result ){
+            echo mysqli_error($DB);
+        }
+        return $result;
+    }
+}
+
+if (!function_exists('returnError')){
+    function returnError($errorMsg){
+        $responseArr = [];
+        $responseArr['success'] = true;
+        $responseArr['error'] = true;
+        $responseArr['errorMsg'] = $errorMsg;
+        // do not encode unicode characters;
+        die(json_encode($responseArr, JSON_UNESCAPED_UNICODE));
+    }
+}
+/**
+ * ****************************
+ * Question Cart Section      *
+ * ****************************
+ */
+if (!function_exists('cart_question_exists')){
+    function cart_question_exists($questionid, $cart){
+        if (!isset($cart) || !is_array($cart)){
+            return false;
+        }
+        foreach($cart as $qtype=>$qid_arr){
+            if (in_array($questionid, $qid_arr)){
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+if (!function_exists('removeQuestionFromCart')){
+    function removeQuestionFromCart($questionid, $cart){
+        if (!isset($cart) || !is_array($cart)){
+            return false;
+        }
+        foreach($cart as $qtype=>$qid_arr){
+            if (in_array($questionid, $qid_arr)){
+                // remove the questionid from array
+                $arrData = remove_Array_Value($qid_arr, $questionid);
+                $cart[$qtype] = $arrData;
+                return $cart;
+            }
+        }
+    }
+}
+
+if (!function_exists('addQuestionToCart')){
+    function addQuestionToCart($questionid, $cart){
+        $questionCart = $cart;
+        $questionDetail = getQuestionDetails($questionid);
+        $question = mysqli_fetch_assoc($questionDetail);
+        $qtype= $question['qtype'];
+        if (isset($cart[$qtype]) || array_key_exists($qtype, $cart) ){
+            // if the qtype already exists in cart, then add qid to related array;
+            $qid_arr = $questionCart[$qtype];
+            $qid_arr[] = $questionid;
+            $questionCart[$qtype] = $qid_arr;
+        }else{
+            // if the qtype not exists in cart, then add new item for the qtype;
+            $qid_arr = array($questionid);
+            $qtype_arr = array($qtype=>$qid_arr);
+            //$cart[$qtype] = $qid_arr;
+            foreach($qtype_arr as $key=>$value){
+                $questionCart[$key] = $value;
+            }
+        }
+        return $questionCart;
+    }
+}
+
+if (!function_exists('cartQuestionCount')){
+    function cartQuestionCount(){
+        if (!isset($_SESSION['question_cart'])){
+            return 0;
+        }
+        
+        $questionCart = $_SESSION['question_cart'];
+        if (!is_array($questionCart)){
+            return 0;
+        }
+        $count = 0;
+        foreach($questionCart as $key=>$value){
+            $count += count($value);
+        }
+        return $count;
+    }
+}
+    
+
+if (!function_exists('getAllTestPapers')){
+    function getAllTestPapers($orderby , $orderdir){
+        global $DB;
+        $querystr = "select * from tk_testpapers";
+        if (isset($orderby )){
+            $querystr .= " order by " .$orderby;
+            if (isset($orderdir)){
+                $querystr .= " ".$orderdir;
+            }
+        }
+        
+        $result = mysqli_query($DB, $querystr);
+        if (!$result){
+            returnError(mysqli_error($DB));
+        }
+        return $result;
     }
 }

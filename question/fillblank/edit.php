@@ -46,7 +46,7 @@ if (null != $courseid) {
     if (!empty($qid)){
         // --------------Case 2---- edit a existing question----------
         // get question details and show on page
-        //$query = "select * from tk_questions " . " left join tk_subjects on tk_subjects.subject_id = tk_questions.subjectid" . " left join vw_difficultylevels on vw_difficultylevels.dictionary_id = tk_questions.difficultylevel_id" . " where tk_questions.question_id=$courseid";
+        //$query = "select * from tk_questions " . " left join tk_subjects on tk_subjects.subject_id = tk_questions.subjectid" . " left join vw_difficultylevels on vw_difficultylevels.item_value = tk_questions.difficultylevel_id" . " where tk_questions.question_id=$courseid";
         $result = getQuestionDetails($qid);
         if (! $result) {
             die(mysqli_error($DB));
@@ -168,8 +168,8 @@ if (null != $courseid) {
                                 
                                 if ($result->num_rows > 0) {
                                     foreach ( $result as $row ) {
-                                        $selected = ($difficultyLevelId == $row ['dictionary_id']) ? "selected" : "";
-                                        echo '<option value="' . $row ['dictionary_id'] . '"' . $selected . ' >' . $row ['dictionary_value'] . '</option>';
+                                        $selected = ($difficultyLevelId == $row ['item_value']) ? "selected" : "";
+                                        echo '<option value="' . $row ['item_value'] . '"' . $selected . ' >' . $row ['item_name'] . '</option>';
                                     }
                                 }
                                 ?>

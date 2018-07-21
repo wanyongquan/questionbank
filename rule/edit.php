@@ -17,7 +17,7 @@ if (isset ( $_REQUEST ['courseid'] )) {
 if (null != $id) {
     // for edit a existing rule
     // get rule details and show on page
-    $query = "select * from tk_rules " . " left join tk_subjects on tk_subjects.subject_id = tk_rules.subject_id" . " left join vw_difficultylevels on vw_difficultylevels.dictionary_id = tk_rules.difficultylevel_id" . " where tk_rules.rule_id=$id";
+    $query = "select * from tk_rules " . " left join tk_subjects on tk_subjects.subject_id = tk_rules.subject_id" . " left join vw_difficultylevels on vw_difficultylevels.item_value = tk_rules.difficultylevel_id" . " where tk_rules.rule_id=$id";
     $result = mysqli_query ( $DB, $query );
     if (! $result) {
         // error

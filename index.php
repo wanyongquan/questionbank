@@ -12,6 +12,7 @@ require_once 'config.php';
 require_once 'includes/html_header.php';
 require_once 'classes/Class.User.php';
 
+if (!loginRequired($_SERVER['PHP_SELF'])){die();}
 
 $courseData = fetchAllCourses();
 ?>
@@ -28,7 +29,7 @@ $courseData = fetchAllCourses();
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>全部可用课程</h3>
+                <h3>全部课程</h3>
               </div>
 
             </div>
@@ -62,7 +63,7 @@ $courseData = fetchAllCourses();
                       <?php 
                       foreach ($courseData as $vl ){
                       ?>
-                      <div class="col-md-12 col-xs-12 col-sm-12">
+                      <div class="col-md-4 col-xs-12 col-sm-4">
                         <div class="well" style="overflow:auto">
                           <h3><a href="<?= $qb_url_root?>/question/question.php?id=<?=$vl['course_id'] ?>" ><?=$vl['coursename'] ?></a></h3>
                         </div>

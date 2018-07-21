@@ -13,8 +13,8 @@
                             <th>创建日期</th>
                             <th>操作</th></thead>
             <tbody>';
-    $query = 'select * from tk_questions left join bs_dictionaryitems as dictdata '
-            .'on tk_questions.difficultylevel_id = dictdata.dictionary_id  left join'
+    $query = 'select * from tk_questions left join tk_dictionary_items as dictdata '
+            .'on tk_questions.difficultylevel_id = dictdata.id  left join'
             .' tk_users on tk_users.uid = tk_questions.createdby left join '
             .' tk_subjects on tk_subjects.subject_id = tk_questions.subject_id ';
     $query .= 'left join tk_courses on tk_subjects.course_id = tk_courses.course_id order by question_id;';
@@ -25,7 +25,7 @@
             $questiontype = $row['qtype'];
             $data .= '<tr><td>'.$row['question_name'].'</td>';
             $data .= '<td>'.$row['qtype'].'</td>';
-            $data .= '<td>'.$row['dictionary_value'].'</td>';
+            $data .= '<td>'.$row['item_name'].'</td>';
             
             $data .= '<td>'.$row['subject_name'].'</td>';
             $data .= '<td>'.$row['point'].'</td>';

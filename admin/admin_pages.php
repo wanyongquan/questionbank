@@ -118,10 +118,15 @@ $pageData = getAllPages();
         <!-- /footer content -->
       </div>
     </div>
+    
+     <!-- jQuery -->
+    <script src="<?php echo $qb_url_root?>/vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="<?php echo $qb_url_root?>/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    
     <!-- Custom Theme Scripts -->
     <script src="<?php echo $qb_url_root?>/js/custom.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    
+   
     <script>
     $(document).ready(function() {
 	    $('#paginate').DataTable({"pageLength": 25,"aLengthMenu": [[25, 50, 100, -1], [25, 50, 100, "All"]], "aaSorting": []});

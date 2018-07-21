@@ -70,7 +70,13 @@ if (!empty($_POST['addUser'])){
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>Page Title</h3>
+                <div class="nav" style="float:left; font-size:16px;">
+                   <ul class="breadcrumb">
+                     <li class=""><i class="fa fa-home"></i> <a href="#"><?=get_string('home'); ?></a></li>
+                     <li class=""><a href="#">用户管理</a></li>
+                     
+                   </ul>
+                </div>
               </div>
 
             </div>
@@ -113,10 +119,10 @@ if (!empty($_POST['addUser'])){
                   <div class="allutable">
                      <table id="paginate" class='table table-hover table-list-search'>
                       <thead>
-                        
+                        <tr>
                           <th>ID</th><th>Username</th><th>Name</th><th>Email</th>
                           <th>Last Sign In</th><th>Status</th>
-                        
+                        </tr>
                       </thead>
                       <tbody>
                         <?php
@@ -214,7 +220,7 @@ if (!empty($_POST['addUser'])){
             <!--  end of modal-content -->
         </div>
         <!--  end of modal-dialog -->
-    </div> 
+    </div> <!-- /end of deleteUser dialog -->
               </div>
             </div>
                   </div>
@@ -236,10 +242,13 @@ if (!empty($_POST['addUser'])){
       </div>
     </div>
 
+ <!-- jQuery -->
+    <script src="<?php echo $qb_url_root?>/vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="<?php echo $qb_url_root?>/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- Custom Theme Scripts -->
     <script src="<?php echo $qb_url_root?>/js/custom.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    
+   
     <script>
     $(document).ready(function() {
         $('#paginate').DataTable({"pageLength": 25,"aLengthMenu": [[25, 50, 100, -1], [25, 50, 100, "All"]], "aaSorting": []});
