@@ -1,24 +1,22 @@
 <?php
 /**
- * Yan Lao Shi Ti Ku
- * An PHP Question Bank Management System
- * @author Wanyongquan
+ * **************************************************************************
+ * ** YanZi Question Management and Test Paper Generator System           ***
+ * ** Developer: Wan Yongquan                                             ***
+ * ** Title:  Test papers management:edit,delete                          ***
+ * ** Function:                                                           ***
+ * **************************************************************************
  */
-/*
- * This page is user management dashboard. it shows all users in a grid .
- */
-require_once 'config.php';
 
-require_once 'includes/html_header.php';
-require_once 'classes/Class.User.php';
+require_once '../config.php';
+
+require_once '../includes/html_header.php';
 
 if (!loginRequired($_SERVER['REQUEST_URI'])){die();}
-
-$courseData = fetchAllCourses();
 ?>
     <div class="container body">
       <div class="main_container">
-        <?php require_once $abs_doc_root.$qb_url_root.'/includes/menu.php';?>
+         <?php require_once $abs_doc_root.$qb_url_root.'/includes/menu.php';?>
         
         <!-- top navigation -->
         <?php   require_once $abs_doc_root.$qb_url_root."/includes/topnavigation.php";  ?>
@@ -29,7 +27,7 @@ $courseData = fetchAllCourses();
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>全部课程</h3>
+                <h3>Page Title</h3>
               </div>
 
             </div>
@@ -40,7 +38,7 @@ $courseData = fetchAllCourses();
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>课程</h2>
+                    <h2>Plain Page</h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -59,17 +57,20 @@ $courseData = fetchAllCourses();
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                     <div class="row">
-                      <?php 
-                      foreach ($courseData as $vl ){
-                      ?>
-                      <div class="col-md-4 col-xs-12 col-sm-4">
-                        <div class="well" style="overflow:auto">
-                          <h3><a href="<?= $qb_url_root?>/question/question.php?id=<?=$vl['course_id'] ?>" ><?=$vl['coursename'] ?></a></h3>
-                        </div>
+                      Add content to the page ...
+                      <div class="col-md-12 col-sm-12 col-xs-12">
+                        <table id="paperstable" class="table table-hover">
+                          <thead><tr>
+                              <th>ID</th>
+                              <th><?=get_string('papertitle') ?></th>
+                              <th><?=get_string('examduration') ?></th>
+                              <th><?=get_string('createdtime') ?></th>
+                              <th><?=get_string('operations') ?></th>
+                          </tr>
+                          </thead>
+                          <tbody></tbody>
+                        </table>
                       </div>
-                      <?php } ?>
-                     </div>
                   </div>
                 </div>
               </div>
@@ -100,5 +101,8 @@ $courseData = fetchAllCourses();
     
     <!-- Custom Theme Scripts -->
     <script src="<?php echo $qb_url_root?>/js/custom.min.js"></script>
+    <script src="../js/pagination/jquery.dataTables.js" type="text/javascript"></script>
+    <script src="../js/pagination/dataTables.js" type="text/javascript"></script>
+    <script src="../js/papers.js"></script>
   </body>
 </html>

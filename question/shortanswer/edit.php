@@ -26,7 +26,7 @@ require_once '../../config.php';
 require_once '../../includes/html_header.php';
 require_once $abs_doc_root.$qb_url_root.'/classes/Redirect.php';
 
-if (!loginRequired($_SERVER['PHP_SELF'])){die();}
+if (!loginRequired($_SERVER['REQUEST_URI'])){die();}
 
 $courseid = $_REQUEST['courseid'];
 if (isset($_REQUEST['qid'])){

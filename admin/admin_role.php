@@ -32,7 +32,7 @@
 
 <?php 
 
-   if (!loginRequired($_SERVER['PHP_SELF'])){die();}
+   if (!loginRequired($_SERVER['REQUEST_URI'])){die();}
 
     $roleId = $_REQUEST['id'];
     // check if selected user exists
@@ -142,7 +142,7 @@
                       <div class="row">
                         <div class="col-xs-12">
                           <h1>Configure settings for this Role</h1>
-                          <form name="roleForm" action="<?=$_SERVER['PHP_SELF']?>?id=<?=$roleId?>" method="post">
+                          <form name="roleForm" action="<?=$_SERVER['REQUEST_URI']?>?id=<?=$roleId?>" method="post">
                             <input name="submitRole" class="btn btn-primary" type="submit"  value="Update Role" class="submit"/>
                             
                             <a class="btn btn-warning" href="admin_roles.php">Cancel</a><br><br>

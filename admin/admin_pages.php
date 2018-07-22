@@ -11,7 +11,7 @@ require_once '../config.php';
 require_once '../includes/html_header.php';
 require_once '../classes/Redirect.php';
 
-if (!loginRequired($_SERVER['PHP_SELF'])){die();}
+if (!loginRequired($_SERVER['REQUEST_URI'])){die();}
 
 // show all users information
 $pageData = getAllPages();

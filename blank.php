@@ -1,17 +1,14 @@
 <?php
-/**
- * **************************************************************************
- * ** YanZi Question Management and Test Paper Generator System           ***
- * ** Developer: Wan Yongquan                                             ***
- * ** Title:                                                              ***
- * ** Function:                                                           ***
- * **************************************************************************
+/*
+ *  YanZi TIKU
+ *  A Question Management and Test Paper Generator System
+ *
+ *  Developer: Wan Yongquan
+ *  Copyright: 2018
  */
-
-require_once 'config.php';
-
-require_once 'includes/html_header.php';
 ?>
+<?php  require_once '../config.php';?>
+<?php require_once '../includes/html_header.php';?>
     <div class="container body">
       <div class="main_container">
          <?php require_once $abs_doc_root.$qb_url_root.'/includes/menu.php';?>

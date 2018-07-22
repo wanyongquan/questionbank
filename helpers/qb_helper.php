@@ -39,7 +39,7 @@ if(!function_exists('loginRequired')){
         }
         
         if(!$user || !$user->isLoggedIn() ){
-            Redirect::to($qb_url_root.'login.php?returnurl='.$url);
+            Redirect::to($qb_url_root.'/login.php?returnurl='.$url);
             return false;
         }
         
@@ -338,7 +338,9 @@ if (!function_exists('getCourseSubjects')){
         global $DB;
         $querystr = "select * from tk_subjects where courseid = $id";
         $result = mysqli_query($DB, $querystr);
-        
+        if (mysqli_num_rows($result) > 0){
+            $row = mysqli_fetch_assoc($result);
+        }
         return $result;
         
     }
@@ -373,6 +375,7 @@ if (!function_exists('getQuestionDetails')){
         if (!$result){
             echo( mysqli_error($DB));
         }
+        
         return $result;
     }
 }
@@ -468,7 +471,11 @@ if (!function_exists('cart_question_exists')){
         if (!isset($cart) || !is_array($cart)){
             return false;
         }
-        foreach($cart as $qtype=>$qid_arr){
+        if (!isset($cart['qtype_data'])){
+            return false;
+        }
+        $qtypeArr = $cart['qtype_data'];
+        foreach($qtypeArr as $qtype=>$qid_arr){
             if (in_array($questionid, $qid_arr)){
                 return true;
             }
@@ -482,7 +489,11 @@ if (!function_exists('removeQuestionFromCart')){
         if (!isset($cart) || !is_array($cart)){
             return false;
         }
-        foreach($cart as $qtype=>$qid_arr){
+        if(!isset($cart['qtype_data'])){
+            return false;
+        }
+        $qtypeArr = $cart['qtype_data'];
+        foreach($qtypeArr as $qtype=>$qid_arr){
             if (in_array($questionid, $qid_arr)){
                 // remove the questionid from array
                 $arrData = remove_Array_Value($qid_arr, $questionid);
@@ -495,24 +506,59 @@ if (!function_exists('removeQuestionFromCart')){
 
 if (!function_exists('addQuestionToCart')){
     function addQuestionToCart($questionid, $cart){
-        $questionCart = $cart;
+        /**
+         * example data of question cart
+         * { 'courseid': 1,
+         *   'qtype_data' : [
+         *      ['qtype_1': [1, 3, 5]],
+         *      ['qtype_2': [2, 4, 6]]
+         *     ]
+         *  }
+         * @var Ambiguous $questionCart
+         */
+        
         $questionDetail = getQuestionDetails($questionid);
         $question = mysqli_fetch_assoc($questionDetail);
+        $courseId = $question['courseid'];
         $qtype= $question['qtype'];
-        if (isset($cart[$qtype]) || array_key_exists($qtype, $cart) ){
-            // if the qtype already exists in cart, then add qid to related array;
-            $qid_arr = $questionCart[$qtype];
-            $qid_arr[] = $questionid;
-            $questionCart[$qtype] = $qid_arr;
+        
+        if (!isset($cart)){
+            // if the cart is empty, then add the question
+            $questionCart= array();
+            $questionCart['courseid'] = $courseId;
+            $qtypeArr = array();
+            $qtypeArr[$qtype] = array($questionid);
+            $questionCart['qtype_data'] = $qtypeArr;
         }else{
-            // if the qtype not exists in cart, then add new item for the qtype;
-            $qid_arr = array($questionid);
-            $qtype_arr = array($qtype=>$qid_arr);
-            //$cart[$qtype] = $qid_arr;
-            foreach($qtype_arr as $key=>$value){
-                $questionCart[$key] = $value;
+            $questionCart = $cart;
+            $qtypeArr = $cart['qtype_data'];
+            if (array_key_exists($qtype, $qtypeArr)){
+                //if the qtype is in array, then add the question id to the type array;
+                $qid_arr = $qtypeArr[$qtype];
+                $qid_arr[] = $questionid;
+                $qtypeArr[$qtype] = $qid_arr;
+                $questionCart['qtype_data'] = $qtypeArr;
+            }else{
+                // add the qtype and qid_arr to qtype_data
+                $qid_arr = array($questionid);
+                $qtypeArr[] = array($qtype=>$qid_arr);
             }
+            
         }
+//         if (isset($cart['qtype_data']) || array_key_exists($qtype, $cart['qtype_data']) ){
+//             // if the qtype already exists in cart, then add qid to related array;
+//             $qid_arr = $questionCart[$qtype];
+//             $qid_arr[] = $questionid;
+//             $questionCart[$qtype] = $qid_arr;
+//         }else{
+//             // if the qtype not exists in cart, then add new item for the qtype;
+//             $qid_arr = array($questionid);
+//             $qtype_arr = array($qtype=>$qid_arr);
+//             //$cart[$qtype] = $qid_arr;
+//             foreach($qtype_arr as $key=>$value){
+//                 $questionCart[$key] = $value;
+//             }
+//         }
         return $questionCart;
     }
 }
@@ -527,8 +573,12 @@ if (!function_exists('cartQuestionCount')){
         if (!is_array($questionCart)){
             return 0;
         }
+        if (!isset($questionCart['qtype_data']))
+            return 0;
+        
         $count = 0;
-        foreach($questionCart as $key=>$value){
+        $qtypeArr = $questionCart['qtype_data'];
+        foreach($qtypeArr as $key=>$value){
             $count += count($value);
         }
         return $count;

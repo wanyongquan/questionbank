@@ -1,4 +1,6 @@
 <?php 
+    
+    
     error_reporting ( 1 );
 ?>
 
@@ -16,11 +18,12 @@
 
 $action = $_REQUEST['action'];
 
+global $DB, $user;
 
 switch( $action){
     case 'getsubjectofcourse':
         $courseid = $_REQUEST['courseId'];
-        echo CourseHelper::getCourseSubjects($courseid);
+        echo core_paper\CourseHelper::getCourseSubjects($courseid);
         break;
     case 'addquestiontocart':
         /**
@@ -65,10 +68,11 @@ switch( $action){
         break;
     case 'updatecartbrief':
             $questionCart = $_SESSION['question_cart'];
-            $courseId = $_SESSION['current_courseid'];
+            $courseId = $questionCart['courseid'];
+            $qtypeArr= $questionCart['qtype_data'];
             
             $html = ''; 
-            foreach($questionCart as $key=>$value){
+            foreach($qtypeArr as $key=>$value){
                 $qtypeDisplayStr = getQuesTypeDisplayStr($key);
                 $html .= '<li><a><span>';
                 $html .= ' <span>' . $qtypeDisplayStr . ':</span>';
@@ -76,8 +80,8 @@ switch( $action){
                 $html .= '</span></a> </li>';    
             } // end of foreach 
             $html .='  <li><div class="text-center">
-                        <a href="' . $qb_url_root .'/zujuan/makepaper.php?courseid='. $courseId. '">
-                          <strong>进入组卷中心</strong>
+                        <a href="' . $qb_url_root .'/zujuan/maketestpaper.php?courseid=">' . $courseid .
+                          '<strong>进入组卷中心</strong>
                           <i class="fa fa-angle-right"></i>
                         </a>
                       </div>
@@ -227,5 +231,18 @@ switch( $action){
         }finally {
             $DB->autocommit(true);
         }
+        break;
+    case 'movequestionup':
+        $questionid = $_REQUEST['questionid'];
+        $questionCart = $_SESSION['question_cart'];
+        $questionCart =  core_paper\CourseHelper::moveQuestionUp($questionCart, $questionid);
+        $_SESSION['question_cart'] = $questionCart;
+        break;
+    case 'movequestiondown':
+        break;
+    case 'reloadquestioncart':
+        $questionCart = $_SESSION['question_cart'];
+        $html = core_paper\CourseHelper::reloadQuestionCart($questionCart);
+        echo $html;
         break;
 }

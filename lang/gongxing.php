@@ -46,6 +46,7 @@ $string['addcart']='加入试卷';
 $string['removecart']='移出试卷';
 $string['papergenerator']='组卷中心';
 $string['continueaddquestion']='继续添加试题';
+$string['clearcart']='清空试卷篮';
 $string['savepaper']='保存试卷';
 $string['testpapers']='试卷';
 $string['papertitle']='试卷标题';

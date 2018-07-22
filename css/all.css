@@ -22,6 +22,10 @@
     //margin-left: 10px;
     //margin-right: 10px;
 }
+.filter-item-wrap{
+	border: solid 1px #E6E9ED;
+	margin-bottom:20px;
+}
 .filter-item-wrap li{
 	float:left;
 	display:inline;
@@ -36,6 +40,15 @@
 	fon-size:14px;
 	border-radius:5px;
 }
+.filter-item-wrap .filter-item{
+	background-color:#f5f5f5;
+}
+.filter-item-wrap .filter-item:not(:last-child){
+	border-bottom: dashed 1px #E6E9Ed;
+	
+}
+
+
 .filter-item .filter-head{
 	float:left;
     margin-top:10px;
@@ -44,8 +57,21 @@
 	line-height:24px;
 	font-size:14px;
 	text-align:right;
+	
 }
-
+.filter-item .filter-value{
+	margin-left:80px;
+	overflow:hidden;
+	background-color:#fff;
+}
+.filter-item .filter-value a{
+	margin:10px 0;
+	display:inline-block;
+	line-height:25px;
+}
+.filter-value-inner{
+	padding: 5px;
+}
 .question-head-left, .question-head-right {
     font-size: 12px;
     color: #666;
@@ -123,4 +149,36 @@
 }
 .warningtext{
 	text-align:center;
+}
+.question-wrap:hover{
+	border: solid 1px #39f;
+}
+.ques-body{
+	margin:10px 0;
+}
+.panel-heading .add-btn{
+	background-color:#39f;
+	color:#fff;
+	padding: 0 5px; 
+}
+.panel-heading .remove-btn{
+    background-color:#f93;
+    color:#fff;
+    padding: 0 5px; 
+}
+.widget-toolbar {
+	display:inline-block;
+	position:relative;
+}
+.widget-toolbar li{
+    float:left;
+    cursor:pointer;	
+}
+.widget-toolbar li a{
+	padding:5px;
+	color:#333;
+	font-size:14px;
+}
+.side_toolbar li a{
+	text-decoration: underline;
 }

@@ -14,7 +14,7 @@ require_once '../config.php';
 
 require_once '../includes/html_header.php';
 
-if (!loginRequired($_SERVER['PHP_SELF'])){die();}
+if (!loginRequired($_SERVER['REQUEST_URI'])){die();}
 
 $courseData = fetchAllCourses();
 
@@ -75,7 +75,7 @@ $courseData = fetchAllCourses();
                       ?>
                       <div class="col-md-4 col-xs-4 col-sm-12">
                         <div class="well" style="overflow:auto">
-                          <h3><a href="<?= $qb_url_root?>/zujuan/question.php?id=<?=$vl['course_id'] ?>" ><?=$vl['coursename'] ?></a></h3>
+                          <h3><a href="<?= $qb_url_root?>/zujuan/pickquestions.php?courseid=<?=$vl['course_id'] ?>" ><?=$vl['coursename'] ?></a></h3>
                         </div>
                       </div>
                       <?php } ?>
@@ -117,6 +117,6 @@ $courseData = fetchAllCourses();
     	 $('.select2').select2()
      });
     </script>
-    <script src="custom.js"></script>
+    
   </body>
 </html>

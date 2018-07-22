@@ -52,7 +52,6 @@
                     ?>
                     <li>
                       <a>
-                        <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
                         <span>
                           <span> <?=$key?> :</span>
                           <span><?=count($value) ?></span>
@@ -65,7 +64,7 @@
                         }// end of if  ?>
                     <li>
                       <div class="text-center">
-                        <a href="<?=$qb_url_root?>/zujuan/makepaper.php">
+                        <a href="<?=$qb_url_root?>/zujuan/maketestpaper.php">
                           <strong>进入组卷中心</strong>
                           <i class="fa fa-angle-right"></i>
                         </a>

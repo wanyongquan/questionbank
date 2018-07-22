@@ -1,15 +1,15 @@
 <?php
 /**
  * Yan Lao Shi Ti Ku
- * An PHP Question Bank Management System              
+ * An PHP Question Bank Management System
  * @author Wanyongquan
  */
 /*
  * This page is user management dashboard. it shows all users in a grid .
  */
-require_once '../config.php';
-require_once '../includes/html_header.php';
-require_once '../classes/Redirect.php';
+require_once 'config.php';
+require_once 'includes/html_header.php';
+require_once 'classes/Redirect.php';
 
 if (!loginRequired($_SERVER['REQUEST_URI'])){die();}
 // show all users information
@@ -30,7 +30,7 @@ if (!empty($_POST['addUser'])){
     $confirmpassword = $_POST['confirm'];
     
     $form_valid = false;
-    //Todo: ui input validation 
+    //Todo: ui input validation
     if (True){
         $form_valid = true;
         try{
@@ -115,36 +115,21 @@ if (!empty($_POST['addUser'])){
               <a class="pull-right" href="#" data-toggle="modal" data-target="#adduser"><i class="glyphicon glyphicon-plus"></i> 新增用户</a>
               <div class="row">
                 <div class="col-xs-12">
-                  <div class="alluinfo">&nbsp;</div>
+                  <div class="alluinfo">
+                   <input id="ttt" value="1" >
+                   <table id="example" class="display dataTable" role="grid" style="width:100%">
+                    <thead><tr role="row"><th class="sorting">firstname</th><th>last name</th></tr></thead>
+                   </table>
+                  </div>
                   <div class="allutable">
                      <table id="paginate" class='table table-hover table-list-search'>
                       <thead>
                         <tr>
-                          <th>ID</th><th>Username</th><th>Name</th><th>Email</th>
-                          <th>Last Sign In</th><th>Status</th>
+                          <th>ID</th><th>Username</th><th>Name</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <?php
-                        //Cycle through users
-                        foreach ($userData as $v1) {
-                          ?>
-                          <tr>
-                            <td><a class="nounderline" href='admin_user.php?id=<?=$v1['uid']?>'><?=$v1['uid']?></a></td>
-                            
-                            <td><a class="nounderline" href='admin_user.php?id=<?=$v1['uid']?>'><?=$v1['username']?></a></td>
-                            <td><?=$v1['fname']?> <?=$v1['lname']?></td>
-                            <td><?=$v1['email']?></td>
-                            <td><?php if($v1['lastlogin'] != 0) { echo $v1['lastlogin']; } else {?> <i>Never</i> <?php }?></td>
-                            
-                            
-                            <td>
-                            <a title="编辑用户信息" href="<?=$qb_url_root ?>/admin/admin_user.php?id=<?=$v1['uid']?>">
-                                        <span class="blue"><i class="fa fa-edit bigger-120"></i></span></a>&nbsp;&nbsp;&nbsp;&nbsp;
-                            <a title="删除" class="deleteuser" data-id="'.$vl['uid'].'"  data-toggle="modal" data-target="#deleteUser" data-backdrop="false">
-                            <span class="red"><i class="ace-icon fa fa-trash-o bigger-120"></i></span></a></td>
-                          </tr>
-                        <?php } ?>
+                       
                       </tbody>
                     </table>  
                    
@@ -243,18 +228,34 @@ if (!empty($_POST['addUser'])){
     </div>
 
  <!-- jQuery -->
-    <script src="<?php echo $qb_url_root?>/vendors/jquery/dist/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <!-- Bootstrap -->
     <script src="<?php echo $qb_url_root?>/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- Custom Theme Scripts -->
-    <script src="<?php echo $qb_url_root?>/js/custom.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
    
+
     <script>
     $(document).ready(function() {
-        $('#paginate').DataTable({"pageLength": 25,"aLengthMenu": [[25, 50, 100, -1], [25, 50, 100, "All"]], "aaSorting": []});
+        var ex = 'ttt';
+        var vl = $("#" + ex).val();
+       // alert('value: ' + vl);
+        
+//         $('#paginate').DataTable({
+//             "serverSide":true,
+//             "processing":true,
+//             searching:false,
+//             "pageLength": 25,
+//             "aLengthMenu": [[25, 50, 100, -1], [25, 50, 100, "All"]],
+//             // "aaSorting": [],
+//              "ajax":"test.ajax.php"
+//         });
     } );
     </script>
-    <script src="../js/pagination/jquery.dataTables.js" type="text/javascript"></script>
-    <script src="../js/pagination/dataTables.js" type="text/javascript"></script>
+    <script src="js/pagination/jquery.dataTables.js" type="text/javascript"></script>
+    <script src="js/pagination/dataTables.js" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="datatables/datatables.min.css"/>
+    <script type="text/javascript" src="datatables/datatables.min.js"></script>
+    <script src="test.js"></script>
   </body>
 </html>

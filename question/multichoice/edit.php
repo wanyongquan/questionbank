@@ -25,7 +25,7 @@ error_reporting(E_ALL);
  
 <?php require_once '../../includes/html_header.php'; ?>
 
-<?php if (!loginRequired($_SERVER['PHP_SELF'])){die();} ?>
+<?php if (!loginRequired($_SERVER['REQUEST_URI'])){die();} ?>
 
 <?php 
 if (isset($_REQUEST['courseid'])){

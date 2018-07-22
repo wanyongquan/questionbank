@@ -22,7 +22,7 @@ require_once '../config.php';
 
 require_once '../includes/html_header.php';
 
-if (!loginRequired($_SERVER['PHP_SELF'])){die();}
+if (!loginRequired($_SERVER['REQUEST_URI'])){die();}
 
 $roledata = getAllRoles();
 ?>
@@ -73,7 +73,7 @@ $roledata = getAllRoles();
                      <div class="class col-sm-3"></div>
                      <!-- main content column -->
                      <div class="class col-sm-6">
-                        <form name="addRole" action="<?=$_SERVER['PHP_SELF']?>" method = "post">
+                        <form name="addRole" action="<?=$_SERVER['REQUEST_URI']?>" method = "post">
                           <h2> Create a new role</h2>
                           <p>
                             <label>Role Name:</label>

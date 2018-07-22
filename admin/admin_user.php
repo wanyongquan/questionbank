@@ -26,7 +26,7 @@
 <?php require_once '../includes/html_header.php';?>
 <?php 
     
-    if (!loginRequired($_SERVER['PHP_SELF'])){die();}
+    if (!loginRequired($_SERVER['REQUEST_URI'])){die();}
 
     $userId = $_REQUEST['id'];
     // check if selected user exists

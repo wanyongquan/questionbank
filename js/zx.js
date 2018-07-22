@@ -8,7 +8,12 @@ $(document).ready(function(){
 	updateCartInfo();
 });
 function getProjectRootPath(){
-	//full url: http://localhost/test/index.php
+	  var pathName = document.location.pathname;
+      var index = pathName.substr(1).indexOf("/");
+     var result = pathName.substr(0,index+1);
+     return result;
+/** solution 2
+  	//full url: http://localhost/test/index.php
 	var currPath = window.document.location.href;
 	//app url: /test/index.php
 	var pagePath = window.document.location.pathname;
@@ -17,7 +22,7 @@ function getProjectRootPath(){
 	var host = currPath.substring(0, pos);
 	// project name with slash: /test
 	var projectName = pagePath.substring(0, pagePath.substr(1).indexOf('/') + 1);
-	return ( host + projectName);
+	return ( host + projectName);*/
 }
 
 function updateCartInfo(){
