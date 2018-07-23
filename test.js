@@ -23,7 +23,7 @@ $(document).ready(function() {
 //	$("#paginate").DataTable({
 //		searching:false
 //	})
-    $('#testform').bootstrapValidator({
+/*    $('#testform').bootstrapValidator({
         message: 'This value is not valid',
         feedbackIcons: {
             valid: 'glyphicon glyphicon-ok',
@@ -58,14 +58,14 @@ $(document).ready(function() {
             }
         }
     });
-
+*/
 });
 
 function deletebtn(e){
 	alert('deleted');
 	//
 	
-	var datatable = $("#paginate").DataTable();
+	var datatable = $("#paginate").dataTable();
 	datatable.fnClearTable();
 	datatable.fnDestroy();
 	

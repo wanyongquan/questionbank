@@ -228,7 +228,7 @@ if (!empty($_POST['addUser'])){
     </div>
 
  <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="<?php echo $qb_url_root?>/vendors/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap -->
     <script src="<?php echo $qb_url_root?>/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- Custom Theme Scripts -->
@@ -254,8 +254,8 @@ if (!empty($_POST['addUser'])){
     </script>
     <script src="js/pagination/jquery.dataTables.js" type="text/javascript"></script>
     <script src="js/pagination/dataTables.js" type="text/javascript"></script>
-    <link rel="stylesheet" type="text/css" href="datatables/datatables.min.css"/>
-    <script type="text/javascript" src="datatables/datatables.min.js"></script>
+        <script src="js/pagination/jquery.dataTables.js" type="text/javascript"></script>
+    <script src="js/pagination/dataTables.js" type="text/javascript"></script>
     <script src="test.js"></script>
   </body>
 </html>

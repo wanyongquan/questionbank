@@ -34,6 +34,7 @@ function movequestiondown(e){
 		},
 		success:function(data){
 			//TODO: update page layout
+			reloadQuestionCart();
 		}
 	
 	});

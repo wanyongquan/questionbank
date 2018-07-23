@@ -18,6 +18,8 @@ function addtocart(e){
 		success:function(data){
 			// update cart infor
 			updateCartInfo();
+			// update btn text
+			$(e).html(data);
 		}
 	});
 }

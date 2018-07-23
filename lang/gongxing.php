@@ -57,3 +57,5 @@ $string['deletepaper']='删除试卷';
 $string['confirmdeletepaper']='你确定要删除该试卷吗？';
 $string['confirmeditpaper']='试题篮中存在试题，确定要编辑试卷吗？';
 $string['editpaperwarning']='提示：编辑试卷后不可恢复当前试题篮中的试题！';
+$string['moveup']='上移';
+$string['movedown']='下移';

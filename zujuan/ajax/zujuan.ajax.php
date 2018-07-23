@@ -23,7 +23,7 @@ global $DB, $user;
 switch( $action){
     case 'getsubjectofcourse':
         $courseid = $_REQUEST['courseId'];
-        echo core_paper\CourseHelper::getCourseSubjects($courseid);
+        echo core_paper\PaperHelper::getCourseSubjects($courseid);
         break;
     case 'addquestiontocart':
         /**
@@ -80,7 +80,7 @@ switch( $action){
                 $html .= '</span></a> </li>';    
             } // end of foreach 
             $html .='  <li><div class="text-center">
-                        <a href="' . $qb_url_root .'/zujuan/maketestpaper.php?courseid=">' . $courseid .
+                        <a href="' . $qb_url_root .'/zujuan/maketestpaper.php?courseid="'. $courseId  .'">' .
                           '<strong>进入组卷中心</strong>
                           <i class="fa fa-angle-right"></i>
                         </a>
@@ -235,14 +235,18 @@ switch( $action){
     case 'movequestionup':
         $questionid = $_REQUEST['questionid'];
         $questionCart = $_SESSION['question_cart'];
-        $questionCart =  core_paper\CourseHelper::moveQuestionUp($questionCart, $questionid);
+        $questionCart =  core_paper\PaperHelper::moveQuestionUp($questionCart, $questionid);
         $_SESSION['question_cart'] = $questionCart;
         break;
     case 'movequestiondown':
+        $questionid = $_REQUEST['questionid'];
+        $questionCart = $_SESSION['question_cart'];
+        $questionCart =  core_paper\PaperHelper::moveQuestionDown($questionCart, $questionid);
+        $_SESSION['question_cart'] = $questionCart;
         break;
     case 'reloadquestioncart':
         $questionCart = $_SESSION['question_cart'];
-        $html = core_paper\CourseHelper::reloadQuestionCart($questionCart);
+        $html = core_paper\PaperHelper::reloadQuestionCart($questionCart);
         echo $html;
         break;
 }
