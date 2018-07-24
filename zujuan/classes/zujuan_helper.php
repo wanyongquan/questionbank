@@ -138,9 +138,11 @@ class PaperHelper{
                     $ques = mysqli_fetch_assoc ( $questionData );
                     $disable_inner_moveup = $innerIndex == 1 ? $disableclass: '';
                     $disable_inner_movedown = $innerIndex == $innerLength ? $disableclass : '';
+                    $referedCount= \getQuestionReferedCount($vl);
+                    
                     $html .= '<div class="panel panel-default">
                                 <div class="panel-heading">
-                                <h5 style="float:left; margin: 5px 0 6px;">难度：easy  组卷次数：6 入库时间： 2018-8-1</h5>
+                                <h5 style="float:left; margin: 5px 0 6px;">难度：easy  组卷次数：'.$referedCount.' 入库时间： 2018-8-1</h5>
                                 <ul class="nav navbar-right widget-toolbar" >';
                     $html .= ' <li style="float:left"><a class="collapse-link '. $disable_inner_moveup . '" data-id="' . $vl . '" onclick="movequestionup(this)"><i class="fa fa-arrow-up"></i>'.get_string('moveup') .'</a></li>';
                     
@@ -165,28 +167,30 @@ class PaperHelper{
         if(!isset($questionArr) ){
             return false;
         }
+        $questionCart = $_SESSION['question_cart'];
         $qtypeData = \getQtypes();
         $difficultyData = \getDifficultyLevels();
         
         $html = "";
         foreach($questionArr as $vl){
-            $incart = cart_question_exists($questionid, $questionCart);
+            $incart = cart_question_exists($vl['question_id'], $questionCart);
             $btnclass= $incart? 'remove-btn': 'add-btn';
-            $iconclass= ($incart)? 'fa-minus':'fa-plus';
+            
             $btntext = ($incart)?get_string('removecart'): get_string('addcart');
             
             $qtypename = self::getQtypeName($qtypeData, $vl['qtype']);
             $difficultyname = self::getDifficultyName($difficultyData, $vl['difficultylevel_id']);
+            $referedCount = \getQuestionReferedCount($vl['question_id']);
             
             $html .= '<div class="panel panel-default question-wrap">';
             $html .= '<div class="panel-heading">';
             $html .= '<div class="col-md-9 col-sm-9 col-xs-9 question-head-left">';
             $html .= '<span>'.get_string('difficulty').':' . $difficultyname .'</span>';
             $html .= '<span>'.get_string('questiontype'). ':'. $qtypename .'</span>';
-            $html .= '<span>'.get_string('usedtimes').'：0</span>';
+            $html .= '<span>'.get_string('usedtimes').'：'. $referedCount.'</span>';
             $html .= '</div><div class="question-head-right col-md-3 col-sm-3 col-xs-3">';
             $html .= '<a class="pull-right '. $btnclass.'" href="#" data-id="'.$vl['question_id'] .'" onclick="addtocart(this)">';
-            $html .= '<i class="fa '. $iconclass .'"></i>'. $btntext .' </a></div><div class="clearfix"></div>';
+            $html .= ''. $btntext .' </a></div><div class="clearfix"></div>';
             $html .= ' </div>';
             $html .= ' <div class="panel-body">';
             $html .= '    <div class="ques-body">'. $vl['question_body'] .'</div>';

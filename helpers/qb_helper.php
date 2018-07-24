@@ -505,13 +505,15 @@ if (!function_exists('removeQuestionFromCart')){
         if(!isset($cart['qtype_data'])){
             return false;
         }
+        $questionCart = $cart;
         $qtypeArr = $cart['qtype_data'];
         foreach($qtypeArr as $qtype=>$qid_arr){
             if (in_array($questionid, $qid_arr)){
                 // remove the questionid from array
                 $arrData = remove_Array_Value($qid_arr, $questionid);
-                $cart[$qtype] = $arrData;
-                return $cart;
+                $qtypeArr[$qtype] = $arrData;
+                $questionCart['qtype_data'] = $qtypeArr;
+                return $questionCart;
             }
         }
     }
@@ -642,5 +644,19 @@ if(!function_exists('getQuestionsBy')){
         }
         $result = mysqli_query($DB, $querystr);
         return $result;
+    }
+}
+
+if (!function_exists('getQuestionReferedTimes')){
+    function getQuestionReferedCount($questionId){
+        global $DB;
+        $querystr = "select questionid , count(*) as referedCount from tk_testpaper_questions where questionid=" . $questionId .' group by questionid';
+        $result = mysqli_query($DB, $querystr);
+        if (!$result ){
+            die(mysqli_error($DB));
+        }
+        $resultArr = mysqli_fetch_assoc($result);
+        $referedCount = $resultArr['referedCount'];
+        return $referedCount;
     }
 }

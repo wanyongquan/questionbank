@@ -170,6 +170,10 @@
 .ques-body{
 	margin:10px 0;
 }
+.panel-heading .question-head-right a{
+	width:100px;
+	text-align:center;
+} 
 .panel-heading .add-btn{
 	background-color:#39f;
 	color:#fff;

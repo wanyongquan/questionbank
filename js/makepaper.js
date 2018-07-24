@@ -7,6 +7,24 @@
  */
 $(document).ready(function(){
 	reloadQuestionCart();
+	$("#savepaper").on('click', function(){
+		var courseid = $("#courseid").val();
+		var papertitle = $("#papertitle").val();
+		$.ajax({
+			url: getProjectRootPath() + '/zujuan/ajax/zujuan.ajax.php',
+			data:{
+				action:'savepaper',
+				courseid: courseid
+			},
+			success:function(data){
+				var responseArr = JSON.parse(data);
+				if (responseArr.success == true){
+					alert('save success');
+					window.location = '../zujuan/zujuan.php';
+				}
+			}
+		});
+	})
 });
 
 function movequestionup(e){

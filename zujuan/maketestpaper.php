@@ -83,7 +83,7 @@ $questionCart = $_session['question_cart'];
                             <div class="clearfix"></div>
                           </div>
                           <div class="x_content">
-                              
+                              <div > <input id="papertitle" class="form-control"></div>
                               <?php 
                               foreach ($qid_arr as $vl){
                                   $questionData = getQuestionDetails($vl);
@@ -132,7 +132,7 @@ $questionCart = $_session['question_cart'];
                         <hr>
                         </div>
                         <ul class="list-unstyled user_data">
-                          <li><a class="btn btn-primary" href="admin_users.php">save</a></li>
+                          <li><a class="btn btn-primary" id="savepaper">save</a></li>
                           <li><a class="btn btn-primary" href="admin_users.php">publish</a></li>
                           
                         </ul>

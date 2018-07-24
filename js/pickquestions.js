@@ -89,7 +89,13 @@ function addtocart(e){
 			// update cart infor
 			updateCartInfo();
 			// update btn text
-			$(e).html(data);
+			var responseData = JSON.parse(data);
+			$(e).text(responseData.btn_text);
+			if (responseData.btn == 'add'){
+				$(e).removeClass('remove-btn').addClass('add-btn');
+			}else{
+				$(e).removeClass('add-btn').addClass('remove-btn');
+			}
 		}
 	});
 }
