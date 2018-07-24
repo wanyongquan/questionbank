@@ -1,7 +1,19 @@
 <?php 
+
+/**
+ *  YanZi TIKU
+ *  A Question Management and Test Paper Generator System
+ *
+ *  Developer: Wan Yongquan
+ *  @copyright 2018 Wan yongquan 
+ */
     
-    
-    error_reporting ( 1 );
+/**
+ * Accept client request and process and return data;
+ */
+
+
+error_reporting ( 1 );
 ?>
 
 <?php require_once '../../config.php'; ?>
@@ -192,7 +204,7 @@ switch( $action){
         foreach($paperData as $vl){
             
             $rowArr = array($vl['id'], $vl['title'], $vl['examduration'], $vl['createdtime']);
-            $rowArr[] = ' <a title="' .get_string('edit') .'" class="operationbtn" data-id="' .$vl['id'] .'" data-toggle="modal" data-target="#editpaper" data-backdrop="false"><span class="blue"><i class="fa fa-edit"></i></span></a>
+            $rowArr[] = ' <a href="maketestpaper.php?paperid='.$vl[id] .'" title="' .get_string('edit') .'" class="operationbtn" data-id="' .$vl['id'] .'" data-toggle="modal" data-target="#editpaper" data-backdrop="false"><span class="blue"><i class="fa fa-edit"></i></span></a>
                           <a title="'. get_string('delete') .'" class="operationbtn" data-id="' . $vl['id'] .'" data-toggle="modal" data-target="#deletepaper" data-backdrop="false"><span class="red"><i class="fa fa-trash-o"></i></span></a>';
             $dataArr[] = $rowArr;
         }
@@ -248,5 +260,23 @@ switch( $action){
         $questionCart = $_SESSION['question_cart'];
         $html = core_paper\PaperHelper::reloadQuestionCart($questionCart);
         echo $html;
+        break;
+    case 'editpaper':
+        $paperid = $_REQUEST['paperid'];
+        
+        break;
+    case 'fetchcandidatequestion':
+        $courseid = $_REQUEST['courseid'];
+        $subjectid = $_REQUEST['subjectid'];
+        $qtype = $_REQUEST['qtype'];
+        $difficultyid = $_REQUEST['difficultyid'];
+        
+        $questionData = getQuestiongsBy($courseid, $subjectid, $qtype, $difficultyid);
+        if (!$questionData){
+            die(mysqli_error($DB));
+        }
+        
+        echo core_paper\PaperHelper::reloadCandidateQuestions($questionData);
+        
         break;
 }

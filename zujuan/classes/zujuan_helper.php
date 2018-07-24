@@ -10,6 +10,7 @@ namespace core_paper;
 ?>
 
 <?php require_once '../../config.php'; ?>
+<?php require_once  $abs_doc_root.$qb_url_root.'/helpers/qb_helper.php';?>
 <?php
 
 
@@ -44,7 +45,7 @@ class PaperHelper{
         $qtype = $question['qtype'];
         if (isset($qtypeArr[ $qtype])){
             $qid_arr = $qtypeArr[$qtype];
-            $qid_arr =  PaperHelper::array_swap_forward($qid_arr, $questionid);
+            $qid_arr =  self::array_swap_forward($qid_arr, $questionid);
             if ($qid_arr){
                 $qtypeArr[$qtype] = $qid_arr;
             }
@@ -64,7 +65,7 @@ class PaperHelper{
         $qtype = $question['qtype'];
         if (isset($qtypeArr[ $qtype])){
             $qid_arr = $qtypeArr[$qtype];
-            $qid_arr =  PaperHelper::array_swap_back($qid_arr, $questionid);
+            $qid_arr =  array_swap_back($qid_arr, $questionid);
             if ($qid_arr){
                 $qtypeArr[$qtype] = $qid_arr;
             }
@@ -158,5 +159,72 @@ class PaperHelper{
             }
             return $html;
         }
+    }
+
+    public static function reloadCandidateQuestions($questionArr){
+        if(!isset($questionArr) ){
+            return false;
+        }
+        $qtypeData = \getQtypes();
+        $difficultyData = \getDifficultyLevels();
+        
+        $html = "";
+        foreach($questionArr as $vl){
+            $incart = cart_question_exists($questionid, $questionCart);
+            $btnclass= $incart? 'remove-btn': 'add-btn';
+            $iconclass= ($incart)? 'fa-minus':'fa-plus';
+            $btntext = ($incart)?get_string('removecart'): get_string('addcart');
+            
+            $qtypename = self::getQtypeName($qtypeData, $vl['qtype']);
+            $difficultyname = self::getDifficultyName($difficultyData, $vl['difficultylevel_id']);
+            
+            $html .= '<div class="panel panel-default question-wrap">';
+            $html .= '<div class="panel-heading">';
+            $html .= '<div class="col-md-9 col-sm-9 col-xs-9 question-head-left">';
+            $html .= '<span>'.get_string('difficulty').':' . $difficultyname .'</span>';
+            $html .= '<span>'.get_string('questiontype'). ':'. $qtypename .'</span>';
+            $html .= '<span>'.get_string('usedtimes').'：0</span>';
+            $html .= '</div><div class="question-head-right col-md-3 col-sm-3 col-xs-3">';
+            $html .= '<a class="pull-right '. $btnclass.'" href="#" data-id="'.$vl['question_id'] .'" onclick="addtocart(this)">';
+            $html .= '<i class="fa '. $iconclass .'"></i>'. $btntext .' </a></div><div class="clearfix"></div>';
+            $html .= ' </div>';
+            $html .= ' <div class="panel-body">';
+            $html .= '    <div class="ques-body">'. $vl['question_body'] .'</div>';
+            $html .= '    <div class="ques_answer">';
+            $quesAnswer = getQuestionAnswers($vl['question_id']);
+            foreach($quesAnswer as $ques){    
+                 $html .= '  <div class="col-md-3 col-sm-3 col-xs-12">';
+                 $html .= $ques['answerlabel'] .'<span>.</span><span>' .$ques['answer'] .'></span>';
+                 $html .= '  </div>';
+             } 
+             $html .= ' </div>
+                          </div>
+                        </div>';
+                
+         }
+         return $html;
+    }
+    
+    public static function getQtypeName($qtypeArr, $qtype){
+        if (!isset($qtypeArr) || !isset($qtype)){
+            return false;
+        }
+        foreach($qtypeArr as $vl){
+            if ($vl['item_value'] == $qtype){
+                return $vl['item_name'];
+            }
+        }
+        return false;
+    }
+    public static function getDifficultyName($difficultyArr, $difficultyLevelId){
+        if (!isset($difficultyArr) || !isset($difficultyLevelId)){
+            return false;
+        }
+        foreach ($difficultyArr as $vl){
+            if ($vl['id'] == $difficultyLevelId){
+                return $vl['item_name'];
+            }
+        }
+        return false;
     }
 }

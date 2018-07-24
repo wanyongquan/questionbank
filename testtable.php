@@ -109,10 +109,16 @@ if (!empty($_POST['addUser'])){
                      
                   <!-- Page Heading -->
         <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12" >
            <div class="row">
+           <div id="wrapper">
+             <div class="hello">
+               <a class="btn  btn-primary ">delete</a>
+            
+             </div>
+           </div>
               <hr />
-              <a class="pull-right" href="#" data-toggle="modal" data-target="#adduser"><i class="glyphicon glyphicon-plus"></i> 新增用户</a>
+              <a class="pull-right" href="#" id = "hello"><i class="glyphicon glyphicon-plus"></i> 新增用户</a>
               <div class="row">
                 <div class="col-xs-12">
                   <div class="alluinfo">

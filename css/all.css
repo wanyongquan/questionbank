@@ -68,6 +68,20 @@
 	margin:10px 0;
 	display:inline-block;
 	line-height:25px;
+	padding:0 10px;
+}
+.filter-item .filter-value a:hover{
+    margin:10px 0;
+    display:inline-block;
+    line-height:25px;
+    padding:0 10px;
+    color:#39f;
+    
+}
+
+.filter-item .filter-value .active,.filter-item .filter-value .active:hover{
+	color:#fff;
+	background:#39f;
 }
 .filter-value-inner{
 	padding: 5px;

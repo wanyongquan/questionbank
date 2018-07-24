@@ -37,11 +37,14 @@ $string['course'] = '课程';
  * Question 
  */
 $string['questiontype']='题型';
+$string['difficulty']='难度';
+$string['usedtimes']='组卷次数';
 
 /**
  * Zujuan
  */
 $string['choosecourse']='选择课程';
+$string['choosequestion']='选择试题';
 $string['addcart']='加入试卷';
 $string['removecart']='移出试卷';
 $string['papergenerator']='组卷中心';

@@ -33,3 +33,13 @@ function reloadpaperstable(){
 	
 }
 
+function editpaper(e){
+	var paperid = $(e).attr("data-id");
+	$.ajax({
+		url: getProjectRootPath() +　'zujuan/ajax/zujuan.ajax.php',
+		data:{
+			action:'editpaper',
+			paperid: paperid
+		}
+	});
+}

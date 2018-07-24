@@ -451,6 +451,19 @@ if (!function_exists('getDifficultyLevels')){
     }
 }
 
+if (!function_exists('getQtypes')){
+    function getQtypes(){
+        global $DB;
+        $querystr = "select dictData.id, item_name, item_value,itemorder,isfixed, type_id from tk_dictionary_items dictData , tk_dictionary_types dictType where dictData.type_id = dictType.id and dictType.dictionary_value='qtype'";
+        $result = mysqli_query($DB, $querystr);
+        if (!$result ){
+            die(mysqli_error($DB));
+        }
+        
+        return $result;
+    } 
+}
+
 if (!function_exists('returnError')){
     function returnError($errorMsg){
         $responseArr = [];
@@ -601,6 +614,33 @@ if (!function_exists('getAllTestPapers')){
         if (!$result){
             returnError(mysqli_error($DB));
         }
+        return $result;
+    }
+}
+
+if(!function_exists('getQuestionsBy')){
+    /**
+     * return questions match the given conditions;
+     * @param int $courseId
+     * @param int $subjectId
+     * @param string $qtype
+     * @param int $difficultylevelid
+     * @return mysqli_result
+     */
+    function getQuestiongsBy($courseId, $subjectId, $qtype, $difficultylevelid){
+        global $DB;
+        $querystr = "select question_id, question_body, qtype, point, creatorid, createddate, ques.courseid ,ques.subjectid, subjectname, difficultylevel_id ";
+        $querystr .= " from tk_questions ques, tk_subjects sub where ques.subjectid = sub.subject_id and ques.courseid= " . $courseId;
+        if (isset($subjectId) && $subjectId != -1){
+            $querystr .= " and subjectid = " . $subjectId;
+        }
+        if (isset($qtype) && $qtype!= 'all'){
+            $querystr .= " and qtype = '" . $qtype . "'";
+        }
+        if (isset($difficultylevelid) && $difficultylevelid != -1){
+            $querystr .= " and difficultylevel_id =" . $difficultylevelid; 
+        }
+        $result = mysqli_query($DB, $querystr);
         return $result;
     }
 }

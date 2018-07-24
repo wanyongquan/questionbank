@@ -20,6 +20,12 @@ $(document).ready(function() {
 //	});
 	reloadTable();
 	
+	$("#wrapper .btn").on('click', function(){
+		alert('hello');
+	});
+	$(".btn-primary").on('click', function(){
+		alert('a clicked');
+	});
 //	$("#paginate").DataTable({
 //		searching:false
 //	})

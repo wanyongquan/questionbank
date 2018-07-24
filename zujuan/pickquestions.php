@@ -19,6 +19,8 @@ if(!isset($courseId)){
 }
 $questionData = getCourseQuestions($courseId);
 $questionCart = $_SESSION['question_cart'];
+$qtypeData = getQtypes();
+$difficultyLevels = getDifficultyLevels();
 ?>
     <div class="container body">
       <div class="main_container">
@@ -33,7 +35,13 @@ $questionCart = $_SESSION['question_cart'];
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>Page Title</h3>
+                 <div class="nav" style="float:left; font-size:16px;">
+                   <ul class="breadcrumb">
+                     <li class=""><i class="fa fa-home"></i> <a href="#"><?=get_string('home') ?></a></li>
+                     <li class=""><a href="#"><?=get_string('manualzujuan') ?></a></li>
+                     
+                   </ul>
+                </div>
               </div>
 
             </div>
@@ -44,7 +52,7 @@ $questionCart = $_SESSION['question_cart'];
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Plain Page</h2>
+                    <h2><?=get_string('choosequestion') ?></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -66,6 +74,7 @@ $questionCart = $_SESSION['question_cart'];
                       
                       <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="filter-item-wrap">
+                          <input type="hidden" id="courseid" value="<?=$courseId ?>">
                           <div class="filter-item ">
                             <div class="filter-head">知识点
                             </div>
@@ -75,7 +84,7 @@ $questionCart = $_SESSION['question_cart'];
                                 <?php $subjectData = getCourseSubjects($courseId);
                                 foreach($subjectData as $subject){
                                 ?>
-                                  <option value=""><?=$subject['subjectname'] ?></option>
+                                  <option value="<?=$subject['subject_id'] ?>"><?=$subject['subjectname'] ?></option>
                                   
                                 <?php } ?>
                                 </select>
@@ -85,25 +94,30 @@ $questionCart = $_SESSION['question_cart'];
                           <div class="filter-item ">
                             <div class="filter-head">题型
                             </div>
-                            <div class="filter-value">
-                                <ul>
-                                  <li><a>choice</a></li> <li><a>shortanswer</a></li><li><a>this is a very long option </a></li>
-                                </ul>
+                            <div class="filter-value" id="qtypeselect">
+                                <a href="#" class="active" data-id="-1">全部</a>
+                                  <?php foreach($qtypeData as $vl){?>
+                                  <a href="#"  data-id="<?=$vl['id'] ?>" data-value="<?=$vl['item_value'] ?>"><?=$vl['item_name'] ?></a>
+                                  
+                                  <?php } ?>
+                                
                             </div>
                           </div>
                           <div class="filter-item ">
                             <div class="filter-head">难度
                             </div>
-                            <div class="filter-value">
-                                <ul>
-                                  <li><a>easy</a></li> <li><a>hard</a></li>
-                                </ul>
+                            <div class="filter-value" id="difficultyselect">
+                                <a class="active" data-id="-1">全部</a>
+                                <?php foreach($difficultyLevels as $vl) {?>
+                                <a href="#" data-id="<?=$vl['id'] ?>"><?=$vl['item_name'] ?></a>
+                                
+                             <?php } ?>      
                             </div>
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-12 col-sm-12 col-xs-12">
-                      <?php 
+                      <div id="candidatequeslist" class="col-md-12 col-sm-12 col-xs-12">
+                 <!--       <?php 
                       foreach($questionData as $vl){
                           $questionid= $vl['question_id'];
                          $incart = cart_question_exists($questionid, $questionCart);
@@ -126,7 +140,7 @@ $questionCart = $_SESSION['question_cart'];
                             </div>
                           </div>
                         </div>
-                     <?php }?> 
+                     <?php }?> -->
                       </div>
                   </div>
                 </div>

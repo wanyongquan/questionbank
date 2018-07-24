@@ -57,7 +57,7 @@ if (!loginRequired($_SERVER['REQUEST_URI'])){die();}
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                      Add content to the page ...
+                      
                       <div class="col-md-12 col-sm-12 col-xs-12">
                         <table id="paperstable" class="table table-hover">
                           <thead><tr>
