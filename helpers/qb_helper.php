@@ -550,13 +550,15 @@ if (!function_exists('addQuestionToCart')){
             if (array_key_exists($qtype, $qtypeArr)){
                 //if the qtype is in array, then add the question id to the type array;
                 $qid_arr = $qtypeArr[$qtype];
+                // add new id in array;
                 $qid_arr[] = $questionid;
                 $qtypeArr[$qtype] = $qid_arr;
                 $questionCart['qtype_data'] = $qtypeArr;
             }else{
                 // add the qtype and qid_arr to qtype_data
                 $qid_arr = array($questionid);
-                $qtypeArr[] = array($qtype=>$qid_arr);
+                $qtypeArr[$qtype] = $qid_arr;
+                $questionCart['qtype_data'] = $qtypeArr;
             }
             
         }
@@ -658,5 +660,45 @@ if (!function_exists('getQuestionReferedTimes')){
         $resultArr = mysqli_fetch_assoc($result);
         $referedCount = $resultArr['referedCount'];
         return $referedCount;
+    }
+}
+
+if (!function_exists('getPaperDetails')){
+    function getPaperDetails($paperId){
+        global $DB;
+        $querystr = "select * from tk_testpapers where id=" . $paperId;
+        $result= mysqli_query($DB, $querystr);
+        if (!result){
+            die(mysqli_error($DB));
+        }
+        $paperDetails = mysqli_fetch_assoc($result);
+        return $paperDetails;
+    }
+}
+if (!function_exists('getPaperQtypes')){
+    function getPaperQtypes($paperId){
+        global $DB;
+        $querystr = "select * from tk_testpaper_qtypes where paperid = ". $paperId;
+        $result = mysqli_query($DB, $querystr);
+        return $result;
+    }
+}
+
+if (!function_exists('getQuestionsByPaperAndType')){
+    function getQuestionsByPaperAndType($paperId, $qtype="all"){
+        global $DB;
+        $querystr = "select * from tk_testpaper_questions where paperid= " . $paperId ;
+        if ($qtype != "all"){
+            $querystr .=  " and qtype='". $qtype. "'";
+        }
+        $result = mysqli_query($DB, $querystr);
+        return $result;
+    }
+}
+
+if (!function_exists('getPaperQuestions')){
+    function getPaperQuestions($paperId){
+        global $DB;
+        return getQuestionsByPaperAndType($paperId);
     }
 }

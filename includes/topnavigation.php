@@ -43,36 +43,8 @@
                     
                   </a>
                 
-                 <ul id="quesCart" class="dropdown-menu list-unstyled msg_list" role="menu">
-                    <?php 
-                    if (isset($_SESSION['question_cart'])){
-                       $questionCart = $_SESSION['question_cart'];
-                        foreach($questionCart as $key=>$value){
-                    
-                    ?>
-                    <li>
-                      <a>
-                        <span>
-                          <span> <?=$key?> :</span>
-                          <span><?=count($value) ?></span>
-                          
-                        </span>
-                        
-                      </a>
-                    </li>
-                    <?php } // end of foreach 
-                        }// end of if  ?>
-                    <li>
-                      <div class="text-center">
-                        <a href="<?=$qb_url_root?>/zujuan/maketestpaper.php">
-                          <strong>进入组卷中心</strong>
-                          <i class="fa fa-angle-right"></i>
-                        </a>
-                      </div>
-                    </li>
-                   </ul>
-                   </li>
-              </ul>
+                 <ul id="quesCart" class="dropdown-menu list-unstyled msg_list" role="menu">  
+                </ul>
               
             <!-- /.navar-right -->
             </nav>

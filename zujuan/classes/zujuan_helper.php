@@ -7,6 +7,7 @@
  */
 
 namespace core_paper;
+
 ?>
 
 <?php require_once '../../config.php'; ?>
@@ -230,5 +231,57 @@ class PaperHelper{
             }
         }
         return false;
+    }
+    
+    public static function createAndSaveAsWord($content, $filename='newdoc1.doc'){
+        
+    }
+    
+    public static function prepareForEditPaper($paperId){
+        unset($_SESSION['question_cart']);
+        
+        $questionCart = array();
+        $questionCart['paperid'] = $paperId;
+        
+        //update courseId in cart;
+        $paperDetails = \getPaperDetails($paperId);
+        
+        $courseId= $paperDetails['courseid'];
+        if ( !array_key_exists('courseid', $questionCart)){
+            $questionCart['courseid'] = $courseId;
+        }
+        
+        // update question information in question_cart in session
+        
+        $paperQuestions =  getPaperQuestions($paperId);
+        
+         foreach($paperQuestions as $vl){
+            $questionid = $vl['questionid'];
+           
+            
+//             // step 1: check if this question is already in session;
+//             //$questionCart = $_SESSION['question_cart'];
+//             if (cart_question_exists($questionid, $questionCart)){
+//                 // remove the question from cart if it exits in cart;
+//                 ///$questionCart = removeArrayAt($questionCart, $questionid);
+//                 $questionCart = removeQuestionFromCart($questionid, $questionCart);
+//                 $responseArr['btn']='add';
+//                 $responseArr['btn_text'] = get_string('addcart');
+//                 $btn_text = get_string('addcart');
+//             }else{
+//                 ///$questionDetails = getQuestionDetails($questionid);
+//                 ///$row = mysqli_fetch_assoc($questionDetails);
+//                 ///$questionArr = array($questionid => array('qid'=>$questionid, 'qbody'=>$row['qbody'], 'difficulty'=>$row['difficulty_id'], 'subject'=>$row['subjectid']));
+//                 ///foreach($questionArr as $key =>$value){
+//                 ///    $questionCart[$key] = $value;
+//                 ///}
+                $questionCart = addQuestionToCart($questionid, $questionCart);
+//                 $responseArr['btn'] = 'remove';
+//                 $responseArr['btn_text'] = get_string('removecart');
+//                 $btn_text = get_string('removecart');
+//             }
+        }
+        //update cart in session
+        $_SESSION['question_cart'] = $questionCart;
     }
 }

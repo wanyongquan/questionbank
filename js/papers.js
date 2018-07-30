@@ -9,6 +9,13 @@
 
 $(document).ready(function(){
 	reloadpaperstable();
+	
+	$("#confirmEdit").on('show.bs.modal', function(e){
+		// set the data-id attr with paperid;
+		$(this).find('.btn-ok').attr('data-id', $(e.relatedTarget).data('id'));
+		
+	});
+
 });
 
 /**
@@ -36,10 +43,20 @@ function reloadpaperstable(){
 function editpaper(e){
 	var paperid = $(e).attr("data-id");
 	$.ajax({
-		url: getProjectRootPath() +　'zujuan/ajax/zujuan.ajax.php',
+		url: '../zujuan/ajax/zujuan.ajax.php',
+		type:'POST',
 		data:{
-			action:'editpaper',
+			action:'prepareforeditpaper',
 			paperid: paperid
+		},
+		success:function(data){
+			// hide the modal dialog
+			$("#confirmEdit").modal("hide");
+			
+			// relocate
+			window.location = data;
+			
 		}
 	});
 }
+

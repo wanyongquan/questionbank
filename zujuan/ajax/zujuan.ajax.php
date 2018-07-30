@@ -1,5 +1,6 @@
 <?php 
 
+
 /**
  *  YanZi TIKU
  *  A Question Management and Test Paper Generator System
@@ -98,7 +99,7 @@ switch( $action){
                 $html .= '</span></a> </li>';    
             } // end of foreach 
             $html .='  <li><div class="text-center">
-                        <a href="' . $qb_url_root .'/zujuan/maketestpaper.php?courseid="'. $courseId  .'">' .
+                        <a href="' . $qb_url_root .'/zujuan/maketestpaper.php?courseid='. $courseId  .'">' .
                           '<strong>进入组卷中心</strong>
                           <i class="fa fa-angle-right"></i>
                         </a>
@@ -210,7 +211,7 @@ switch( $action){
         foreach($paperData as $vl){
             
             $rowArr = array($vl['id'], $vl['title'], $vl['examduration'], $vl['createdtime']);
-            $rowArr[] = ' <a href="maketestpaper.php?paperid='.$vl[id] .'" title="' .get_string('edit') .'" class="operationbtn" data-id="' .$vl['id'] .'" data-toggle="modal" data-target="#editpaper" data-backdrop="false"><span class="blue"><i class="fa fa-edit"></i></span></a>
+            $rowArr[] = ' <a title="' .get_string('edit') .'" class="operationbtn" data-id="' .$vl['id'] .'" data-toggle="modal" data-target="#confirmEdit" data-backdrop="false"><span class="blue"><i class="fa fa-edit"></i></span></a>
                           <a title="'. get_string('delete') .'" class="operationbtn" data-id="' . $vl['id'] .'" data-toggle="modal" data-target="#deletepaper" data-backdrop="false"><span class="red"><i class="fa fa-trash-o"></i></span></a>';
             $dataArr[] = $rowArr;
         }
@@ -283,6 +284,19 @@ switch( $action){
         }
         
         echo core_paper\PaperHelper::reloadCandidateQuestions($questionData);
+        
+        break;
+    case 'prepareforeditpaper':
+        $paperId = $_REQUEST['paperid'];
+        // fetch paper information and reset questioncart in session;
+       
+        
+        core_paper\PaperHelper::prepareForEditPaper($paperId);
+        $url = $qb_url_root.'/zujuan/maketestpaper.php?action=edit';
+        echo $url;
+        break;
+    case 'clearcart':
+        unset($_SESSION['question_cart']);
         
         break;
 }

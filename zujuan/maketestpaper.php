@@ -13,9 +13,17 @@
 <?php  if (!loginRequired($_SERVER['REQUEST_URI'])){die();} ?>
 <? 
 // PHP goes here!
+
+$action = $_REQUEST['action'];
+if (!empty($action) && $action == 'editpaper'){
+    /***********section 1: edit paper *********/
+    $paperId = $_SESSION['paperid'];
+}
+
 $questionCart = $_session['question_cart'];
 
 ?>
+
     <div class="container body">
       <div class="main_container">
          <?php require_once $abs_doc_root.$qb_url_root.'/includes/menu.php';?>
@@ -118,22 +126,22 @@ $questionCart = $_session['question_cart'];
                         
                         <ul class="list-unstyled side_toolbar">
                           <li><a href="<?php echo isset($courseid)? $qb_url_root.'/zujuan/pickquestions.php?courseid='.$courseid:$qb_url_root.'/zujuan/zujuan.php'  ?>"><?=get_string('continueaddquestion') ?></a></li>
-                          <li><a href=""><?=get_string('clearcart') ?></a></li>
+                          <li><a  href="#" data-toggle="modal" data-target="#confirmClear" data-backdrop="false"><?=get_string('clearcart') ?></a></li>
                           <li>
-                            <a href="" >试卷设置（标题）</a>
+                            <a >试卷设置（标题）</a>
                           </li>
                           <li>
                             <a href="">分数设置</a>
                           </li>
                           <li>
-                            <a href="">试题分析</a>
+                            <a href="#" data-toggle="modal" data-target="#paperAnalysis" data-backdrop="false">试题分析</a>
                           </li>
                         </ul>
                         <hr>
                         </div>
                         <ul class="list-unstyled user_data">
                           <li><a class="btn btn-primary" id="savepaper">save</a></li>
-                          <li><a class="btn btn-primary" href="admin_users.php">publish</a></li>
+                          <li><a class="btn btn-primary" href="downloadword.php?id=<?= 17?>">download</a></li>
                           
                         </ul>
                         
@@ -145,7 +153,82 @@ $questionCart = $_session['question_cart'];
           </div>
         </div>
         <!-- /page content -->
-
+     <div id="confirmClear" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!--  Modal dialog content -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><?=get_string('prompt') ?></h4>
+                </div>
+                <div class="modal-body">
+                    <h5 class="warningtext"><?=get_string('confirmclearcart') ?> </h5>
+                    <p class="warningtext"><span class="red"><?=get_string('clearcartWarningtext') ?></span></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <a class="btn btn-primary btn-ok" onclick="clearcart(this)"><?=get_string('ok'); ?></a>
+                </div>
+                <!--  end of modal-footer -->
+            </div>
+            <!--  end of modal-content -->
+        </div>
+        <!--  end of modal-dialog -->
+    </div> <!-- /end of confirmClear dialog -->
+    <div id="paperAnalysis" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!--  Modal dialog content -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><?=get_string('prompt') ?></h4>
+                </div>
+                <div class="modal-body">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs">
+                      <li class="active"> <a href="#qtypepane" data-toggle="tab" onclick="showQtypeChart()"><?=get_string('qtypedistribution') ?></a>
+                      </li>
+                      <li><a href="#subjectpane" data-toggle="tab"><?=get_string('subjectdistribution') ?></a>
+                      </li>
+                      <li><a href="#difficultypane" data-toggle="tab"><?=get_string('difficultydistribution') ?></a>
+                      </li>
+                      <li><a href="#overallpane" data-toggle="tab"><?=get_string('statisticsreport') ?></a>
+                      </li>
+                    </ul>
+                    <!-- Tab Panes -->
+                    <div class="tab-content">
+                      <div class="tab-pane fade in active" id="qtypepane">
+                        <h4>adf</h4>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                          <div id="qtypedistribution" style="width:480px;height:360px"></div>
+                          
+                        </div>
+                        <div class="clearfix"></div>
+                      </div>
+                      <div class="tab-pane fade" id="subjectpane">
+                        <h4>Profile tab</h4>
+                        <p>adsfadf</p>
+                      </div>
+                      <div class="tab-pane fade" id="difficulypane">
+                        <h4>Profile tab</h4>
+                        <p>difficulty</p>
+                      </div>
+                      <div class="tab-pane fade" id="overallpane">
+                        <h4>Profile tab</h4>
+                        <p>over all</p>
+                      </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <a class="btn btn-primary btn-ok" onclick="clearcart(this)"><?=get_string('ok'); ?></a>
+                </div>
+                <!--  end of modal-footer -->
+            </div>
+            <!--  end of modal-content -->
+        </div>
+        <!--  end of modal-dialog -->
+    </div> <!-- /end of paperAnalysis dialog -->
         <!-- footer content -->
         <footer>
           <div class="pull-right">
@@ -170,6 +253,7 @@ $questionCart = $_session['question_cart'];
     <script src="<?php echo $qb_url_root?>/js/custom.min.js"></script>
     <script src="../js/pagination/jquery.dataTables.js" type="text/javascript"></script>
     <script src="../js/pagination/dataTables.js" type="text/javascript"></script>
+     <script src="../vendors/echarts/dist/echarts.js"></script>
     <script src="../js/makepaper.js"></script>
   </body>
 </html>

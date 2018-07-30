@@ -13,6 +13,8 @@
 <?php  if (!loginRequired($_SERVER['REQUEST_URI'])){die();} ?>
 <?php 
 // PHP goes here!
+
+
 $courseId = $_REQUEST['courseid'];
 if(!isset($courseId)){
     Redirect::to($qb_url_root.'/zujuan/zujuan.php');
