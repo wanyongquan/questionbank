@@ -78,7 +78,28 @@ if (!loginRequired($_SERVER['REQUEST_URI'])){die();}
           </div>
         </div>
         <!-- /page content -->
-
+     <div id="confirmEdit" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!--  Modal dialog content -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><?=get_string('prompt') ?></h4>
+                </div>
+                <div class="modal-body">
+                    <h5 class="warningtext"><?=get_string('confirmeditpaper') ?> </h5>
+                    <p class="warningtext"><span class="red"><?=get_string('editpaperwarning') ?></span></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <a class="btn btn-primary btn-ok" onclick="editpaper(this)"><?=get_string('ok'); ?></a>
+                </div>
+                <!--  end of modal-footer -->
+            </div>
+            <!--  end of modal-content -->
+        </div>
+        <!--  end of modal-dialog -->
+    </div> <!-- /end of confirmEdit dialog -->
         <!-- footer content -->
         <footer>
           <div class="pull-right">
