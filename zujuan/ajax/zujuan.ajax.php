@@ -310,7 +310,7 @@ switch( $action){
         $querystr = "select subjectname, count(*) QC from tk_questions Q, tk_subjects S where Q.subjectid = S.subject_id and Q.question_id in " .$qidRange . ' group by subjectname';
         $result = mysqli_query($DB, $querystr);
         $responseArr = array();
-        if (!result ){
+        if (!$result ){
             die(mysqli_error($DB));
         }
         foreach($result as $vl){
@@ -340,7 +340,7 @@ switch( $action){
         $querystr = "select item_name Difficulty, count(*) QC from tk_questions Q, tk_dictionary_items D  where Q.difficultylevel_id =D.id and Q.question_id in " .$qidRange . ' group by Difficulty';
         $result = mysqli_query($DB, $querystr);
         $responseArr = array();
-        if (!result ){
+        if (!$result ){
             die(mysqli_error($DB));
         }
         foreach($result as $vl){
@@ -351,4 +351,51 @@ switch( $action){
         
         echo json_encode($responseArr, JSON_UNESCAPED_UNICODE);
         break;
+    case 'getoverallreport':
+        $questionCart = $_SESSION['question_cart'];
+        $qtype_arr = $questionCart['qtype_data'];
+        
+        // get the value-name pair array of qtype;
+        $qtypeData = getQtypes();
+        $qtypeValueNameMap = array();
+        foreach($qtypeData as $vl){
+            $qtypeValueNameMap[$vl['item_value']] = $vl['item_name'];
+        }
+        
+        $html = '<table class="table table-hover table-striped">';
+        $html .= '<thead><tr><td>题型</td><td>知识点</td><td>试题数量</td></tr></thead>';
+        foreach($qtype_arr as $qtype=>$qid_arr){
+            $qidRange = '(';
+            foreach($qid_arr as $vl){
+                $qidRange .= $vl. ',';
+            }
+            if (strlen($qidRange) > 1){
+                $qidRange  = rtrim($qidRange, ','); //  get rid of the ',' at the end;
+            }
+            $qidRange .= ')';
+            $querystr = "select subjectname, count(*) QC from tk_questions Q , tk_subjects S where Q.subjectid= S.subject_id and Q.question_id in " . $qidRange . ' group by subjectname';
+            $result = mysqli_query($DB, $querystr);
+            if ($result ){
+                $rowCount = count($result);
+               $html .="<tr>";
+               $index = 0;
+               foreach($result as $vl){
+                   $index ++;
+                   $rowspan = '';
+                   if ($rowCount > 1 && $index ==1)
+                   {
+                       $rowspan = 'rowspan="'.$rowCount.'"';
+                   }
+                   $html .= '<td '. $rowspan.'>'.$qtypeValueNameMap[$qtype].'</td>'; 
+                   
+                       $html .= '<td>'.$vl['subjectname'] .'</td><td>'. $vl['QC'].'</td>';
+                   
+               }
+               $html .= '</tr>';
+            }
+            
+            
+        }
+        
+        echo $html;
 }

@@ -66,7 +66,7 @@ class PaperHelper{
         $qtype = $question['qtype'];
         if (isset($qtypeArr[ $qtype])){
             $qid_arr = $qtypeArr[$qtype];
-            $qid_arr =  array_swap_back($qid_arr, $questionid);
+            $qid_arr =  self::array_swap_back($qid_arr, $questionid);
             if ($qid_arr){
                 $qtypeArr[$qtype] = $qid_arr;
             }

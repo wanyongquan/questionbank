@@ -76,7 +76,7 @@ $questionCart = $_SESSION['question_cart'];
                       
                       </div><!-- /end of col-md-9 -->
                       <div class="col-md-3 col-sm-3 col-xs-3">
-                        <h3> operation</h3>
+                        <h3><?=get_string('operations') ?></h3>
                         
                         <div >
                         
@@ -96,7 +96,7 @@ $questionCart = $_SESSION['question_cart'];
                         <hr>
                         </div>
                         <ul class="list-unstyled user_data">
-                          <li><a class="btn btn-primary" id="savepaper">save</a></li>
+                          <li><a class="btn btn-primary" id="savepaper"><?=get_string('savepaper') ?></a></li>
                           <li><a class="btn btn-primary" href="downloadword.php?id=<?= 17?>">download</a></li>
                           
                         </ul>
@@ -177,8 +177,11 @@ $questionCart = $_SESSION['question_cart'];
                         <div class="clearfix"></div>
                       </div>
                       <div class="tab-pane fade" id="overallpane">
-                        <h4>Profile tab</h4>
-                        <p>over all</p>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                          <div id="overallreport" class="fixedbox"></div>
+                          
+                        </div>
+                        <div class="clearfix"></div>
                       </div>
                     </div>
                 </div>

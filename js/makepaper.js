@@ -397,3 +397,18 @@ function showDifficultyChart(){
 		}
 	});
 }
+
+/**
+ * show report of questions on page;
+ * @returns
+ */
+function showOverallReport(){
+	$.ajax({
+		url:getProjectRootPath() + '/zujuan/ajax/zujuan.ajax.php',
+		type:'GET',
+		data:{action:'getoverallreport'},
+		success:function(data){
+			$("#overallreport").html(data);
+		}
+	});
+}
