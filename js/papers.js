@@ -10,12 +10,6 @@
 $(document).ready(function(){
 	reloadpaperstable();
 	
-	$("#confirmEdit").on('show.bs.modal', function(e){
-		// set the data-id attr with paperid;
-		$(this).find('.btn-ok').attr('data-id', $(e.relatedTarget).data('id'));
-		
-	});
-
 });
 
 /**
@@ -60,3 +54,29 @@ function editpaper(e){
 	});
 }
 
+function beforeEditPaper(e){
+	// check if there are questions in cart;
+	var actionurl = getProjectRootPath() + '/zujuan/ajax/zujuan.ajax.php';
+		
+		$.ajax({
+			url: actionurl,
+			type:'POST',
+			data:{
+				action:'updatecartinfo'			
+			},
+		    success:function(data){
+		    	// update UI element
+		    	//alert('arrive here' + data);
+		    	if (data == 0){
+		    		// forward to edit page;
+		    		editpaper(e);
+		    	}else{
+		    		// set the attr data-id of .btn-ok with paper id;
+					$("#confirmEdit").find('.btn-ok').attr('data-id', $(e).data('id'));
+					// pop up confirm edit dialog;
+		    		$("#confirmEdit").modal("show");
+		    	}
+		    	
+		    }
+		});
+}

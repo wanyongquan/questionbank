@@ -45,7 +45,8 @@
                 
                  <ul id="quesCart" class="dropdown-menu list-unstyled msg_list" role="menu">  
                 </ul>
-              
+               </li>
+            </ul> 
             <!-- /.navar-right -->
             </nav>
           </div>

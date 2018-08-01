@@ -113,6 +113,10 @@ class PaperHelper{
         }else{
             $courseid = $questionCart ['courseid'];
             $qtypeArr = $questionCart ['qtype_data'];
+            
+            $qtypeData = getQtypes();
+            // qtype order-displaytext map
+            $qtypeDisplayTextArr = array();
             $html = '';
             $outindex = 0;
             $outLength = count($qtypeArr);
@@ -121,9 +125,19 @@ class PaperHelper{
                 $disableclass= "btn disabled";
                 $disable_outter_moveup = $outindex == 1? $disableclass : '';
                 $disable_outter_movedown= $outindex == $outLength ? $disableclass : '';
+                
+                foreach ( $qtypeData as $vl){
+                    if ($vl['item_value'] == $qtype){
+                        $qtypeName = $vl['item_name'];
+                        break;
+                    }
+                }
+                if (empty($qtypeName)){
+                    $qtypeName =  $qtype;
+                }
                 $html .= '<div class="x_panel">
                           <div class="x_title">
-                            <h2>' . $qtype . ' </h2>
+                            <h2>'.PaperHelper::getSerialNumberText($outindex) . '. ' . $qtypeName . ' </h2>
                             <ul class="nav navbar-right widget-toolbar">';
                 $html .= '  <li><a class="collapse-link ' .$disable_outter_moveup . '"><i class="fa fa-arrow-up"></i>'.get_string('moveup') .'</a>  </li>';
                 $html .= '  <li><a class="collapse-link '. $disable_outter_movedown . '"><i class="fa fa-arrow-down"></i>'.get_string('movedown') .'</a>  </li>';
@@ -141,6 +155,10 @@ class PaperHelper{
                     $disable_inner_movedown = $innerIndex == $innerLength ? $disableclass : '';
                     $referedCount= \getQuestionReferedCount($vl);
                     
+                    $subjectId = $ques['subjectid'];
+                    $subjectNameDetail = \getSubjectName($subjectId);
+                    $subjectArr = mysqli_fetch_assoc($subjectNameDetail);
+                    
                     $html .= '<div class="panel panel-default">
                                 <div class="panel-heading">
                                 <h5 style="float:left; margin: 5px 0 6px;">难度：easy  组卷次数：'.$referedCount.' 入库时间： 2018-8-1</h5>
@@ -154,7 +172,8 @@ class PaperHelper{
                     $html .= ' </ul>
                                 <div class="clearfix"></div>
                                 </div>
-                                <div class="panel-body">' . $ques ['question_body'] . '          </div>
+                                <div class="panel-body">'.$innerIndex. '. ' . $ques ['question_body'] . '          </div>
+                                <div class="panel-footer">知识点：'.$subjectArr['subjectname'] .'</div>
                               </div>';
                 }
                 $html .= '</div>
@@ -283,5 +302,65 @@ class PaperHelper{
         }
         //update cart in session
         $_SESSION['question_cart'] = $questionCart;
+    }
+
+    public static function reloadTestPapersTable(){
+        global $DB, $user;
+        // table columns: ID, title, examduration, createdtime, operations
+        if(isset($_REQUEST['order'])){
+            $orderby = null;
+            $order = $_REQUEST['order'];
+            $orderdir = $order[0]['dir'];
+            switch($order[0][column]){
+                case 0:
+                    $orderby = 'id';
+                    break;
+                case 1:
+                    $orderby = 'title';
+                    break;
+            }
+        }
+        $paperData = getAllTestPapers($orderby, $orderdir);
+        $responseArr = array();
+        $responseArr['draw'] = $_REQUEST['draw'];
+        $responseArr['recordsTotal'] = mysqli_num_rows($paperData);
+        $responseArr['recordsFiltered'] = mysqli_num_rows($paperData);
+        $dataArr = array();
+        foreach($paperData as $vl){
+            
+            $rowArr = array($vl['id'], $vl['title'], $vl['examduration'], $vl['createdtime']);
+            $rowArr[] = ' <a title="' .get_string('edit') .'" class="operationbtn" data-id="' .$vl['id'] .'" onclick="beforeEditPaper(this)" ><span class="blue"><i class="fa fa-edit"></i></span></a>
+                          <a title="'. get_string('delete') .'" class="operationbtn" data-id="' . $vl['id'] .'" data-toggle="modal" data-target="#deletepaper" data-backdrop="false"><span class="red"><i class="fa fa-trash-o"></i></span></a>';
+            $dataArr[] = $rowArr;
+        }
+        $responseArr['data'] = $dataArr;
+        return json_encode($responseArr);
+    }
+    public static function getSerialNumberText($serialNumber){
+        if (!\is_int($serialNumber)){
+            return false;
+        }
+        switch($serialNumber){
+            case 1:
+                return "一";
+            case 2:
+                return "二";
+            case 3:
+                return "三";
+            case 4:
+                return "四";
+            case 5:
+                return "五";
+            case 6:
+                return "六";
+            case 7:
+                return "七";
+            case 8:
+                return "八";
+            case 9:
+                return "九";
+            case 10:
+                return "十";
+        }
     }
 }

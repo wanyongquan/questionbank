@@ -32,7 +32,10 @@ $(document).ready(function(){
 		
 	});
 	
-	
+    $("#paperAnalysis").on('show.bs.modal',function(e){
+        showQtypeChart();    	
+    });
+   
 });
 
 function movequestionup(e){
@@ -102,17 +105,20 @@ function showQtypeChart(){
 	var qtypeChart = echarts.init(document.getElementById('qtypedistribution'));
 	
 	var qtypes  = [];
-//	$.ajax({
-//		url:'getdata.php',
-//		type:'POST',
-//		success:function(data){
-//			var responseArr = JSON.parse(data);
-//			for(var i = 0; i< responseArr.qtypes.length; i++){
-//				qtypes.push(responseArr.qtypes[i].qtype);
-//			}
-			qtypes.push({value: 1, name:'choice'});
-			qtypes.push({value: 2, name:'truefalse'});
-			qtypes.push({value: 2, name:'shortanswer'});
+	
+	$.ajax({
+		url:getProjectRootPath() + '/zujuan/ajax/zujuan.ajax.php',
+		type:'POST',
+		data:{
+			action:'getQtypeInCart'
+		},
+		success:function(data){
+			var responseArr = JSON.parse(data);
+			for(var i = 0; i< responseArr.length; i++){
+				
+				qtypes.push({name: responseArr[i].qtype, value: responseArr[i].quesCount});
+			}
+
 			var qtypeOption ={
 					title:{
 						text:"题型分布",
@@ -122,16 +128,11 @@ function showQtypeChart(){
 						trigger:"item",
 						formatter:"{a} <br/> {b}:{c} ({d}%)"
 					},
-					legend:{
-						orient:"vertical",
-						x:'left',
-						data:['type1', 'type2', 'type3']
-					},
+
 					toolbox:{
 						show:true,
 						feature:{
 							mark:{show:true},
-							dataView:{show:true, readonly :false},
 							magicType:{
 								show:true,
 								type:['pie', 'funnel'],
@@ -143,14 +144,12 @@ function showQtypeChart(){
 										max:1548
 									}
 								}
-							},
-							
-							saveAsImage:{show:true}
+							}
 						}
 					},
 					calculable:true,
 					series:[{
-						name:"Qtype",
+						name:"题型",
 						type:'pie',
 						radius:'55%',
 						center:['50%','60%'],
@@ -175,6 +174,226 @@ function showQtypeChart(){
 					}]
 			};
 			qtypeChart.setOption(qtypeOption);
-//		}
-//	});
+		}
+	});
+}
+function showSubjectChart(){
+	// init pie chart 
+	var subjectChart = echarts.init(document.getElementById('subjectdistribution'));
+	
+	var subjects  = [];
+	$.ajax({
+		url:getProjectRootPath() + '/zujuan/ajax/zujuan.ajax.php',
+		type:'POST',
+		data:{
+			action:'getSubjectInCart'
+		},
+		success:function(data){
+			var responseArr = JSON.parse(data);
+			for(var i = 0; i< responseArr.length; i++){
+				subjects.push({name:responseArr[i].subject, value:responseArr[i].QC});
+			}
+			var subjectOption ={
+					title:{
+						text:"知识点分布",
+						x:'center'
+					},
+					tooltip:{
+						trigger:"item",
+						formatter:"{a} <br/> {b}:{c} ({d}%)"
+					},
+					toolbox:{
+						show:true,
+						feature:{
+							mark:{show:true},
+							magicType:{
+								show:true,
+								type:['pie', 'funnel'],
+								option:{
+									funnel:{
+										x:"25%",
+										width:"50%",
+										funnelAlign:"left",
+										max:1548
+									}
+								}
+							}
+						}
+					},
+					calculable:true,
+					series:[{
+						name:"知识点",
+						type:'pie',
+						radius:'55%',
+						center:['50%','60%'],
+						data:subjects,
+						itemStyle:{
+							normal:{
+								label:{
+									show:true,
+									formatter:'{b}: {c}\n ({d}%)'
+								},
+								labelLine:{
+									show:true
+								}
+							},
+							emphasis:{
+								shadowBlur:10,
+								shadowOffsetX:0,
+								shadowColor:'rgba(0,0,0,0.5)'
+							}
+						}
+					
+					}]
+			};
+			subjectChart.setOption(subjectOption);
+		}
+	});
+}
+
+function showSubjectChart(){
+	// init pie chart 
+	var subjectChart = echarts.init(document.getElementById('subjectdistribution'));
+	
+	var subjects  = [];
+	$.ajax({
+		url:getProjectRootPath() + '/zujuan/ajax/zujuan.ajax.php',
+		type:'POST',
+		data:{
+			action:'getSubjectInCart'
+		},
+		success:function(data){
+			var responseArr = JSON.parse(data);
+			for(var i = 0; i< responseArr.length; i++){
+				subjects.push({name:responseArr[i].subject, value:responseArr[i].QC});
+			}
+			var subjectOption ={
+					title:{
+						text:"知识点分布",
+						x:'center'
+					},
+					tooltip:{
+						trigger:"item",
+						formatter:"{a} <br/> {b}:{c} ({d}%)"
+					},
+					toolbox:{
+						show:true,
+						feature:{
+							mark:{show:true},
+							magicType:{
+								show:true,
+								type:['pie', 'funnel'],
+								option:{
+									funnel:{
+										x:"25%",
+										width:"50%",
+										funnelAlign:"left",
+										max:1548
+									}
+								}
+							}
+						}
+					},
+					calculable:true,
+					series:[{
+						name:"知识点",
+						type:'pie',
+						radius:'55%',
+						center:['50%','60%'],
+						data:subjects,
+						itemStyle:{
+							normal:{
+								label:{
+									show:true,
+									formatter:'{b}: {c}\n ({d}%)'
+								},
+								labelLine:{
+									show:true
+								}
+							},
+							emphasis:{
+								shadowBlur:10,
+								shadowOffsetX:0,
+								shadowColor:'rgba(0,0,0,0.5)'
+							}
+						}
+					
+					}]
+			};
+			subjectChart.setOption(subjectOption);
+		}
+	});
+}
+function showDifficultyChart(){
+	// init pie chart 
+	var difficultyChart = echarts.init(document.getElementById('difficultydistribution'));
+	
+	var difficulties  = [];
+	$.ajax({
+		url:getProjectRootPath() + '/zujuan/ajax/zujuan.ajax.php',
+		type:'POST',
+		data:{
+			action:'getDifficultyInCart'
+		},
+		success:function(data){
+			var responseArr = JSON.parse(data);
+			for(var i = 0; i< responseArr.length; i++){
+				difficulties.push({name:responseArr[i].Difficulty, value:responseArr[i].QC});
+			}
+			var option ={
+					title:{
+						text:"难度分布",
+						x:'center'
+					},
+					tooltip:{
+						trigger:"item",
+						formatter:"{a} <br/> {b}:{c} ({d}%)"
+					},
+					toolbox:{
+						show:true,
+						feature:{
+							mark:{show:true},
+							magicType:{
+								show:true,
+								type:['pie', 'funnel'],
+								option:{
+									funnel:{
+										x:"25%",
+										width:"50%",
+										funnelAlign:"left",
+										max:1548
+									}
+								}
+							}
+						}
+					},
+					calculable:true,
+					series:[{
+						name:"难度",
+						type:'pie',
+						radius:'55%',
+						center:['50%','60%'],
+						data:difficulties,
+						itemStyle:{
+							normal:{
+								label:{
+									show:true,
+									formatter:'{b}: {c}\n ({d}%)'
+								},
+								labelLine:{
+									show:true
+								}
+							},
+							emphasis:{
+								shadowBlur:10,
+								shadowOffsetX:0,
+								shadowColor:'rgba(0,0,0,0.5)'
+							}
+						}
+					
+					}]
+			};
+			difficultyChart.setOption(option);
+		}
+	});
 }

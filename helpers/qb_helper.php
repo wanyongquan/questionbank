@@ -702,3 +702,13 @@ if (!function_exists('getPaperQuestions')){
         return getQuestionsByPaperAndType($paperId);
     }
 }
+
+if (!function_exists('getSubjectName')){
+    function getSubjectName($subjectId){
+        global $DB;
+        $querystr = "select subjectname from tk_subjects where subject_id=". $subjectId;
+        $result = mysqli_query($DB, $querystr) or die(mysqli_error($DB));
+        
+        return $result;
+    }
+}

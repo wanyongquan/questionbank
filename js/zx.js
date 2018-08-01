@@ -39,7 +39,7 @@ function updateCartInfo(){
 	    	//alert('arrive here' + data);
 	    	$("#quescartcount").html(data);
 	    }
-	})
+	});
 }
 
 function updateCartBrief(){

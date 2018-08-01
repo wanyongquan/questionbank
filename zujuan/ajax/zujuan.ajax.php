@@ -1,6 +1,5 @@
 <?php 
 
-
 /**
  *  YanZi TIKU
  *  A Question Management and Test Paper Generator System
@@ -187,36 +186,7 @@ switch( $action){
         echo $html;
         break;
     case 'reloadpaperstable':
-        global $DB, $user;
-        // table columns: ID, title, examduration, createdtime, operations
-        if(isset($_REQUEST['order'])){
-            $orderby = null;
-            $order = $_REQUEST['order'];
-            $orderdir = $order[0]['dir'];
-            switch($order[0][column]){
-                case 0:
-                    $orderby = 'id';
-                    break;
-                case 1:
-                    $orderby = 'title';
-                    break;
-            }
-        }
-        $paperData = getAllTestPapers($orderby, $orderdir);
-        $responseArr = array();
-        $responseArr['draw'] = $_REQUEST['draw'];
-        $responseArr['recordsTotal'] = mysqli_num_rows($paperData);
-        $responseArr['recordsFiltered'] = mysqli_num_rows($paperData);
-        $dataArr = array();
-        foreach($paperData as $vl){
-            
-            $rowArr = array($vl['id'], $vl['title'], $vl['examduration'], $vl['createdtime']);
-            $rowArr[] = ' <a title="' .get_string('edit') .'" class="operationbtn" data-id="' .$vl['id'] .'" data-toggle="modal" data-target="#confirmEdit" data-backdrop="false"><span class="blue"><i class="fa fa-edit"></i></span></a>
-                          <a title="'. get_string('delete') .'" class="operationbtn" data-id="' . $vl['id'] .'" data-toggle="modal" data-target="#deletepaper" data-backdrop="false"><span class="red"><i class="fa fa-trash-o"></i></span></a>';
-            $dataArr[] = $rowArr;
-        }
-        $responseArr['data'] = $dataArr;
-        echo json_encode($responseArr);
+        echo core_paper\PaperHelper::reloadTestPapersTable();
         break;
     case 'deletepaper':
         global $DB;
@@ -298,5 +268,87 @@ switch( $action){
     case 'clearcart':
         unset($_SESSION['question_cart']);
         
+        break;
+    case 'getQtypeInCart':
+        $questionCart = $_SESSION['question_cart'];
+        $qtypeArr = $questionCart['qtype_data'];
+        $qtypeStatistic = array();
+        
+        // get the value-name pair array of qtype;
+        $qtypeData = getQtypes();
+        
+        $qtypeValueNameMap = array();
+        foreach($qtypeData as $vl){
+            $qtypeValueNameMap[$vl['item_value']] = $vl['item_name'];
+        }
+        // calculate the subtotal of questions per qtype;
+        foreach($qtypeArr as $qtype=>$qid_arr){
+            $qtypeCount = count($qid_arr);
+            $qtypeItem['qtype']= $qtypeValueNameMap[$qtype];
+            $qtypeItem['quesCount'] = $qtypeCount;
+            $qtypeStatistic[]=$qtypeItem;
+            
+        }
+        
+        echo json_encode($qtypeStatistic, JSON_UNESCAPED_UNICODE);
+        break;
+    case 'getSubjectInCart':
+        $questionCart = $_SESSION['question_cart'];
+        $qtype_arr = $questionCart['qtype_data'];
+        $qidRange = '('; // array of all question ids in the cart;
+        foreach($qtype_arr  as $qtype =>$qid_arr){
+            foreach($qid_arr as $vl){
+                $qidRange .= $vl .',';
+            }
+        }
+        if (strlen($qidRange) >1 ){
+            // get rid of the last ',';
+            $qidRange = rtrim($qidRange, ','); 
+        }
+        $qidRange .= ')'; 
+        global $DB;
+        $querystr = "select subjectname, count(*) QC from tk_questions Q, tk_subjects S where Q.subjectid = S.subject_id and Q.question_id in " .$qidRange . ' group by subjectname';
+        $result = mysqli_query($DB, $querystr);
+        $responseArr = array();
+        if (!result ){
+            die(mysqli_error($DB));
+        }
+        foreach($result as $vl){
+            $subjectItem['subject'] = $vl['subjectname'];
+            $subjectItem['QC'] = $vl['QC'];
+            $responseArr[] = $subjectItem;
+        }
+        echo json_encode($responseArr, JSON_UNESCAPED_UNICODE);
+        break;
+    case 'getDifficultyInCart':
+        $questionCart = $_SESSION['question_cart'];
+        $qtype_arr = $questionCart['qtype_data'];
+        $qidRange = '('; // array of all question ids in the cart;
+        foreach($qtype_arr  as $qtype =>$qid_arr){
+            foreach($qid_arr as $vl){
+                $qidRange .= $vl .',';
+            }
+        }
+        if (strlen($qidRange) >1 ){
+            // get rid of the last ',';
+            $qidRange = rtrim($qidRange, ',');
+        }
+        $qidRange .= ')'; 
+        
+        global $DB;
+        
+        $querystr = "select item_name Difficulty, count(*) QC from tk_questions Q, tk_dictionary_items D  where Q.difficultylevel_id =D.id and Q.question_id in " .$qidRange . ' group by Difficulty';
+        $result = mysqli_query($DB, $querystr);
+        $responseArr = array();
+        if (!result ){
+            die(mysqli_error($DB));
+        }
+        foreach($result as $vl){
+            $difficultyItem['Difficulty'] = $vl['Difficulty'];
+            $difficultyItem['QC'] = $vl['QC'];
+            $responseArr[] = $difficultyItem;
+        }
+        
+        echo json_encode($responseArr, JSON_UNESCAPED_UNICODE);
         break;
 }
