@@ -108,7 +108,7 @@ function getQuestionDetails(id){
 }
 
 // call choose function after submit modal
-$("#choose_questiontype_form").validator().on('submit', function(e){
+$("#choose_questiontype_form").bootstrapValidator().on('success.form.bv', function(e){
     
     if (e.isDefaultPrevented()){
         //

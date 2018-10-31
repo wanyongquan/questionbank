@@ -10,6 +10,7 @@
         $question_body= $_POST['question_body'];
        
         $subject_id = $_POST['subject_id'];
+        $cognitionId = $_POST['ques_cognitionid'];
         $difficultyLevelId = $_POST['difficultyLevel_id'];
         $question_mark = $_POST['question_mark'];
         //$user_id = $_SESSION['userid'];
@@ -21,10 +22,10 @@
             // step1: insert question to table tk_questions and tk_questionmultichoise
             $now = getCurrentDatetime(); // Month, day, year, hour, minute,second
             $query = "insert into tk_questions (question_body, point, ";
-            $query .= " courseid, subjectid,";
+            $query .= " courseid, subjectid, cognitionid, ";
             $query .= " difficultylevel_id, qtype, createdDate, creatorID)";
             $query .= " values('$question_body',$question_mark ,";
-            $query .= $courseId ."," . $subject_id .",";
+            $query .= $courseId ."," . $subject_id ."," . $cognitionId . ', ';
             $query .= " $difficultyLevelId , '$qtype', '$now', $user_id);";
 
             $result = mysqli_query($DB, $query) or die(exit(mysqli_error($DB)));

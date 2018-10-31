@@ -1,18 +1,18 @@
 <?php
 /*
- * ****************************************************
- * ** Yan Lao Shi Question Management System        ***
- * **-----------------------------------------------***
- * ** Developer: Wan Yongquan                       ***
- * ** Title: User Management                        ***
- * ** Function: Edit, Password&Role Settings        ***
- * ****************************************************        
+ ****************************************************
+ ** WanXin Test Paper Generator System             **
+ **------------------------------------------------**
+ ** Developer: Wan Yongquan                        **
+ ** Title: User Profile                            **
+ ** Function: Edit,Password Settings, Role Settings**
+ ****************************************************
  */
 
 /* 
  * ***********************************************
  * ---------------*
- * PHP goes here  *
+ * PHP Section    *
  * ---------------*
  
     Case 1: Edit -  update user information;
@@ -75,7 +75,14 @@
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>Page Title</h3>
+                <div class="nav" style="float:left; font-size:16px;">
+                   <ul class="breadcrumb">
+                     <li class=""><i class="fa fa-home"></i> <a href="<?php echo $qb_url_root?>/index.php"><?=get_string('home'); ?></a></li>
+                     <li class=""><a href="<?php echo $qb_url_root?>/admin/admin_users.php"><?=get_string('usermanagement');?></a></li>
+                     <li class=""><a href="#"><?=get_string('userprofile');?></a></li>
+                     
+                   </ul>
+                </div>
               </div>
 
             </div>
@@ -86,7 +93,7 @@
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>用户</h2>
+                    <h2><?=get_string('userprofile')?></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -114,9 +121,9 @@
                         </div>
                         <h3> <?php echo $userDetails['username']?></h3>
                         <ul class="list-unstyled user_data">
-                          <li> <i class="fa fa-map-marker user-profile-icon"></i> Last Name . First Name
+                          <li> <i class="fa fa-user user-profile-icon"></i>&nbsp; <?=$userDetails['lname']?> <?=$userDetails['fname']?>
                           </li>
-                          <li><i class="fa fa-briefcase user-profile-icon"></i><?php echo $userDetails['role']?>
+                          <li><i class="fa fa-shield user-profile-icon"></i> &nbsp;<?php echo $userDetails['role']?>
                           </li>
                         </ul>
                         <!--  courses -->
@@ -137,17 +144,17 @@
                               <div class="panel panel-default">
                                 <div class="panel-heading">User ID: <?php echo $userDetails['uid']?></div>
                                 <div class="panel-body">
-                                  <label> Joined: </label> <?php echo $userDetails['joindate']?><br/>
-                                  <label>Last Login:</label> <?php if ( isset($userDetails['lastlogin']) ){echo $userDetails['lastlogin'];} else {?><i>Never</i><?php }?><br/>
-                                  <label>Username:</label> 
+                                  <label><?=get_string('registered')?> </label> <?php echo $userDetails['joindate']?><br/>
+                                  <label><?=get_string('lastlogin')?></label> <?php if ( isset($userDetails['lastlogin']) ){echo $userDetails['lastlogin'];} else {?><i>Never</i><?php }?><br/>
+                                  <label><?=get_string('username')?></label> 
                                   <input class='form-control' type='text' name='username' value='<?php echo $userDetails['username']?>'><br/>
-                                  <label>First Name:</label>
+                                  <label><?=get_string('firstname')?></label>
                                   <input class='form-control' type='text' name='fname' value='<?=$userDetails['fname']?>'/>
-                                  <label>Last Name:</label>
+                                  <label><?=get_string('lastname')?></label>
                                   <input class='form-control' type='text' name='lname' value='<?=$userDetails['lname']?>'/>
-                                  <label>Email:</label>
+                                  <label><?=get_string('email')?></label>
                                   <input class='form-control' type='text' name='email' value='<?=$userDetails['email']?>'/>
-                                  <label>Tel:</label>
+                                  <label><?=get_string('tel')?></label>
                                   <input class='form-control' type='text' name='tel' value='<?=$userDetails['tel']?>'/>
                                   
                                 </div>  
@@ -155,15 +162,15 @@
                               
                               
                               <div class="panel panel-default">
-                                <div class="panel-heading">Functions
+                                <div class="panel-heading"><?=get_string('securityInfo')?>
                                 </div>
                                 <div class="panel-body">
                                   <div class="form-group">
                                     <div class="btn-group">
-                                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#password">Password Settings</button>
+                                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#password"><?=get_string('passwordSettings')?></button>
                                     </div>
                                     <div class="btn-group">
-                                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#roles">Roles Settings</button>
+                                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#roles"><?=get_string('roleSettings')?></button>
                                       </div>
                                   </div>
                                 </div>
@@ -176,25 +183,24 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Update Password</h4>
+        <h4 class="modal-title"><?=get_string('updatepassword')?></h4>
       </div>
       <div class="modal-body">
                   <div class="form-group">
-                        <label>New Password (6 char min, 30 max.)</label>
+                        <label><?=get_string('newpassword')?></label>
                         <input class='form-control' type='password' name='password' />
                   </div>
 
                   <div class="form-group">
-                        <label>Confirm Password</label>
+                        <label><?=get_string('confirmpassword')?></label>
                         <input class='form-control' type='password' name='confirm' />
                   </div>
-
-                                  <label><input type="checkbox" name="sendPwReset" id="sendPwReset" /> Send Reset Email?</label><br>
+                      <label><input type="checkbox" name="sendPwReset" id="sendPwReset" /> Send Reset Email?</label><br>
                                   
       </div>
       <div class="modal-footer">
-          <div class="btn-group"><input class='btn btn-primary' type='submit' value='Update' class='submit' /></div>
-         <div class="btn-group"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button></div>
+          <div class="btn-group"><input class='btn btn-primary' type='submit' value='<?=get_string('save')?>' class='submit' /></div>
+         <div class="btn-group"><button type="button" class="btn btn-default" data-dismiss="modal"><?=get_string('close')?></button></div>
       </div>
     </div>
 
@@ -202,13 +208,13 @@
 </div>                                
                                 
                               <div class="pull-right">
-                                <div class="btn-group"><input class="btn btn-primary" type="submit" value="Update" name="saveuser" class="submit"/></div>
-                                <div class="btn-group"><a class="btn btn-warning" href="admin_users.php">Cancel</a></div><br/><Br/>
+                                <div class="btn-group"><input class="btn btn-primary" type="submit" value="<?=get_string('save')?>" name="submit" class="submit"/></div>
+                                <div class="btn-group"><a class="btn btn-warning" href="admin_users.php"><?=get_string('cancel')?></a></div><br/><Br/>
                               </div>
                             </form>
                           </div>
                       </div>
-                  </div>
+                  </div><!--  /xcontent -->
                 </div>
               </div>
             </div>

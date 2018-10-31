@@ -16,6 +16,11 @@ require_once '../includes/html_header.php';
 
 if (!loginRequired($_SERVER['REQUEST_URI'])){die();}
 
+$mode = $_REQUEST['mode'];
+if (empty($mode)|| !($mode == 'm' || $mode == 'i')){
+    header('location', '../index.php');
+}
+
 $courseData = fetchAllCourses();
 
 ?>
@@ -36,7 +41,7 @@ $courseData = fetchAllCourses();
                <div class="nav" style="float:left; font-size:16px;">
                    <ul class="breadcrumb">
                      <li class=""><i class="fa fa-home"></i> <a href="#">Home</a></li>
-                     <li class=""><a href="#">手动组卷</a></li>
+                     <li class=""><a href="#"><?= $mode == 'm' ? '手动组卷' : '智能组卷'?></a></li>
                    </ul>
               </div>
              </div>
@@ -75,7 +80,17 @@ $courseData = fetchAllCourses();
                       ?>
                       <div class="col-md-4 col-xs-4 col-sm-12">
                         <div class="well" style="overflow:auto">
-                          <h3><a href="<?= $qb_url_root?>/zujuan/pickquestions.php?courseid=<?=$vl['course_id'] ?>" ><?=$vl['coursename'] ?></a></h3>
+                          <?php 
+                          switch ($mode){
+                              case 'm':
+                                  $url = $qb_url_root .'/zujuan/pickquestions.php?courseid='.$vl['course_id'];
+                                  break;
+                              case 'i':
+                                  $url = $qb_url_root .'/zujuan/autogenerating.php?courseid='.$vl['course_id'];
+                                  break;
+                          }
+                          ?>
+                          <h3><a href="<?=$url?>" ><?=$vl['coursename'] ?></a></h3>
                         </div>
                       </div>
                       <?php } ?>

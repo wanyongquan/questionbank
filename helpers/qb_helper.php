@@ -1,13 +1,17 @@
 <?php
-/**
- * Yan Lao Shi Ti Ku
- * An PHP Question Bank Management System
- * @author Wanyongquan
+
+/*
+ ***************************************************
+ ** WanXin Test Paper Generator System            **
+ **-----------------------------------------------**
+ ** Developer: Wan Yongquan                       **
+ ** Title: helper tools                           **
+ ** Function: functions that serve system         **
+ ***************************************************
  */
 ?>
-
 <?php require_once $abs_doc_root.$qb_url_root.'/classes/Redirect.php';?>
-
+<?php require_once $abs_doc_root.$qb_url_root.'/classes/SelectionPriority.php';?>
 <?php
 function closedb()
 {
@@ -30,7 +34,7 @@ if(!function_exists('loginRequired')){
             array_splice($self_path, $self_path_length-$i, $i);
             $qb_url_root=implode("/",$self_path)."/";
             
-            if (file_exists($abs_qb_root.$qb_url_root.'index.php')){
+            if (file_exists($abs_qb_root.$qb_url_root.'z_qb_root.php')){
                 $file_found=TRUE;
                 break;
             }else{
@@ -39,7 +43,7 @@ if(!function_exists('loginRequired')){
         }
         
         if(!$user || !$user->isLoggedIn() ){
-            Redirect::to($qb_url_root.'/login.php?returnurl='.$url);
+            Redirect::to($qb_url_root.'login.php?returnurl='.$url);
             return false;
         }
         
@@ -338,8 +342,8 @@ if (!function_exists('getCourseSubjects')){
         global $DB;
         $querystr = "select * from tk_subjects where courseid = $id";
         $result = mysqli_query($DB, $querystr);
-        if (mysqli_num_rows($result) > 0){
-            $row = mysqli_fetch_assoc($result);
+        if (!result ){
+            die(mysqli_error($DB));
         }
         return $result;
         
@@ -367,9 +371,9 @@ if (!function_exists('getQuestionDetails')){
     function getQuestionDetails($qid){
         global $DB;
         $querystr = "select question_id, question_body, qtype, point, createdDate,";
-        $querystr .= " subjectname, subjectid, tk_questions.courseid, difficultylevel_id, item_name as difficulty ";
-        $querystr .= " from tk_questions left join tk_subjects on tk_questions.subjectid = tk_subjects.subject_id ";
-        $querystr .= " left join tk_dictionary_items as dicts on tk_questions.difficultylevel_id = dicts.id ";
+        $querystr .= " subjectname, subjectid, Q.courseid, cognitionid, difficultylevel_id, item_name as difficulty ";
+        $querystr .= " from tk_questions Q left join tk_subjects S on Q.subjectid = S.subject_id ";
+        $querystr .= " left join tk_dictionary_items as dicts on Q.difficultylevel_id = dicts.id ";
         $querystr .= " where question_id = $qid";
         $result = mysqli_query($DB, $querystr);
         if (!$result){
@@ -410,6 +414,20 @@ if (!function_exists('findUser')){
     }
 }
 
+if(!function_exists('addUser')){
+    function addUser($username, $password){
+        global $DB;
+        // Step 1: add the user 
+        $querystr = sprintf("insert into tk_users (username, password) values ('%s', '%s')", $username, $password);
+        $result = mysqli_query($DB, $querystr);
+        $newUserId = mysqli_insert_id($DB);
+        // Step 2: assign user with default role;
+        $addNewRole = sprintf("insert into tk_user_assigned_roles (userid, roleid) values (%d, %d) ;", $newUserId, 3);
+        mysqli_query($DB, $addNewRole);
+        return true;
+    }
+}
+
 if (!function_exists('checkRole')){
     function checkRole($role){
         global $DB, $user;
@@ -439,6 +457,10 @@ if (!function_exists('checkRole')){
 
 
 if (!function_exists('getDifficultyLevels')){
+    /**
+     * @desc get list of difficulty levels;
+     * @return  mysqli_result 
+     */
     function getDifficultyLevels(){
         global $DB;
         $querystr = "select dictData.item_name, dictData.item_value, dictData.id from tk_dictionary_items dictData, tk_dictionary_types dicts" ;
@@ -452,9 +474,16 @@ if (!function_exists('getDifficultyLevels')){
 }
 
 if (!function_exists('getQtypes')){
+    /**
+     * @desc get list of question types;
+     * @return false|mysqli_result return FALSE on failure. return a mysqli_result object for successful query.
+     */
     function getQtypes(){
         global $DB;
-        $querystr = "select dictData.id, item_name, item_value,itemorder,isfixed, type_id from tk_dictionary_items dictData , tk_dictionary_types dictType where dictData.type_id = dictType.id and dictType.dictionary_value='qtype'";
+        $querystr = "select dictData.id, item_name, item_value,itemorder,isfixed, type_id ";
+        $querystr .= " from tk_dictionary_items dictData , tk_dictionary_types dictType "; 
+        $querystr .= " where dictData.type_id = dictType.id and dictType.dictionary_value='qtype'";
+        $querystr .= " order by itemorder";
         $result = mysqli_query($DB, $querystr);
         if (!$result ){
             die(mysqli_error($DB));
@@ -479,23 +508,7 @@ if (!function_exists('returnError')){
  * Question Cart Section      *
  * ****************************
  */
-if (!function_exists('cart_question_exists')){
-    function cart_question_exists($questionid, $cart){
-        if (!isset($cart) || !is_array($cart)){
-            return false;
-        }
-        if (!isset($cart['qtype_data'])){
-            return false;
-        }
-        $qtypeArr = $cart['qtype_data'];
-        foreach($qtypeArr as $qtype=>$qid_arr){
-            if (in_array($questionid, $qid_arr)){
-                return true;
-            }
-        }
-        return false;
-    }
-}
+
 
 if (!function_exists('removeQuestionFromCart')){
     function removeQuestionFromCart($questionid, $cart){
@@ -580,27 +593,6 @@ if (!function_exists('addQuestionToCart')){
     }
 }
 
-if (!function_exists('cartQuestionCount')){
-    function cartQuestionCount(){
-        if (!isset($_SESSION['question_cart'])){
-            return 0;
-        }
-        
-        $questionCart = $_SESSION['question_cart'];
-        if (!is_array($questionCart)){
-            return 0;
-        }
-        if (!isset($questionCart['qtype_data']))
-            return 0;
-        
-        $count = 0;
-        $qtypeArr = $questionCart['qtype_data'];
-        foreach($qtypeArr as $key=>$value){
-            $count += count($value);
-        }
-        return $count;
-    }
-}
     
 
 if (!function_exists('getAllTestPapers')){
@@ -616,6 +608,20 @@ if (!function_exists('getAllTestPapers')){
         
         $result = mysqli_query($DB, $querystr);
         if (!$result){
+            returnError(mysqli_error($DB));
+        }
+        return $result;
+    }
+}
+
+if (!function_exists('getAllTestPaperByCreatorId')){
+    function getAllTestPapersByCreatorId($creatorId){
+        global $DB;
+        $querystr = "select id, title, examduration, createdtime, createdby, P.courseid, coursename, finaldraft ";
+        $querystr .= " from tk_testpapers P, tk_courses C ";
+        $querystr .= " where P.courseid = C.course_id and P.createdby = $creatorId ";
+        $result = mysqli_query($DB, $querystr);
+        if (!result ){
             returnError(mysqli_error($DB));
         }
         return $result;
@@ -712,3 +718,153 @@ if (!function_exists('getSubjectName')){
         return $result;
     }
 }
+if (!function_exists('getMyTopNQuestions')){
+    /**
+     * @desc return top-N questions that current loggedin user created.
+     * @param int $top
+     * @return object result
+     */
+    function getMyTopNQuestions($top = 5){
+        
+        global $DB, $user;
+        $querystr = "select question_id, question_body, qtype, courseid, subjectid, date(createdDate) Created_Date from tk_questions  where creatorid = " .$user->_id .' order by createdDate desc limit '.$top; 
+        $result = mysqli_query($DB, $querystr);
+        if (!result){
+            die(mysqli_error($DB));
+        }
+        return $result;
+    }
+}
+
+if(!function_exists('getMyTopNPapers')){
+    /**
+     * @desc return top-N papers that created by current logged in user;
+     * @param number $top
+     * @return object result
+     */
+    function getMyTopNPapers($top = 5){
+        global $DB, $user;
+        $querystr = "select id, title , date(createdtime) Created_Date from tk_testpapers where createdby = $user->_id order by createdtime desc limit $top";
+        $result = mysqli_query($DB, $querystr);
+        if (!$result){
+            die(mysqli_error($DB));
+        }
+        return $result;
+    }
+}
+
+if (!function_exists('getCongnitions')){
+    function getCognitions(){
+        global $DB;
+        $querystr = "select id,item_name CognitionName, item_value CognitionValue, itemorder, isfixed from tk_dictionary_items where type_id=3";
+        $result = mysqli_query($DB, $querystr);
+        if (!$result){
+            returnError(mysqli_error($DB));
+        }
+        return $result;
+    }
+}
+
+if (!function_exists('getQuestionSubtotal')){
+    /**
+     * @desc return an array of question subtotal per qtype;
+     * @param int $courseId
+     * @param int $subjectIdArr
+     * @return boolean|array 
+     */
+    function getQuestionSubtotal($courseId, $subjectIdArr){
+        if (empty($courseId) || empty($subjectIdArr)){
+            return false;
+        }
+        if (!is_array($subjectIdArr)){
+            return false;
+        }
+        global $DB;
+        $subjectIdRange = '';
+        foreach($subjectIdArr as $vl){
+            $subjectIdRange .= $vl . ',';
+        }
+        $subjectIdRange = rtrim($subjectIdRange, ',');
+                
+        $querystr = "select qtype, count(*) QC from tk_questions where courseid = $courseId and subjectid in ( $subjectIdRange ) group by qtype";
+        $result = mysqli_query($DB,$querystr);
+        if (!$result){
+            die(mysqli_error($DB));
+        }
+        return $result;
+   
+    }
+}
+
+if (!function_exists('findQuestions')){
+    /**
+     * @desc find the  questions that satisfied all requirements;
+     * @param int $courseId
+     * @param int $difficulty
+     * @param string $qtype
+     * @param int $subjectId
+     * @param  $priority
+     * @return false|mysqli_result return false on failure. return a mysqli_result for successfully query. 
+     */
+    function findQuestions($courseId, $difficulty, $qtype, $subjectId, $priority){
+        global $DB;
+        switch($priority){
+            case  core_qb\SelectionPriority::LatestCreateFirst:
+                $querystr = "select * from tk_questions where courseid = $courseId ";
+                $querystr .= " and qtype='$qtype' and subjectid= $subjectId ";
+                $querystr .= " order by createdDate desc";
+                break;
+            case core_qb\SelectionPriority::LessUsedFirst:
+                $querystr = "select  from tk_questions Q left join ";
+                $querystr .= " (select questionid, count(*) usedTimes from tk_testpaper_questions group by questionid) Used "; 
+                $querystr .= " on Q.question_id = Used.questionid";
+                $querystr .= " order by usedTimes ";
+                break;                  
+          }
+          $result = mysqli_query($DB, $querystr);
+          if(!$result ){
+              die(mysqli_error($DB));
+          }
+          return $result;
+    }
+}
+
+function get_questions($courseId, $difficultyId, $qtype, $subjectIdArr){
+    global $DB;
+    
+    if (is_array($subjectIdArr))
+    {   
+        foreach($subjectIdArr as $vl)
+        {
+            $subjectStr = $vl . ',';
+        }
+        // remove the last ',' at the end of line;
+        $subjectStr = rtrim($subjectStr, ',');
+        // add the start and end parentheses;
+        $subjectStr = '(' . $subjectStr . ')';
+        
+    }else{
+        die('$subjectIdArr must be an array.');
+    }
+    $querystr = "select * from tk_questions where courseId = $courseId";
+    $querystr .= sprintf(" and qtype='%s'  and subjectid in $subjectStr ", $qtype);
+    $result = mysqli_query($DB, $querystr);
+    if (!$result){
+        die(mysqli_error($DB));
+    }
+    $row = mysqli_fetch_assoc($result);
+    return $result;
+}
+
+function array_random($arr, $num=1)
+{
+    shuffle($arr);
+    
+    $result = array();
+    for ($i = 0; $i <$num; $i ++)
+    {
+        $result[] = $arr[$i];
+    }
+    return $result;
+}
+

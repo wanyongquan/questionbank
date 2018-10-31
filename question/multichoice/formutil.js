@@ -132,6 +132,8 @@ $(document).ready(function(e){
             }
         });
     });
+    
+    $("#ques_cognitionid").select2();
 });
 
 function onSubmitQForm(){

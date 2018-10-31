@@ -29,7 +29,13 @@ $questionData = getCourseQuestions($courseId);
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>Page Title</h3>
+                <div class="nav" style="float:left; font-size:16px;">
+                   <ul class="breadcrumb">
+                     <li class=""><i class="fa fa-home"></i> <a href="<?php echo $qb_url_root?>/index.php"><?=get_string('home'); ?></a></li>
+                     <li class=""><a href="#"><?=get_string('coursemanagement');?></a></li>
+                     
+                   </ul>
+                </div>
               </div>
 
             </div>
@@ -40,7 +46,7 @@ $questionData = getCourseQuestions($courseId);
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>题库管理</h2>
+                    <h2><?=get_string('my-question-bank');?></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -78,7 +84,7 @@ $questionData = getCourseQuestions($courseId);
                                 echo '<td>'.$question['createdDate'].'</td>';
                                 echo '<td><a title="编辑" href="'.$question['qtype'].'/edit.php?courseid='.$courseId.'&qid='.$question['question_id'].'">
                                             <span class="green"><i class="ace-icon fa fa-pencil bigger-120"></i></span></a>&nbsp;&nbsp;&nbsp;&nbsp;';
-                                echo '<a title="删除" data-id="'.$question['question_id'].'" data-toggle="modal" data-target="#delete_question_modal"  data-backdrop="false">
+                                echo '<a title="删除" data-id="'.$question['question_id'].'" data-toggle="modal" data-target="#delete_question_modal"  data-backdrop="true">
                                             <span class="red"><i class="ace-icon fa fa-trash-o bigger-120"></i></span></a></td>';
                                 echo '</tr>';
                             }
@@ -155,7 +161,7 @@ $questionData = getCourseQuestions($courseId);
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                     <button type="submit" class="btn btn-primary" id="btnAddQuestion">添加</button>
                 </div>
                 <!-- End of modal footer -->
@@ -187,7 +193,7 @@ $questionData = getCourseQuestions($courseId);
     <script src="<?php echo $qb_url_root?>/vendors/nprogress/nprogress.js"></script>
     
     <!-- Custom Theme Scripts -->
-    <script src="<?=$qb_url_root?>/script/form-validator.min.js" type="text/javascript"></script>
+    <script src="<?=$qb_url_root?>/lib/bootstrapvalidator/js/bootstrapValidator.min.js" type="text/javascript"></script>
     <script src="question.js" type="text/javascript"></script>
     <script src="<?php echo $qb_url_root?>/js/custom.min.js"></script>
            

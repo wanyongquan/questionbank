@@ -43,6 +43,13 @@ function getQuestions($courseid){
     $result = mysqli_query($DB, $sql);
     return $result;
 }
+
+/**
+ * @desc return an array of question count per qtype;
+ * @param int $courseid
+ * @param int $subjectid
+ * @return array question count of each qtype;
+ */
 function getQuestionsByCourseIdAndSubjectId($courseid, $subjectid){
     global $DB;
     $sql = "select question_id, question_name, question_body, qtype, ";

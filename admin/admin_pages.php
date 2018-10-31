@@ -74,9 +74,9 @@ $pageData = getAllPages();
                   <div class="allutable">
                     <table id="paginate" class='table table-hover table-list-search'>
                       <thead>
-                        
+                        <tr>
                           <th>id</th><th>Page Path</th><th>Page Name</th><th>Private</th>
-                          
+                          </tr>
                         
                       </thead>
                       <tbody>

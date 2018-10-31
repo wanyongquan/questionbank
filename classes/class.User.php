@@ -11,6 +11,7 @@ class User
     
     public function __set($property_name, $value){
         $this->$property_name = $value;
+        $this->SaveToSession();
     }
     public function __get($property_name){
         if (isset($this->$property_name)){
@@ -35,10 +36,15 @@ class User
     public function login_user()
     {
         $this->_isLoggedIn = true;
-        //序列化并保存到session
-        $_SESSION['loggeduser'] =  $this;
+        $this->SaveToSession();
+        /* //序列化并保存到session
+        $_SESSION['loggeduser'] =  $this; */
         
 
+    }
+    private function SaveToSession(){
+        //序列化并保存到session
+        $_SESSION['loggeduser'] =  $this;
     }
     public function exists()
     {
@@ -78,4 +84,5 @@ class User
             return false;
     }
 }  
+
 ?>

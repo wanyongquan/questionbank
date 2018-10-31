@@ -17,11 +17,9 @@ $action = $_REQUEST['action'];
 switch($action){
     case 'updatecartinfo':
         // get question cart info from session;
-        $questioncart = $_SESSION['question_cart'];
-        foreach($questioncart as $vl){
-            $qid  .= $vl['qid'];
-            //$quesarry = $vl['']
-        }
-        echo count($questioncart);
+        // todo:[2018-10-30] need to check if this code is necessary and correct?
+//         $count = cartQuestionCount();
+//         echo $count;
+        
         break;
 }

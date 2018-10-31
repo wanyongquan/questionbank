@@ -1,24 +1,14 @@
 <?php
 /*
- * ****************************************************
- * ** Yan Lao Shi Question Management System        ***
- * **-----------------------------------------------***
- * ** Developer: Wan Yongquan                       ***
- * ** Title: User Management                        ***
- * ** Function: Edit, Password&Role Settings        ***
- * ****************************************************
+ ***************************************************
+ ** WanXin Test Paper Generator System            **
+ **-----------------------------------------------**
+ ** Developer: Wan Yongquan                       **
+ ** Title: User Management                        **
+ ** Function: Edit, Password&Role Settings        **
+ ***************************************************
  */
 
-/*
- * ***********************************************
- * ---------------*
- * PHP goes here  *
- * ---------------*
- 
- Case 1: Edit -  update user information;
- Case 2: Password - update new password;
- *************************************************
- */
 
 ?>
 <?php require_once '../config.php';?>
@@ -83,7 +73,14 @@
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>知识点管理</h3>
+                <div class="nav" style="float:left; font-size:16px;">
+                   <ul class="breadcrumb">
+                     <li class=""><i class="fa fa-home"></i> <a href="<?php echo $qb_url_root?>/index.php"><?=get_string('home'); ?></a></li>
+                     <li class=""><a href="<?php echo $qb_url_root?>/course/admin_courses.php"><?=get_string('coursemanagement');?></a></li>
+                     <li class=""><a href="#"><?=get_string('subject-management');?></a></li>
+                     
+                   </ul>
+                </div>
               </div>
 
             </div>
@@ -94,7 +91,7 @@
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>课程-知识点</h2>
+                    <h2><?=get_string('subject-management');?></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -116,9 +113,8 @@
                     <a class="pull-right" href="#" data-toggle="modal" data-target="#addsubject"><i class="glyphicon glyphicon-plus"></i> 新增知识点</a>
               
                     <div class="col-md-3 col-sm-3 col-xs-12 ">
-                      <h3>Course Name</h3>
+                      <h3>PHP Web开发</h3>
                       <ul class="list-unstyled user_data">
-                        <li><i class="fa fa-map-marker user-profile-icon"></i>Creator</li>
                         
                       </ul>
                     </div>
@@ -127,7 +123,7 @@
                         <table id="paginate" class="table  table-hover table-list-search">
                             <thead>
                              <tr>
-                                <th>知识点</th><th>Action</th>
+                                <th>知识点</th><th></th>
                              </tr>
                             </thead>
                             <tbody>
@@ -138,10 +134,10 @@
                                 <td><div class=" action-buttons">
                                 
                                 
-                                <a title="编辑" onclick="getCourseDetails(<?=$vl['subject_id'] ?>)" data-toggle="modal" data-target="#edit_course_modal" data-backdrop="false"
+                                <a title="编辑" onclick="getSubjectDetails(<?=$vl['subject_id'] ?>)" data-toggle="modal" data-target="#edit_subject_modal" data-backdrop="true"
                                     data-href="http://localhost/user/editadvanced.php?id=2&amp;course=<?=$vl['subject_id'] ?>">
                                     <span class="green"><i class="ace-icon fa fa-pencil bigger-120"></i></span></a>
-                                <a title="删除" class="delete_product" data-id="'.$vl['subject_id'].'"  data-toggle="modal" data-target="#delete_course_modal" data-backdrop="false">
+                                <a title="删除" class="delete_product" data-id="'.$vl['subject_id'].'"  data-toggle="modal" data-target="#delete_subjet_modal" data-backdrop="true">
                                     <span class="red"><i class="ace-icon fa fa-trash-o bigger-120"></i></span></a></div></td>
                                             
                             <?php } ?>
@@ -189,7 +185,63 @@
         <!-- End of modal dialog -->
     </div>
     <!-- End of add_subject_modal  -->
-
+    <!-- Modal dialog for edit subject -->
+    <div id="edit_subject_modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!--  Modal dialog content -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">编辑 知识点</h4>
+                    <input type="hidden" id="hidden_subject_id">
+                </div>
+                <div class="modal-body">
+                    <form id="edit_subject_form" class="form-horizontal" role="form" method="post" data-toggle="validator">
+                        <div class="form-group">
+                            <label for="edit_subject_name" class="col-xs-3">知识点名称</label>
+                            <div class="col-xs-8">
+                                <input type="text" id="edit_subject_name" placeholder="" required data-error="Please enter subject name" class="form-control" />
+                                <div class="help-block with-errors"></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="btnEditSubject">保存</button>
+                </div>
+                <!-- End of modal footer -->
+            </div>
+            <!-- End of modal content -->
+        </div>
+        <!-- End of modal dialog -->
+    </div>
+    <!-- End of Modal  -->
+    <!--  Modal dialog for delete subject  -->
+    <div id="delete_subject_modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!--  Modal dialog content -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">删除知识点</h4>
+                    <input type="hidden" id="hidden_edit_subject_id">
+                </div>
+                <div class="modal-body">
+                    <p>确定要删除该知识点吗?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <a class="btn btn-danger btn-ok" onclick="deleteSubject()">删除</a>
+                </div>
+                <!--  end of modal-footer -->
+            </div>
+            <!--  end of modal-content -->
+        </div>
+        <!--  end of modal-dialog -->
+    </div>
+    <!--  end of modal -->
+    <!--  end of modal delete subject-->
         <!-- footer content -->
         <footer>
           <div class="pull-right">
@@ -209,8 +261,10 @@
     <script src="../vendors/fastclick/lib/fastclick.js"></script>
     <!-- NProgress -->
     <script src="../vendors/nprogress/nprogress.js"></script>
+    <script src="<?=$qb_url_root?>/lib/bootstrapvalidator/js/bootstrapValidator.min.js" type="text/javascript"></script>
     
     <!-- Custom Theme Scripts -->
     <script src="../js/custom.min.js"></script>
+    <script src="../subject/subject.js" type="text/javascript"></script>
   </body>
 </html>

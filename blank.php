@@ -1,10 +1,12 @@
 <?php
 /*
- *  YanZi TIKU
- *  A Question Management and Test Paper Generator System
- *
- *  Developer: Wan Yongquan
- *  Copyright: 2018
+ ***************************************************
+ ** WanXin Test Paper Generator System            **
+ **-----------------------------------------------**
+ ** Developer: Wan Yongquan                       **
+ ** Title: Role Management                        **
+ ** Function: Add,Edit,Delete                     **
+ ***************************************************
  */
 ?>
 <?php  require_once '../config.php';?>

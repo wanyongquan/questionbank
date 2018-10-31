@@ -1,0 +1,42 @@
+/**
+ * This file is part of ZhiXing Test Paper Generator Platform.
+ * 
+ * 
+ */
+
+$().ready(function(){
+	// validate the form elements;
+	$("#registerform").validate({
+		rules:{
+			username:{
+				required:true,
+				minlength:5
+				},
+			password:{
+				required:true,
+				minlength:8
+			},
+			passwordcfm:{
+				required:true,
+				minlength:8,
+				equalTo:"#password"
+			}
+		},
+		messages:{
+			username:{
+				required:"请输入用户名",
+				minlength:"用户名长度不能小于5个字符"
+			},
+			minlength:"",
+			password:{
+				required:"请输入密码",
+				minlength:"密码长度不能小于8个字符"
+			},
+			passwordcfm:{
+				required:"请输入密码",
+				minlength:"密码长度不能小于8个字符",
+				equalTo:"两次密码不一致"
+			}
+		}
+	});
+});

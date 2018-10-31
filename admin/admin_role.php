@@ -1,13 +1,14 @@
 <?php
 /*
- * ****************************************************
- * ** Yan Lao Shi Question Management System        ***
- * **-----------------------------------------------***
- * ** Developer: Wan Yongquan                       ***
- * ** Title: Role Management                        ***
- * ** Function: Edit role information               ***
- * **           Add, Remove Users;Add,Remove Pages  ***
- * ****************************************************        
+ ***************************************************
+ ** WanXin Test Paper Generator System            **
+ **-----------------------------------------------**
+ ** Developer: Wan Yongquan                       **
+ ** Title: Role Management                        **
+ ** Function: Edit role information,              **
+ **           Add, Remove Users for role;         **
+ **           Add,Remove Pages  for role          **
+ ***************************************************
  */
 
 /* 
@@ -37,7 +38,7 @@
     $roleId = $_REQUEST['id'];
     // check if selected user exists
     if (!roleIdExists($roleId)){
-        Redirect::to($qb_url_root.'admin_roles.php?err=That Role does not exist.'); die();
+        Redirect::to($qb_url_root.'/admin_roles.php?err=That Role does not exist.'); die();
     }
     $roleDetails = getRoleDetails($roleId);
     
@@ -109,7 +110,14 @@
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>Page Title</h3>
+                <div class="nav" style="float:left; font-size:16px;">
+                   <ul class="breadcrumb">
+                     <li class=""><i class="fa fa-home"></i> 
+                        <a href="<?php echo $qb_url_root?>/index.php"><?=get_string('home'); ?></a></li>
+                     <li class=""><a href="<?php echo $qb_url_root?>/admin/admin_roles.php"><?=get_string('rolemanagement');?></a></li>
+                     <li class=""><a href="#"><?=get_string('roledetail');?></a></li>
+                   </ul>
+                </div>
               </div>
 
             </div>
@@ -120,7 +128,7 @@
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Role</h2>
+                    <h2><?=get_string('roledetail');?></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -141,25 +149,26 @@
                   <div class="x_content">
                       <div class="row">
                         <div class="col-xs-12">
-                          <h1>Configure settings for this Role</h1>
-                          <form name="roleForm" action="<?=$_SERVER['REQUEST_URI']?>?id=<?=$roleId?>" method="post">
-                            <input name="submitRole" class="btn btn-primary" type="submit"  value="Update Role" class="submit"/>
+                          <h2><?=get_string('rolemgrpagetitle');?></h2>
+                          <form name="roleForm" action="<?=$_SERVER['REQUEST_URI']?>" method="post">
+                            <input name="submitRole" class="btn btn-primary" type="submit" 
+                                 value="<?=get_string('btn_updaterole');?>" class="submit"/>
                             
-                            <a class="btn btn-warning" href="admin_roles.php">Cancel</a><br><br>
+                            <a class="btn btn-warning" href="admin_roles.php"><?=get_string('btn_cancelupdaterole');?></a><br><br>
                           
                           <div  class="col-xs-6">
-                            <h3>Role Information</h3>
+                            <h3><?=get_string('role-info');?></h3>
                             <div>
-                             <label>Role ID:</label> <?php echo $roleDetails['id']?><br>
-                             <label>Role Name:</label>
+                             <label><?=get_string('role-id');?>:</label> <?php echo $roleDetails['id']?><br>
+                             <label><?=get_string('role-name');?>:</label>
                              <input  type='text' name='rolename' value='<?php echo $roleDetails['name']?>'><br/>
                                   
                             </div>
                           </div>
                           <div class="col-xs-6">
-                            <h3> Role Membership</h3>
+                            <h3> <?=get_string('role-members');?></h3>
                              <div id="regbox">
-                               <p><strong> Remove Members:</strong>
+                               <p><strong> <?=get_string('remove-role-members');?>:</strong>
                                <?php 
                                  $role_userIDs = [];
                                  foreach($roleUsers as $value){
@@ -172,7 +181,7 @@
                                      }
                                  }
                                ?>
-                               </p><strong>Add Members:</strong>
+                               </p><strong><?=get_string('add-role-members');?>:</strong>
                                <?php 
                                  $role_userIDs = [];
                                  foreach($roleUsers as $value){
@@ -191,12 +200,12 @@
                         <div class="col-xs-12">
                           <div class="panel panel-default">
                             <div class="panel-heading">
-                              Role Access
+                              <h4><?=get_string('role-page-access');?></h4>
                             </div>
                             <div class="panel-body">
                                <div class="col-xs-6">
                                  <div id="regbox">
-                                   <p> <br><strong> Remove Page Access for this Role:</strong>
+                                   <p> <br><strong> <?=get_string('role-pa-remove-pages');?>:</strong>
                                     <?php 
                                     // display list of pages with this role access
                                     $page_Ids = [];
@@ -215,7 +224,7 @@
                                </div>
                                <div class="col-xs-6">
                                  <div id="regbox">
-                                  <p><br><strong>Add Pages access for Role:</strong>
+                                  <p><br><strong><?=get_string('role-pa-add-pages');?>:</strong>
                                    <?php 
                                      $page_Ids = [];
                                      foreach($rolePages as $value){

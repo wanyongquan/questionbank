@@ -29,6 +29,8 @@ function getQuesTypeDisplayStr($qtype) {
     }
     return get_string ( $qtype );
 }
+
+// todo:[2018-10-30] seemed this function can be deprecated;
 function refreshQuestionCart($courseId) {
     if (! isset ( $_SESSION ['current_courseid'] )) {
         // add to session
@@ -39,7 +41,8 @@ function refreshQuestionCart($courseId) {
         if ($courseId != $currCourseId) {
             // if the new course is not the same as in session, then update current courseid and clear question cart;
             $_SESSION ['current_courseid'] = $courseId;
-            unset ( $_SESSION ['question_cart'] );
+            // Wan 2018.10.30
+            unset($_SESSION['paper_generator']);
         }
     }
 }

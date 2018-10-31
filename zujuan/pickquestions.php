@@ -9,6 +9,8 @@
 ?>
 <?php  require_once '../config.php';?>
 <?php  require_once '../includes/html_header.php';?>
+<?php require_once  $abs_doc_root.$qb_url_root.'/helpers/helper.php';?>
+<?php require_once  $abs_doc_root.$qb_url_root.'/classes/PaperGenerator.php';?>
 
 <?php  if (!loginRequired($_SERVER['REQUEST_URI'])){die();} ?>
 <?php 
@@ -19,8 +21,11 @@ $courseId = $_REQUEST['courseid'];
 if(!isset($courseId)){
     Redirect::to($qb_url_root.'/zujuan/zujuan.php');
 }
+$courseDetail = getCourseDetails($courseId);
+$coursename = $courseDetail['coursename'];
+
 $questionData = getCourseQuestions($courseId);
-$questionCart = $_SESSION['question_cart'];
+$paper_generator = try_get_paper_generator($courseId);
 $qtypeData = getQtypes();
 $difficultyLevels = getDifficultyLevels();
 ?>
@@ -45,7 +50,11 @@ $difficultyLevels = getDifficultyLevels();
                    </ul>
                 </div>
               </div>
-
+                <div class="navbar-right ">
+                   <div class="page-head-right">
+                                        当前课程：<?= $coursename?></div>
+                 
+                 </div>
             </div>
 
             <div class="clearfix"></div>
@@ -81,7 +90,8 @@ $difficultyLevels = getDifficultyLevels();
                             <div class="filter-head">知识点
                             </div>
                             <div class="filter-value">
-                              <div class="filter-value-inner"> <select id="ques_subject" class="select2 form-control">
+                              <div class="filter-value-inner"> 
+                            <select id="ques_subject" class="select2 form-control">
                                   <option value="-1"> All</option>
                                 <?php $subjectData = getCourseSubjects($courseId);
                                 foreach($subjectData as $subject){
@@ -119,30 +129,6 @@ $difficultyLevels = getDifficultyLevels();
                         </div>
                       </div>
                       <div id="candidatequeslist" class="col-md-12 col-sm-12 col-xs-12">
-                 <!--       <?php 
-                      foreach($questionData as $vl){
-                          $questionid= $vl['question_id'];
-                         $incart = cart_question_exists($questionid, $questionCart);
-                      ?>
-                        <div class="panel panel-default question-wrap">
-                          <div class="panel-heading"><?=$vl['id'] ?>difficulty, <span>难度:<?=$vl['difficulty'] ?></span>, count 
-                          <a class="pull-right <?= ($incart)? 'remove-btn': 'add-btn'?>" href="#" data-id="<?=$vl['question_id'] ?>" onclick="addtocart(this)">
-                            <i class="fa <?=($incart)? 'fa-minus':'fa-plus' ?>"></i><?=($incart)?get_string('removecart'): get_string('addcart')?> </a>
-                          </div>
-                          <div class="panel-body">
-                            <div class="ques-body"><?=$vl['question_body'] ?></div>
-                            <div class="ques_answer">
-                            <?php $quesAnswer = getQuestionAnswers($vl['question_id']);
-                            foreach($quesAnswer as $ques){
-                            ?>
-                            <div class="col-md-3 col-sm-3 col-xs-12">
-                             <?=$ques['answerlabel'] ?><span>.</span><span><?=$ques['answer'] ?></span>
-                            </div>
-                            <?php } ?>
-                            </div>
-                          </div>
-                        </div>
-                     <?php }?> -->
                       </div>
                   </div>
                 </div>

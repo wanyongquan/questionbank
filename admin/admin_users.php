@@ -1,12 +1,14 @@
 <?php
-/**
- * Yan Lao Shi Ti Ku
- * An PHP Question Bank Management System              
- * @author Wanyongquan
- */
 /*
- * This page is user management dashboard. it shows all users in a grid .
+ ****************************************************
+ ** WanXin Test Paper Generator System            **
+ **-----------------------------------------------**
+ ** Developer: Wan Yongquan                       **
+ ** Title: User Management                        **
+ ** Function: Add,Edit,Delete user                **
+ ***************************************************
  */
+
 require_once '../config.php';
 require_once '../includes/html_header.php';
 require_once '../classes/Redirect.php';
@@ -43,7 +45,7 @@ if (!empty($_POST['addUser'])){
                 $newUserId = mysqli_insert_id($DB);
                 // add default role Student;
                 $addNewRole = sprintf("insert into tk_user_assigned_roles (userid, roleid) values (%d, %d) ;", $newUserId, 3);
-                mysqli_query($DB, $query);
+                mysqli_query($DB, $addNewRole);
                 Redirect::to("admin_user.php?id=". $newUserId);
             }
         }catch(Exception $ex){
@@ -72,8 +74,8 @@ if (!empty($_POST['addUser'])){
               <div class="title_left">
                 <div class="nav" style="float:left; font-size:16px;">
                    <ul class="breadcrumb">
-                     <li class=""><i class="fa fa-home"></i> <a href="#"><?=get_string('home'); ?></a></li>
-                     <li class=""><a href="#">用户管理</a></li>
+                     <li class=""><i class="fa fa-home"></i> <a href="<?php echo $qb_url_root?>/index.php"><?=get_string('home'); ?></a></li>
+                     <li class=""><a href="#"><?=get_string('usermanagement');?></a></li>
                      
                    </ul>
                 </div>
@@ -87,7 +89,7 @@ if (!empty($_POST['addUser'])){
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Plain Page</h2>
+                    <h2><?=get_string('usermanagement');?></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -120,8 +122,8 @@ if (!empty($_POST['addUser'])){
                      <table id="paginate" class='table table-hover table-list-search'>
                       <thead>
                         <tr>
-                          <th>ID</th><th>Username</th><th>Name</th><th>Email</th>
-                          <th>Last Sign In</th><th>Status</th>
+                          <th>序号</th><th>用户名</th><th>姓名</th><th>邮箱</th>
+                          <th>最近登录</th><th>状态</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -133,7 +135,7 @@ if (!empty($_POST['addUser'])){
                             <td><a class="nounderline" href='admin_user.php?id=<?=$v1['uid']?>'><?=$v1['uid']?></a></td>
                             
                             <td><a class="nounderline" href='admin_user.php?id=<?=$v1['uid']?>'><?=$v1['username']?></a></td>
-                            <td><?=$v1['fname']?> <?=$v1['lname']?></td>
+                            <td><?=$v1['lname']?>&nbsp;<?=$v1['fname']?> </td>
                             <td><?=$v1['email']?></td>
                             <td><?php if($v1['lastlogin'] != 0) { echo $v1['lastlogin']; } else {?> <i>Never</i> <?php }?></td>
                             
@@ -164,36 +166,39 @@ if (!empty($_POST['addUser'])){
                     <form class="form-signup" action="admin_users.php" method="POST" id="payment-form">
                       <div class="panel-body">
                         
-                          <label>Username: </label>&nbsp;&nbsp;<span id="usernameCheck" class="small"></span>
-                          <input type="text" class="form-control" id="username" name="username" placeholder="Username" value="<?php if (!$form_valid && !empty($_POST)){ echo $username;} ?>" required>
-                          <label>First Name: </label>
-                          <input type="text" class="form-control" id="fname" name="fname" placeholder="First Name" value="<?php if (!$form_valid && !empty($_POST)){ echo $fname;} ?>" required>
-                          <label>Last Name: </label>
-                          <input type="text" class="form-control" id="lname" name="lname" placeholder="Last Name" value="<?php if (!$form_valid && !empty($_POST)){ echo $lname;} ?>" required>
-                          <label>Email: </label>
-                          <input  class="form-control" type="text" name="email" id="email" placeholder="Email Address" value="<?php if (!$form_valid && !empty($_POST)){ echo $email;} ?>" required >
-                           <label>Mobile: </label>
-                          <input  class="form-control" type="text" name="tel" id="tel" placeholder="Mobile phone" value="<?php if (!$form_valid && !empty($_POST)){ echo $tel;} ?>"  >
-                          <label>Password: </label>
+                          <label>用户名: </label>&nbsp;&nbsp;<span id="usernameCheck" class="small"></span>
+                          <input type="text" class="form-control" id="username" name="username" placeholder="请输入用户名" value="<?php if (!$form_valid && !empty($_POST)){ echo $username;} ?>" required>
+                          <label>名: </label>
+                          <input type="text" class="form-control" id="fname" name="fname" placeholder="请输入名字" value="<?php if (!$form_valid && !empty($_POST)){ echo $fname;} ?>" required>
+                          <label>姓: </label>
+                          <input type="text" class="form-control" id="lname" name="lname" placeholder="请输入姓" value="<?php if (!$form_valid && !empty($_POST)){ echo $lname;} ?>" required>
+                          <label>邮箱: </label>
+                          <input  class="form-control" type="text" name="email" id="email" placeholder="请输入电子邮箱地址" value="<?php if (!$form_valid && !empty($_POST)){ echo $email;} ?>" required >
+                           <label>电话: </label>
+                          <input  class="form-control" type="text" name="tel" id="tel" placeholder="请输入手机号码" value="<?php if (!$form_valid && !empty($_POST)){ echo $tel;} ?>"  >
+                          <label>密码: </label>
                           <div class="input-group" data-container="body">
                             <span class="input-group-addon password_view_control" id="addon1"><span class="glyphicon glyphicon-eye-open"></span></span>
-                            <input  class="form-control" type="password" name="password" id="password" value=""  placeholder="Password" required aria-describedby="passwordhelp">
+                            <input  class="form-control" type="password" name="password" id="password" value=""  placeholder="请输入密码" required aria-describedby="passwordhelp">
                             
                           </div>
-                          <label>Confirm Password: </label>
+                          <label>再次输入密码: </label>
                           <div class="input-group" data-container="body">
                             <span class="input-group-addon password_view_control" id="addon1"><span class="glyphicon glyphicon-eye-open"></span></span>
-                            <input  type="password" id="confirm" name="confirm" value=""  class="form-control" placeholder="Confirm Password" required >
+                            <input  type="password" id="confirm" name="confirm" value=""  class="form-control" placeholder="请再次输入密码" required >
                             
                           </div>
-                          <label><input type="checkbox" name="sendEmail" id="sendEmail"  /> Send Email?</label>
+                         <!--  <label><input type="checkbox" name="sendEmail" id="sendEmail"  /> 发送邮件?</label> -->
                           <br />
                         </div>
                         <div class="modal-footer">
                           <div class="btn-group">
                             <input type="hidden" name="csrf" value="<?=123?>" />
-                            <input class='btn btn-primary' type='submit' id="addUser" name="addUser" value='Add User' class='submit' /></div>
-                            <div class="btn-group"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button></div>
+                            <input class='btn btn-primary' type='submit' id="addUser" name="addUser" 
+                                value='保存' class='submit' /></div>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            </div>
                           </div>
                         </form>
                       </div>

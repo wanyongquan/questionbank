@@ -1,0 +1,1 @@
+https://github.com/1000hz/bootstrap-validator

@@ -119,7 +119,7 @@
 	text-align:center;
 	line-height:40px;
 	text-indent:18px;
-	margin:0px;
+	margin:3px 0px;
 }
 .questionbody, .questionanswer{
 	margin-bottom:20px;
@@ -222,3 +222,162 @@
     //border:solid 1px red;
 	
 }
+.block{
+	background:#f2f5f7;
+}
+.block a:hover{
+	color:#e23131;
+	cursor:point;
+}
+
+.small-box{
+	border-radius:2px;
+	position:relative;
+	display:block;
+	margin-botton:20px;
+	box-shadow:0 1px 1px rgba(0,0,0,0.1)；
+	text-align:center;
+}
+
+.small-box >.inner{
+	padding:10px;
+}
+.small-box h3, .small-box p{
+	z-index:5;
+}
+.small-box h3{
+	font-size:38px;
+	font-weight:bold;
+	margin:0 0 10px 0;
+	white-space: nowrap;
+	padding:0;
+}
+.small-box .icon{
+	webkit-transition: all .3s linear;
+	transition: all .3s linear;
+	position: absolute;
+	top:-10px;
+	right :10px;
+	z-index:0;
+	font-size:90px;
+	color:rgba(0,0,0,0.15);
+}
+.small-box>.small-box-footer{
+	position:relative;
+	text-align:center;
+	padding:3px 0;
+	color:#fff;
+	display:block;
+	z-index:0;
+	background: #9cc2cb!important;
+	text-decoration:none;
+}
+.detail-list h2{
+	float:left;
+}
+.detail-list h2 a:hover{
+	color: #e23131;
+	cursor:pointer;
+}
+.tag-list{
+	padding: 14px 10px;
+	
+}
+.i-filter-box{
+	border:1px solid #aaa;
+	margin-bottom: 10px;
+}
+.i-filter-subject{
+	
+}
+.i-filter-box .i-filter-head{
+	font-weight:bold;
+	font-size:14px;
+	margin-left:5px;
+}
+.i-subject-item{
+	float:left;
+	position:relative;
+	margin-right:10px;
+	margin-bottom:5px;
+	padding: 0 15px 0 9px;
+	z-index:1;
+	height:30px;
+	line-height:30px;
+	border: 1px solid #aaa;
+	border-radius:5px;
+}
+.i-subject-item a{
+	margin-left:5px;
+} 
+.i-filter-box{
+	
+	padding:20px;
+}
+.i-filter-item{
+	
+	font-size:14px;
+	display: block;
+	line-height:40px;
+	margin-bottom:5px;
+}
+
+.leftbox{
+	//width:60px;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	margin-right:30px;
+	
+}
+.i-filter-box:after, .i-filter-item:after, .i-filter-left:after{
+	clear:both;
+	content:".";
+	display:block;
+	line-height:0;
+	visibility:hidden;
+}
+.f-left{
+	float:left;
+}
+.f-right{
+	float:right;
+}
+.filter-label{
+	margin-right:10px;
+}
+.filter-option{
+	margin-left:10px;
+}
+.i-filter-left .filter-text, .i-filter-right .filter-text{
+	width:60px;
+	height:20px;
+	font-size:12px;
+	text-align:center;
+	margin-right:5px;
+	padding: 6px 0;
+}
+.i-filter-right {
+    //line-height:20px;
+    //height:20px;
+    text-align:center;
+}
+ .filter-right-wrap .emphasis{
+	text-align:center;
+}
+.i-filter-right i{
+	margin-left:5px;
+}
+.emphasis{
+	border:solid 1px #f58686;
+}
+
+.command-block{
+	margin-bottom:20px;
+}
+
+.modal-vertical-center {
+         position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%);
+    }

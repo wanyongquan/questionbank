@@ -13,7 +13,7 @@
               </div>
               <div class="profile_info">
                 <span>Welcome,</span>
-                <h2><?=$user->_fname ?>&nbsp;&nbsp;<?=$user->_lname ?></h2>
+                <h2><?=$user->_lname ?>&nbsp;&nbsp;<?=$user->_fname ?></h2>
               </div>
               <div class="clearfix"></div>
             </div>

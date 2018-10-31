@@ -2,6 +2,7 @@
  * Holds the javascript functions for manipulate subject 
  */
 
+
 // add subject
 function addSubject(){
 	
@@ -118,7 +119,7 @@ $(document).ready(function(){
 	}
 )
 
-$("#add_subject_form").validator().on('submit', function(e){
+$("#add_subject_form").bootstrapValidator().on('submit', function(e){
 	
 	if (e.isDefaultPrevented()){
 		// handle error
@@ -129,7 +130,7 @@ $("#add_subject_form").validator().on('submit', function(e){
 	}
 	
 });
-$("#edit_subject_form").validator().on('submit', function(e){
+$("#edit_subject_form").bootstrapValidator().on('submit', function(e){
 	
 	if (e.isDefaultPrevented()){
 		// handle error

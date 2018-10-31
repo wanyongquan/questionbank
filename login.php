@@ -11,28 +11,29 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
     }
 }
 if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
+    
     // get username and password from form;
     $username = Input::get ( 'username' );
     $password = Input::get ( 'password' );
-    $user = findUser($username);
-   
-    if ($user && $user->varify_password($password)){
-         $user->login_user();
-         $user->isLoggedIn();
-         
-         if (isset($_REQUEST['returnurl'])){
-             $returnurl = $_REQUEST['returnurl'];
-         }else{
-             $returnurl = 'index.php';
-         }
-            // redirect to custom login script
-         header ( "location:$returnurl" );
-            
+    $user = findUser ( $username );
+    
+    if ($user && $user->varify_password ( $password )) {
+        $user->login_user ();
+       
+        
+        if (isset ( $_REQUEST ['returnurl'] )) {
+            $returnurl = $_REQUEST ['returnurl'];
+        } else {
+            $returnurl = 'index.php';
+        }
+        // redirect to custom login script
+        header( "location:$returnurl" );
+    } else {
+        $_GLOBALS ['message'] = "Username or password is wrong.";
+        $error = "Username or password is wrong.";
+        ;
     }
-     else {
-         $_GLOBALS['message']="Username or password is wrong.";
-         $error="Username or password is wrong.";;
-    }
+    
 }
 
 
@@ -77,7 +78,7 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
           <section class="login_content">
             <div class="login-panel panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">欢迎使用<?php echo get_string('title'); ?>系统</h3>
+                    <h3 class="panel-title">欢迎使用<?php echo get_string('title'); ?></h3>
                 </div>
                 <div class="panel-body">
                 
@@ -85,13 +86,13 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
               <?php if (isset($returnurl) ){?><input type="hidden" name="returnurl" value="<?=$returnurl ?>">
               <?php } ?>
               <div>
-                <input type="text" name="username" class="form-control" placeholder="Username" required="" />
+                <input type="text" name="username" class="form-control" placeholder="请输入账号" required />
               </div>
               <div>
-                <input type="password" name="password" class="form-control" placeholder="Password" required="" />
+                <input type="password" name="password" class="form-control" placeholder="请输入密码" required />
               </div>
               <div>
-                <button class= "btn btn-primary btn-block" type="submit" name="login">Log in</button>
+                <button class= "btn btn-primary btn-block" type="submit" name="login">登陆</button>
               </div>
 
               <div class="clearfix"></div>
@@ -100,10 +101,10 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
               <div class="row">
                 
                 <div class="col-md-6 col-sm-6 col-xs-6">
-                  <a href="admin/forgot_password.php" ><i class="fa fa-wrench"></i>Forget Password? </a>
+                  <a href="admin/forgot_password.php" ><i class="fa fa-wrench"></i>忘记密码? </a>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-6">
-                  <a class="to_register" href='#signup'><i class="fa fa-plus-square"></i> Register</a>
+                  <a class="to_register" href="register.php"><i class="fa fa-plus-square"></i> 注册账号</a>
                 </div>
                 
                 </div>
@@ -123,30 +124,32 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
             <div class="login-panel panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">欢迎使用<?php echo get_string('title'); ?>系统</h3>
-                    <p>(This page is under construction....)</p>
+                    <p></p>
                 </div>
                 <div class="panel-body">
                 
-            <form>
-              
+            <form method="post" action="<?php echo htmlspecialchars ( $_SERVER ['PHP_SELF'] );?>" >
               <div>
-                <input type="text" id="username"  name="username" class="form-control" placeholder="Username" required="" autofocus/>
+                <input type="text" id="username"  name="username" class="form-control" placeholder="请输入账号" required autofocus/>
+              </div>
+              <!-- <div>
+                <input type="email" class="form-control" placeholder="Email" required />
+              </div> -->
+              <div>
+                <input type="password" id="password" name="password" class="form-control" placeholder="请输入密码" required />
               </div>
               <div>
-                <input type="email" class="form-control" placeholder="Email" required="" />
+                <input type="password" id="password2" name="password2" class="form-control" placeholder="请确认密码" required />
               </div>
               <div>
-                <input type="password" id="password" name="password" class="form-control" placeholder="Password" required="" />
-              </div>
-              <div>
-                <a class="btn btn-default submit" href="index.html">Submit</a>
+                <input class="btn btn-default submit" type="submit" value="注册"/>
               </div>
 
               <div class="clearfix"></div>
 
               <div class="separator">
-                <p class="change_link">Already a member ?
-                  <a href="#signin" class="to_register"> Log in </a>
+                <p class="change_link">已有账号？
+                  <a href="#signin" class="to_register"> 登陆 </a>
                 </p>
 
                 <div class="clearfix"></div>
@@ -160,6 +163,11 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
         </div>
       </div>
     </div>
+    <script src="lib/jquery/jquery-3.1.1.min.js"></script>
+    <script src="lib/jqueryvalidation/jquery.validate.js"></script>
+    <script>
+        $("form").validate();
+    </script>
   </body>
 </html>
 

@@ -1,11 +1,11 @@
 <?php
 /**
- * **************************************************************************
- * ** YanZi Question Management and Test Paper Generator System           ***
- * ** Developer: Wan Yongquan                                             ***
- * ** Title:  Test papers management:edit,delete                          ***
- * ** Function:                                                           ***
- * **************************************************************************
+ *************************************************************************
+ ** WanXin Test Paper Generator System                                  **
+ ** Developer: Wan Yongquan                                             **
+ ** Title:  Test papers management:                                     **
+ ** Function:   edit,delete test papers                                 **
+ *************************************************************************
  */
 
 require_once '../config.php';
@@ -27,7 +27,12 @@ if (!loginRequired($_SERVER['REQUEST_URI'])){die();}
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>Page Title</h3>
+                <div class="nav" style="float:left; font-size:16px;">
+                   <ul class="breadcrumb">
+                     <li class=""><i class="fa fa-home"></i> <a href="#"><?=get_string('home') ?></a></li>
+                     <li class=""><a href="#"><?=get_string('testpapers') ?></a></li>
+                   </ul>
+                 </div>
               </div>
 
             </div>
@@ -38,7 +43,7 @@ if (!loginRequired($_SERVER['REQUEST_URI'])){die();}
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Plain Page<a href="#" onclick="editcheck()">edit check</a></h2>
+                    <h2><?=get_string('mypapers'); ?></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -63,6 +68,7 @@ if (!loginRequired($_SERVER['REQUEST_URI'])){die();}
                           <thead><tr>
                               <th>ID</th>
                               <th><?=get_string('papertitle') ?></th>
+                              <th><?=get_string('coursename') ?></th>
                               <th><?=get_string('examduration') ?></th>
                               <th><?=get_string('createdtime') ?></th>
                               <th><?=get_string('operations') ?></th>

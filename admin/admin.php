@@ -1,12 +1,12 @@
 <?php
 /*
- * ****************************************************
- * ** Yan Lao Shi Question Management System        ***
- * **-----------------------------------------------***
- * ** Developer: Wan Yongquan                       ***
- * ** Title: Admin Dashboard                        ***
- * ** Function: User Management, Role Management    ***
- * ****************************************************        
+ ***************************************************
+ ** WanXin Test Paper Generator System            **
+ **-----------------------------------------------**
+ ** Developer: Wan Yongquan                       **
+ ** Title: Admin Dashboard                        **
+ ** Function: User Management, Role Management    **
+ ***************************************************        
  */
 
 /* 
@@ -48,7 +48,7 @@ require_once '../includes/html_header.php';
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Admin Dashboard</h2>
+                    <h2><?=get_string('admin-dashboard')?></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -71,25 +71,25 @@ require_once '../includes/html_header.php';
                       <div class="row row-centered">
                         <a href="<?php echo $qb_url_root?>/admin/admin_users.php"><div class="col-md-3 col-sm-3 col-xs- col-centered">
                           <div class="panel panel-default">
-                            <i class="fa fa-users fa-2x"></i><br>Manage Users</li>
+                            <i class="fa fa-users fa-2x"></i><br><?=get_string('usermanagement')?></li>
                           </div>
                         </div></a>
                         
                         <a href="<?php echo $qb_url_root?>/admin/admin_roles.php"><div class="col-md-3 col-sm-3 col-xs- col-centered">
                           <div class="panel panel-default">
-                            <i class="fa fa-lock fa-2x"></i><br>Manage Roles</li>
+                            <i class="fa fa-lock fa-2x"></i><br><?=get_string('rolemanagement')?></li>
                           </div>
                         </div></a>
                         
                         <a href="<?php echo $qb_url_root?>/admin/admin_pages.php"><div class="col-md-3 col-sm-3 col-xs- col-centered">
                           <div class="panel panel-default">
-                            <i class="fa fa-lock fa-2x"></i><br>Manage Pages</li>
+                            <i class="fa fa-lock fa-2x"></i><br><?=get_string('pagemanagement')?></li>
                           </div>
                         </div></a>
                         
                         <a href="<?php echo $qb_url_root?>/admin/admin_courses.php"><div class="col-md-3 col-sm-3 col-xs- col-centered">
                           <div class="panel panel-default">
-                            <i class="fa fa-lock fa-2x"></i><br>Manage Courses</li>
+                            <i class="fa fa-lock fa-2x"></i><br><?=get_string('course-management')?></li>
                           </div>
                         </div></a>
                       </div>

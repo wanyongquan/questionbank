@@ -1,11 +1,12 @@
 <?php
-/**
- * Yan Lao Shi Ti Ku
- * An PHP Question Bank Management System
- * @author Wanyongquan
- */
 /*
- * This page is user management dashboard. it shows all users in a grid .
+ ****************************************************
+ ** WanXin Test Paper Generator System            **
+ **-----------------------------------------------**
+ ** Developer: Wan Yongquan                       **
+ ** Title: Course Management                      **
+ ** Function: Add,Edit,Delete course              **
+ ***************************************************
  */
 require_once '../config.php';
 
@@ -33,7 +34,7 @@ $courseData = fetchAllCourses();
               </div>
               <div class="profile_info">
                 <span>Welcome,</span>
-                <h2>Super Admin</h2>
+                <h2><?=$user->_lname ?>&nbsp;&nbsp;<?=$user->_fname ?></h2>
               </div>
               <div class="clearfix"></div>
             </div>
@@ -73,7 +74,7 @@ $courseData = fetchAllCourses();
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>课程管理</h3>
+                <h3><?=get_string('course-management');?></h3>
               </div>
 
             </div>
@@ -84,7 +85,7 @@ $courseData = fetchAllCourses();
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>课程管理<small><i class="ace-icon fa fa-angle-double-right"></i>新增、编辑、删除课程</small></h2>
+                    <h2><?=get_string('course-management');?><small><i class="ace-icon fa fa-angle-double-right"></i>新增、编辑、删除课程</small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -105,7 +106,7 @@ $courseData = fetchAllCourses();
                   <div class="x_content">
                       <div class="row">
                        <div class="panel panel-default">
-                         <div class="panel-heading">Courses
+                         <div class="panel-heading"><?=get_string('course');?>
                             <a class="pull-right" href="#" data-toggle="modal" data-target="#add_new_course_modal"><i class="glyphicon glyphicon-plus"></i> 新增课程</a>
               
                          </div>
@@ -115,7 +116,7 @@ $courseData = fetchAllCourses();
                             <table id="paginate" class="table  table-hover table-list-search">
                                 <thead>
                                  <tr>
-                                    <th>课程名称</th><th>描述</th><th>Action</th>
+                                    <th>课程名称</th><th>描述</th><th></th>
                                  </tr>
                                 </thead>
                                 <tbody>
@@ -125,15 +126,15 @@ $courseData = fetchAllCourses();
                                     <tr><td><a class="nounderline row-link" href="admin_course.php?cid=<?=$vl['course_id']?>"><?=$vl['coursename'] ?></a></td>
                                     <td><a class="nounderline row-link" href="admin_course.php?cid=<?=$vl['course_id']?>"><?=$vl['description'] ?></a></td>
                                     <td><div class=" action-buttons">
-                                    <a class="btn btn-warning" href="../admin/admin_subjects.php?cid=<?=$vl['course_id'] ?>">知识点管理</a>
+                                    <a class="btn btn-warning" href="../subject/admin_subjects.php?cid=<?=$vl['course_id'] ?>">知识点管理</a>
                                     <a class="btn btn-warning" href="../question/admin_questions.php?courseid=<?=$vl['course_id'] ?>">题库管理</a>
-                                    
+                                    <!-- 
                                     <a class="btn btn-warning" href="../admin/admin_users.php">组卷规则管理</a>
-                                    
-                                    <a title="编辑" onclick="getCourseDetails(<?=$vl['course_id'] ?>)" data-toggle="modal" data-target="#edit_course_modal" data-backdrop="false"
+                                     -->
+                                    <a title="编辑" onclick="getCourseDetails(<?=$vl['course_id'] ?>)" data-toggle="modal" data-target="#edit_course_modal" data-backdrop="true"
                                         data-href="http://localhost/user/editadvanced.php?id=2&amp;course=<?=$vl['course_id'] ?>">
                                         <span class="green"><i class="ace-icon fa fa-pencil bigger-120"></i></span></a>
-                                    <a title="删除" class="delete_product" data-id="<?=$vl['course_id'] ?>"  data-toggle="modal" data-target="#delete_course_modal" data-backdrop="false">
+                                    <a title="删除" class="delete_product" data-id="<?=$vl['course_id'] ?>"  data-toggle="modal" data-target="#delete_course_modal" data-backdrop="true">
                                         <span class="red"><i class="ace-icon fa fa-trash-o bigger-120"></i></span></a></div></td>
                                                 
                                 <?php } ?>

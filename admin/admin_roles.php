@@ -1,23 +1,15 @@
 <?php
 /*
- * ****************************************************
- * ** Yan Lao Shi Question Management System        ***
- * **-----------------------------------------------***
- * ** Developer: Wan Yongquan                       ***
- * ** Title: Role Management                        ***
- * ** Function: Add,Edit,Delete                     ***
- * ****************************************************        
+ ***************************************************
+ ** WanXin Test Paper Generator System            **
+ **-----------------------------------------------**
+ ** Developer: Wan Yongquan                       **
+ ** Title: Role Management                        **
+ ** Function: Add,Edit,Delete                     **
+ ***************************************************
  */
 
-/* 
- * ***********************************************
- * ---------------*
- * PHP goes here  *
- * ---------------*
- 
 
- *************************************************
- */
 require_once '../config.php';
 
 require_once '../includes/html_header.php';
@@ -39,7 +31,15 @@ $roledata = getAllRoles();
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>Role Management</h3>
+                
+                <div class="nav" style="float:left; font-size:16px;">
+                   <ul class="breadcrumb">
+                     <li class=""><i class="fa fa-home"></i> 
+                        <a href="<?php echo $qb_url_root?>/index.php"><?=get_string('home'); ?></a></li>
+                     <li class=""><a href="#"><?=get_string('rolemanagement');?></a></li>
+                     
+                   </ul>
+                </div>
               </div>
 
             </div>
@@ -50,7 +50,7 @@ $roledata = getAllRoles();
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Plain Page</h2>
+                    <h2>角色管理</h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -74,16 +74,16 @@ $roledata = getAllRoles();
                      <!-- main content column -->
                      <div class="class col-sm-6">
                         <form name="addRole" action="<?=$_SERVER['REQUEST_URI']?>" method = "post">
-                          <h2> Create a new role</h2>
+                          <h2> 新建一个角色</h2>
                           <p>
-                            <label>Role Name:</label>
+                            <label>角色名称:</label>
                             <input name="name" type="text"/>
-                            <input class="btn btn-primary" type="submit" name="submit" value="Add Role"/><br>
+                            <input class="btn btn-primary" type="submit" name="submit" value="创建"/><br>
                           </p>
                         </form>
                         <br>
                         <table class="table table-hover table-list-search">
-                          <tr><th>Role Name</th></tr>
+                          <tr><th>角色名称</th></tr>
                           <?php 
                            // list every role name here
                           foreach($roledata as $row){

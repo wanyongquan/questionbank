@@ -7,14 +7,38 @@
  */
 $(document).ready(function(){
 	reloadQuestionCart();
-	$("#savepaper").on('click', function(){
-		var courseid = $("#courseid").val();
-		var papertitle = $("#papertitle").val();
+	/*$("#savepaper").on('click', function(){
+		
+	});*/
+
+	// save paper modal dialog submitted
+	$("#editPaperTitle").bootstrapValidator({
+		message:'This value not valid',
+		feedbackIcons:{
+			valid:'glyphicon glyphicon-ok',
+			invalid:'glyphicon glyphicon-remove',
+			validating:'glyphicon glyphicon-refresh'
+		},
+		fields: {
+			paper_title:{
+				message:'The paper title is not valid',
+				validators:{
+					notEmpty:{ message:'试卷标题必须填写，不能为空'}
+				}
+			}
+		}
+	})
+	.on('success.form.bv', function(e){
+		// prevent default submission;
+		e.preventDefault();
+		
+		var papertitle = $("#paper_title").val();
+		
 		$.ajax({
 			url: getProjectRootPath() + '/zujuan/ajax/zujuan.ajax.php',
 			data:{
 				action:'savepaper',
-				courseid: courseid
+				papertitle:papertitle
 			},
 			success:function(data){
 				var responseArr = JSON.parse(data);
@@ -24,6 +48,13 @@ $(document).ready(function(){
 				}
 			}
 		});
+	});
+	
+	// set the courseid in hidden field;
+	$('#editPaperTitle').on('show.bs.modal', function(e){ 
+		//$(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+		
+		$(this).find('#hidden_courseId').attr('value', $(e.relatedTarget).data('id'));
 	});
 	
 	$("#confirmClear").on('show.bs.modal', function(e){
@@ -37,6 +68,7 @@ $(document).ready(function(){
     });
    
 });
+
 
 function movequestionup(e){
 	var questionid = $(e).attr("data-id");

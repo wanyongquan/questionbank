@@ -20,7 +20,7 @@ if (!empty($action) && $action == 'edit'){
     $paperId = $_SESSION['paperid'];
 }
 
-$questionCart = $_SESSION['question_cart'];
+$paper_generator = try_get_paper_generator();
 
 ?>
 
@@ -96,8 +96,8 @@ $questionCart = $_SESSION['question_cart'];
                         <hr>
                         </div>
                         <ul class="list-unstyled user_data">
-                          <li><a class="btn btn-primary" id="savepaper"><?=get_string('savepaper') ?></a></li>
-                          <li><a class="btn btn-primary" href="downloadword.php?id=<?= 17?>">download</a></li>
+                          <li><a class="btn btn-primary" id="savepaper" data-toggle="modal" data-target="#editPaperTitle" data-backdrop="true"><?=get_string('savepaper') ?></a></li>
+                          <li><a class="btn btn-primary" href="downloadword.php?id=<?= 17?>"><?=get_string('downloadpaper');?></a></li>
                           
                         </ul>
                         
@@ -195,6 +195,40 @@ $questionCart = $_SESSION['question_cart'];
         </div>
         <!--  end of modal-dialog -->
     </div> <!-- /end of paperAnalysis dialog -->
+    <!--  EditPaperTitle modal dialog -->
+    <div id="editPaperTitle" class="modal fade modal-vertical-center" role="dialog" >
+        <div class="modal-dialog">
+            <!--  Modal dialog content -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title text-center"><?=get_string('save_paper_dlg_title') ?></h4>
+                </div>
+                <form id="edit_paper_title_frm" class="form-horizontal" role="form"  data-toggle="validator">
+                    <input type="hidden" id="hidden_courseId" name="hidden_courseId"/>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <div class="col-xs-12 col-sm-2 col-md-2">
+                                <label for="paper_title" class="control-label"><?=get_string('papertitle') ?> </label>
+                            </div>
+                            <div class="col-xs-12 col-sm-10 col-md-10">
+                                <input name="paper_title" id="paper_title" data-error="请输入试卷标题！" class="form-control"/>
+ 
+                            </div> 
+                        </div>
+                    
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" id="btnCancel">取消</button>
+                        <button type="submit" class="btn btn-primary btn-ok" id="btn-edit-paper-title"><?=get_string('ok'); ?></button>
+                    </div>
+                    <!--  end of modal-footer -->
+                </form>
+            </div>
+            <!--  end of modal-content -->
+        </div>
+        <!--  end of modal-dialog -->
+    </div> <!-- /end of confirmClear dialog -->
         <!-- footer content -->
         <footer>
           <div class="pull-right">
@@ -219,8 +253,10 @@ $questionCart = $_SESSION['question_cart'];
     <script src="<?php echo $qb_url_root?>/js/custom.min.js"></script>
     <script src="../js/pagination/jquery.dataTables.js" type="text/javascript"></script>
     <script src="../js/pagination/dataTables.js" type="text/javascript"></script>
-     <script src="../vendors/echarts/dist/echarts.js"></script>
+    <script src="../vendors/echarts/dist/echarts.js"></script>
+    <link rel="stylesheet" href="<?php echo $qb_url_root?>/lib/bootstrapvalidator/css/bootstrapValidator.min.css"/>
+    <script src="<?php echo $qb_url_root?>/lib/bootstrapvalidator/js/bootstrapValidator.min.js"></script>
+    
     <script src="../js/makepaper.js"></script>
-
   </body>
 </html>

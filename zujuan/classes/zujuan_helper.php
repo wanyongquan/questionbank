@@ -8,10 +8,13 @@
 
 namespace core_paper;
 
+
 ?>
 
 <?php require_once '../../config.php'; ?>
+
 <?php require_once  $abs_doc_root.$qb_url_root.'/helpers/qb_helper.php';?>
+<?php require_once  $abs_doc_root.$qb_url_root.'/classes/PaperGenerator.php'?>
 <?php
 
 
@@ -106,13 +109,20 @@ class PaperHelper{
         return array_merge($before,$mid,$after);
     }
 
-    public static function reloadQuestionCart($questionCart){
-        
-        if (!isset($questionCart)){            
-           echo  ' you have add no question in cart';
-        }else{
-            $courseid = $questionCart ['courseid'];
-            $qtypeArr = $questionCart ['qtype_data'];
+    public static function reloadQuestionCart(){
+       
+        if (!isset($_SESSION['paper_generator']))
+        {
+            echo '试题篮中没有试题！';
+            return false;
+        }
+        else{
+            $paper_generator = try_get_paper_generator();
+            $courseId = $paper_generator->courseId;
+            $qtypeArr = $paper_generator->question_type_groups;
+            
+//             $courseid = $questionCart ['courseid'];
+//             $qtypeArr = $questionCart ['qtype_data'];
             
             $qtypeData = getQtypes();
             // qtype order-displaytext map
@@ -183,17 +193,22 @@ class PaperHelper{
         }
     }
 
+    /**
+     * Show questions that match user filter on page;
+     * @param array $questionArr
+     * @return boolean|string
+     */
     public static function reloadCandidateQuestions($questionArr){
         if(!isset($questionArr) ){
             return false;
         }
-        $questionCart = $_SESSION['question_cart'];
+        $paper_generator = try_get_paper_generator();
         $qtypeData = \getQtypes();
         $difficultyData = \getDifficultyLevels();
         
         $html = "";
         foreach($questionArr as $vl){
-            $incart = cart_question_exists($vl['question_id'], $questionCart);
+            $incart = $paper_generator->question_exists( $vl['question_id']);
             $btnclass= $incart? 'remove-btn': 'add-btn';
             
             $btntext = ($incart)?get_string('removecart'): get_string('addcart');
@@ -257,51 +272,33 @@ class PaperHelper{
     }
     
     public static function prepareForEditPaper($paperId){
-        unset($_SESSION['question_cart']);
+        //clear the existing paper in session;
+        unset($_SESSION['paper_generator']);
         
-        $questionCart = array();
-        $questionCart['paperid'] = $paperId;
+        // build a new Paper_Generator
         
         //update courseId in cart;
         $paperDetails = \getPaperDetails($paperId);
         
         $courseId= $paperDetails['courseid'];
-        if ( !array_key_exists('courseid', $questionCart)){
-            $questionCart['courseid'] = $courseId;
-        }
         
-        // update question information in question_cart in session
+        $paper_generator = new \core_qb\PaperGenerator($paperId);
+        $paper_generator->courseId= $courseId;
+        
+        
+        // update question information of paper_generator object in session
         
         $paperQuestions =  getPaperQuestions($paperId);
         
          foreach($paperQuestions as $vl){
             $questionid = $vl['questionid'];
-           
             
-//             // step 1: check if this question is already in session;
-//             //$questionCart = $_SESSION['question_cart'];
-//             if (cart_question_exists($questionid, $questionCart)){
-//                 // remove the question from cart if it exits in cart;
-//                 ///$questionCart = removeArrayAt($questionCart, $questionid);
-//                 $questionCart = removeQuestionFromCart($questionid, $questionCart);
-//                 $responseArr['btn']='add';
-//                 $responseArr['btn_text'] = get_string('addcart');
-//                 $btn_text = get_string('addcart');
-//             }else{
-//                 ///$questionDetails = getQuestionDetails($questionid);
-//                 ///$row = mysqli_fetch_assoc($questionDetails);
-//                 ///$questionArr = array($questionid => array('qid'=>$questionid, 'qbody'=>$row['qbody'], 'difficulty'=>$row['difficulty_id'], 'subject'=>$row['subjectid']));
-//                 ///foreach($questionArr as $key =>$value){
-//                 ///    $questionCart[$key] = $value;
-//                 ///}
-                $questionCart = addQuestionToCart($questionid, $questionCart);
-//                 $responseArr['btn'] = 'remove';
-//                 $responseArr['btn_text'] = get_string('removecart');
-//                 $btn_text = get_string('removecart');
-//             }
+            $paper_generator->add_question_id($questionId);
+            
+
         }
         //update cart in session
-        $_SESSION['question_cart'] = $questionCart;
+        $_SESSION['paper_generator'] = $paper_generator;
     }
 
     public static function reloadTestPapersTable(){
@@ -320,7 +317,7 @@ class PaperHelper{
                     break;
             }
         }
-        $paperData = getAllTestPapers($orderby, $orderdir);
+        $paperData = \getAllTestPapersByCreatorId($user->_id);
         $responseArr = array();
         $responseArr['draw'] = $_REQUEST['draw'];
         $responseArr['recordsTotal'] = mysqli_num_rows($paperData);
@@ -328,14 +325,15 @@ class PaperHelper{
         $dataArr = array();
         foreach($paperData as $vl){
             
-            $rowArr = array($vl['id'], $vl['title'], $vl['examduration'], $vl['createdtime']);
-            $rowArr[] = ' <a title="' .get_string('edit') .'" class="operationbtn" data-id="' .$vl['id'] .'" onclick="beforeEditPaper(this)" ><span class="blue"><i class="fa fa-edit"></i></span></a>
+            $rowArr = array($vl['id'], $vl['title'],$vl['coursename'], $vl['examduration'], $vl['createdtime']);
+            $rowArr[] = ' <a title="' .get_string('edit') .'" class="operationbtn" data-id="' .$vl['id'] .'" onClick="beforeEditPaper(this)" ><span class="blue"><i class="fa fa-edit"></i></span></a>
                           <a title="'. get_string('delete') .'" class="operationbtn" data-id="' . $vl['id'] .'" data-toggle="modal" data-target="#deletepaper" data-backdrop="false"><span class="red"><i class="fa fa-trash-o"></i></span></a>';
             $dataArr[] = $rowArr;
         }
         $responseArr['data'] = $dataArr;
         return json_encode($responseArr);
     }
+    
     public static function getSerialNumberText($serialNumber){
         if (!\is_int($serialNumber)){
             return false;
@@ -362,5 +360,101 @@ class PaperHelper{
             case 10:
                 return "十";
         }
+    }
+    
+    public static function save_paper()
+    {
+        $paperGenerator = try_get_paper_generator();
+        
+        if (isset($paperGenerator->paperId))
+        {
+            self::update_testpaper();
+        }
+        else
+        {
+            self::add_testpaper();
+        }
+    }
+    public static function add_testpaper()
+    {
+        global $DB, $user;
+        
+        $courseId = $paperGenerator->courseId;
+        $paperTitle = $paperGenerator->paperTitle;
+        
+        try{
+            // set autocommit false to begin a transaction;
+            $DB->autocommit(false);
+            
+            // step 1： insert a question into table tk_testpaper;
+            $sql = sprintf("insert into tk_testpapers (title, examduration, createdtime, createdby, courseid) values('%s', %d, '%s', %d, %d)", 
+                                $paperTitle, 90, getCurrentDatetime(), $user->_id, $courseId);
+            $result = mysqli_query($DB, $sql);
+            if (!$result){
+                returnError(mysqli_error($DB));
+            }
+            // get the id of the new created paper;
+            $paperid = mysqli_insert_id($DB);
+            
+            // step 2: save question type order info in table tk_testpaper_qtypes
+            $sql = "insert into tk_testpaper_qtypes (paperid, qtype, qtypeorder, qtypecomment) ";
+            $sql .= " values (?, ?, ?, ?) ;";
+            $stmt = $DB->prepare($sql);
+            $qtypeorder = 0;
+            foreach($questionCart as $qtype=>$qid_arr){
+                $qtypeorder ++;
+                $qtypecomment =  '每题1分，共10分';
+                $stmt->bind_param("isis", $paperid, $qtype, $qtypeorder, $qtypecomment);
+                $result = $stmt->execute();
+                if (!$result){
+                    returnError($stmt->get_warnings());
+                }
+            }
+        }
+        catch(\Exception $e)
+        {
+            if ($stmt != null)
+            {
+                $stmt->close();
+            }
+            returnError(mysqli_error($DB));
+        }
+        finally 
+        {
+            $DB->autocommit(true);
+        }
+        
+    }
+    
+    public static function update_testpaper()
+    {
+        
+    }
+    
+    /**
+     * @desc Automatically generate a test paper and put those question in session cart according to the conditions passed in .
+     * @param int $courseId
+     * @param int $difficulty
+     * @param array $subjectIdArr
+     * @param array $qtypeCountArr
+
+     */
+    public static function generatePaper($courseId, $difficulty, $subjectIdArr, $qtypeCountArr){
+        if (empty($courseId) || empty($difficulty) || empty($subjectIdArr) || empty($qtypeCountArr)){
+            return false;
+        }
+        // automatically pick the questions using random algrithem
+        $paperGenerator = new \core_qb\PaperGenerator();
+        $paperGenerator->courseId = $courseId;
+        $paperGenerator->difficultyId = $difficulty;
+        $paperGenerator->setRequiredQuestionTypeAndNumbers($qtypeCountArr);
+        $paperGenerator->setRequiredSubjects( $subjectIdArr);
+        
+        $paperGenerator->AutoPickQuestions();
+        
+        unset($_SESSION['paper_generator']);
+        $_SESSION['paper_generator']= $paperGenerator;
+
+        return true;
     }
 }

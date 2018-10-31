@@ -61,6 +61,7 @@ if (isset( $courseid) ) {
             $point = $row ['point'];
             $course_id = $row ['courseid'];
             $subject_id = $row ['subjectid'];
+            $cognitionId = $row['cognitionid'];
             $difficultyLevelId = $row ['difficultylevel_id'];
             
             // get list of answers of this question
@@ -84,7 +85,13 @@ if (isset( $courseid) ) {
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>编辑试题</h3>
+                
+                <div class="nav" style="float:left; font-size:16px;">
+                   <ul class="breadcrumb">
+                     <li class=""><i class="fa fa-home"></i> <a href="#"><?=get_string('home') ?></a></li>
+                     <li class=""><a href="#"><?=get_string('editquestion') ?></a></li>
+                   </ul>
+                 </div>
               </div>
 
             </div>
@@ -95,7 +102,7 @@ if (isset( $courseid) ) {
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>选择题<small><i class="ace-icon fa fa-angle-double-right"></i> for course_name</small></h2>
+                    <h2><?=get_string('multichoice') ?></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -142,7 +149,7 @@ if (isset( $courseid) ) {
                     <div class="form-group ">
                        <label class="control-label col-md-2 col-sm-2 col-xs-12" >知识点</label> 
                         <div class="col-sm-9 col-md-9 col-xs-12">
-                            <select id="qitem_subject_id" name="subject_id" class="form-control">
+                            <select id="qitem_subject_id" name="subject_id" class="form-control" required>
                                 <option value="">--请选择知识点--</option>
                                 <?php
                                 $query = "select * from tk_subjects order by subjectname;";
@@ -153,6 +160,24 @@ if (isset( $courseid) ) {
                                     foreach ( $result as $row ) {
                                         $selected = ($subject_id == $row ['subject_id']) ? "selected" : "";
                                         echo '<option value="' . $row ['subject_id'] . '" ' . $selected . ' >' . $row ['subjectname'] . '</option>';
+                                    }
+                                }
+                                ?>
+                              </select>
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                       <label class="control-label col-md-2 col-sm-2 col-xs-12" ><?=get_string('congnition') ?></label> 
+                        <div class="col-sm-9 col-md-9 col-xs-12">
+                            <select id="ques_cognitionid" name="ques_cognitionid" class="select2 form-control" required data-placeholder="请选择认知能力...">
+                                <option value="">$nbsp;</option>
+                                <?php
+                                $cognitionData = getCognitions();
+
+                                if ($cognitionData && $cognitionData->num_rows > 0) {
+                                    foreach ( $cognitionData as $row ) {
+                                        $selected = ($cognitionId == $row ['id']) ? "selected" : "";
+                                        echo '<option value="' . $row ['id'] . '" ' . $selected . ' >' . $row ['CognitionName'] . '</option>';
                                     }
                                 }
                                 ?>
@@ -341,8 +366,12 @@ if (isset( $courseid) ) {
     <script src="<?php echo $qb_url_root?>/js/custom.min.js"></script>
     
     <!-- Form validation JavaScript -->
-    <script src="<?=$qb_url_root?>/script/form-validator.min.js" type="text/javascript"></script><script src="../../lib/bootstrapValidator/js/bootstrapValidator.js" type="text/javascript"></script>
+    <script src="<?=$qb_url_root?>/script/form-validator.min.js" type="text/javascript"></script>
+    <script src="../../lib/bootstrapValidator/js/bootstrapValidator.js" type="text/javascript"></script>
     <script src="<?=$qb_url_root?>/lib/jqueryvalidation/jquery.validate.js" type="text/javascript"></script>
+    
+    <script src="<?php echo $qb_url_root?>/vendors/select2/dist/js/select2.full.min.js"></script>
+    
     <script src="formutil.js" type="text/javascript"></script>
   </body>
 </html>

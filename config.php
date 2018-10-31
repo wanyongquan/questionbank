@@ -1,6 +1,6 @@
 <?php
 //version 1.0
-require_once ('classes\class.User.php');
+require_once  'classes\class.User.php';
 
 session_start() ;
 
@@ -32,7 +32,7 @@ $file_found=FALSE;
     array_splice($self_path, $self_path_length-$i, $i);
     $qb_url_root=implode("/",$self_path);
 
-    if (file_exists($abs_doc_root.$qb_url_root.'/index.php')){
+    if (file_exists($abs_doc_root.$qb_url_root.'/z_qb_root.php')){
         $file_found=TRUE;
         break;
     }else{
@@ -41,6 +41,8 @@ $file_found=FALSE;
 } 
 //$qb_url_root ='http://localhost/qb';
 $app_root= '/questionbank';
+
+require_once  $abs_doc_root.$qb_url_root.'/helpers/qb_helper.php';
 
 $copyrightmessage=" This is copymessage";
 require_once('lib\setup.php');

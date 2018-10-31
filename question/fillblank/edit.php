@@ -254,7 +254,8 @@ if (null != $courseid) {
     <script src="<?php echo $qb_url_root?>/js/custom.min.js"></script>
     
     <!-- Form validation JavaScript -->
-    <script src="<?=$qb_url_root?>/script/form-validator.min.js" type="text/javascript"></script><script src="../../lib/bootstrapValidator/js/bootstrapValidator.js" type="text/javascript"></script>
+    <script src="<?=$qb_url_root?>/script/form-validator.min.js" type="text/javascript"></script>
+    <script src="../../lib/bootstrapValidator/js/bootstrapValidator.js" type="text/javascript"></script>
     <script src="<?=$qb_url_root?>/lib/jqueryvalidation/jquery.validate.js" type="text/javascript"></script>
     <script src="formutil.js" type="text/javascript"></script>
   </body>

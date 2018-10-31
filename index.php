@@ -14,7 +14,9 @@ require_once 'classes/Class.User.php';
 
 if (!loginRequired($_SERVER['REQUEST_URI'])){die();}
 
-$courseData = fetchAllCourses();
+
+$myQuestionData = getMyTopNQuestions(5);
+$myPapers = getMyTopNPapers(5);
 ?>
     <div class="container body">
       <div class="main_container">
@@ -29,51 +31,141 @@ $courseData = fetchAllCourses();
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>全部课程</h3>
+                 <div class="nav" style="float:left; font-size:16px;">
+                   <ul class="breadcrumb">
+                     <li class=""><i class="fa fa-home"></i> <a href="#"><?=get_string('home') ?></a></li>
+                     
+                   </ul>
+                 </div>
               </div>
 
             </div>
 
             <div class="clearfix"></div>
+                  <!-- Small boxes (Stat box) -->
+      <div class="row">
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-white">
+            <div class="inner">
+              <h3>试题数量</h3>
 
-            <div class="row">
-              <div class="col-md-12 col-sm-12 col-xs-12">
+              <p>1200</p>
+            </div>
+            <div class="icon">
+              <i class="fa fa-book"></i>
+            </div>
+            <a href="<?= $qb_url_root?>/question/index.php" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-white">
+            <div class="inner">
+              <h3>试卷数量</h3>
+
+              <p>120</p>
+            </div>
+            <div class="icon">
+              <i class="fa fa-list"></i>
+            </div>
+            <a href="<?= $qb_url_root?>/zujuan/testpapers.php" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-white">
+            <div class="inner">
+              <h3>知识点</h3>
+
+              <p>54</p>
+            </div>
+            <div class="icon">
+              <i class="fa fa-star"></i>
+            </div>
+            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-white">
+            <div class="inner">
+              <h3>65</h3>
+
+              <p>Unique Visitors</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-pie-graph"></i>
+            </div>
+            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        <!-- ./col -->
+      </div>
+      <br>
+
+            <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>课程</h2>
+                    <h2><?='最新试题' ?></h2>
                     <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      <li><a class="" href="<?= $qb_url_root?>/question/index.php">更多<i class="fa fa-chevron-right"></i> </a>
                       </li>
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                        <ul class="dropdown-menu" role="menu">
-                          <li><a href="#">Settings 1</a>
-                          </li>
-                          <li><a href="#">Settings 2</a>
-                          </li>
-                        </ul>
-                      </li>
-                      <li><a class="close-link"><i class="fa fa-close"></i></a>
-                      </li>
+                      
                     </ul>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                     <div class="row">
+                     
+                      <ul class="list-unstyled">
                       <?php 
-                      foreach ($courseData as $vl ){
+                      foreach ($myQuestionData as $vl ){
                       ?>
-                      <div class="col-md-4 col-xs-12 col-sm-4">
-                        <div class="well" style="overflow:auto">
-                          <h3><a href="<?= $qb_url_root?>/question/question.php?id=<?=$vl['course_id'] ?>" ><?=$vl['coursename'] ?></a></h3>
-                        </div>
+                      <li >
+                      <div class="detail-list"><h2> <a href="#" class="  "><?=$vl['question_body'] ?></a></h2>
+                        
                       </div>
+                      <div style="float:right"> <?=$vl['Created_Date'] ?></div>
+                      <div class="clearfix"></div>
+                      </li>
                       <?php } ?>
-                     </div>
+                      </ul>
+                     
                   </div>
                 </div>
               </div>
-            </div>
+               <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2><?='最近试卷' ?></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="" href="<?= $qb_url_root?>/zujuan/testpapers.php">更多<i class="fa fa-chevron-right"></i></a>
+                      </li>
+                      
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                     <ul class="list-unstyled">
+                      <?php 
+                      foreach ($myPapers as $vl ){
+                      ?>
+                      <li>
+                      <div class="detail-list" >
+                        <h2> <a href="<?= $qb_url_root?>/question/admin_questions.php?courseid=<?=$vl['course_id'] ?>" class="  "><?=$vl['title'] ?></a></h2>
+                      </div>
+                      <div style="float:right"> <?=$vl['Created_Date'] ?></div>
+                      <div class="clearfix"></div>
+                      </li>
+                      <?php } ?>
+                     </ul>
+                  </div>
+                </div>
+              </div>
+
           </div>
         </div>
         <!-- /page content -->
