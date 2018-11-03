@@ -16,9 +16,10 @@ require_once '../includes/html_header.php';
 
 if (!loginRequired($_SERVER['REQUEST_URI'])){die();}
 
-$mode = $_REQUEST['mode'];
-if (empty($mode)|| !($mode == 'm' || $mode == 'i')){
-    header('location', '../index.php');
+if (isset($_REQUEST['mode']) ){
+    $mode = $_REQUEST['mode'];
+}else{
+    $mode = 'm'; // use default mode 'm';
 }
 
 $courseData = fetchAllCourses();

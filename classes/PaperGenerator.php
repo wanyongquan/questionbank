@@ -44,7 +44,7 @@ class PaperGenerator
         $this->timeDuration = null;
         $this->requiredQuestionTypeAndNumbers = null;
         $this->requiredSubjects = null;
-        $this->question_type_groups = null;
+        $this->question_type_groups = array();
         
     }
     
@@ -111,9 +111,10 @@ class PaperGenerator
                 {
                     $quesType = $row['qtype'];
                     $difficultyId = $row['difficultylevel_id'];
+                    $courseId = $row['courseid'];
                     $subjectId = $row['subjectid'];
                     $questionId = $row['question_id'];
-                    $paperItem = new Question($quesType, $difficultyId, $subjectId, $questionId);
+                    $paperItem = new Question($quesType, $difficultyId, $courseId, $subjectId, $questionId);
                     
                     $this->AddQuestion($paperItem);
                 }
@@ -128,8 +129,20 @@ class PaperGenerator
      */
     public function AddQuestion(Question $_paperItem)
     {
-        // step 1: add question to working list;
+        // 0. set the course id if the first question is been added.
+        if (!isset($this->courseId)){
+            $this->courseId = $_paperItem->courseId;
+            
+        }
+        // 1. check if the question type exists in paper;
+        if (! $this->contains_question_type($_paperItem->quesType)){
+            // create the question group and add to paper;
+            $questionGroup = new QuestionTypeGroup($_paperItem->quesType);
+            
+            $this->question_type_groups[] = $questionGroup;
+        }
         
+        // step 2: add question to question type group;
         foreach($this->question_type_groups as $vl)
         {
             if($vl->quesType == $_paperItem->quesType)
@@ -154,26 +167,57 @@ class PaperGenerator
 //         }
     }
     
-    public function add_question_id($questionId){
-        $questionDetail = \getQuestionDetails($questionId);
+    public function add_question_by_id($questionId){
+        $query_result = \getQuestionDetails($questionId);
+        $questionDetail = mysqli_fetch_assoc($query_result);
+        
         $quesType = $questionDetail['qtype'];
         $difficultyId = $questionDetail['difficultylevel_id'];
+        $courseId = $questionDetail['courseid'];
         $subjectId = $questionDetail['subjectid'];
         
-        $question = new Question($quesType, $difficultyId, $subjectId, $questionId);
+        $question = new Question($quesType, $difficultyId, $courseId, $subjectId, $questionId);
         
-        self::AddQuestion($question);
+        $this->AddQuestion($question);
+    }
+    
+    public function remove_question_by_id($questionId){
+        if (isset($questionId))
+        {
+            return false;
+        }
+        
+        foreach($this->question_type_groups as $questionTypeGroup ){
+            
+            // traverse the question type group
+            if ($questionTypeGroup->question_exists($questionId)){
+                // remove the question if find one match the questionid;
+                $questionTypeGroup->remove_question($questionId);
+                break;
+            }
+        }
+                
     }
     
     public function getQuestionCount(){
         $totalCount = 0;
         foreach($this->question_type_groups as $qtypeGroup){
-            $totalCount += $qtypeGroup>getQuestionCount();
+            $totalCount += $qtypeGroup->getQuestionCount();
             
         }
         return $totalCount;
     }
 
+    public function getQuestionIdList(){
+        $questionIdArr = array();
+        foreach($this->question_type_groups as $type_group){
+            foreach($type_group->questionArr as $question){
+                $questionIdArr[] = $question->questionId;
+            }
+        }
+        return $questionIdArr;
+    }
+    
     public function moveQuestionUp($questionId){
         // todo: [2018-10-30] to be implemented;
     }
@@ -192,14 +236,28 @@ class PaperGenerator
     
     public function question_exists($questionId){
         foreach($this->question_type_groups as $qtypeGroup){
-            foreach($qtypeGroup->questionArr as $question){
-                if ($question->questionId== $questionId){
-                    return true;
-                }
-            }
+            if ($qtypeGroup->questionId_exists($questionId))
+                return true;
         }
         return false;
     }
+    
+    public function contains_question_type($question_type){
+        $findType= false;
+        foreach($this->question_type_groups as $qtypeGroup){
+            if ($qtypeGroup->quesType == $question_type){
+                $findType = true;
+                break;
+            }
+        }
+        return $findType;
+    }
+    
+    public function __isset($property){
+        return isset($this->$property);
+    }
+    
+
 //     /**
 //      * Return an array of question types for questions in the working list;
 //      */

@@ -17,7 +17,7 @@ error_reporting ( 1 );
 <?php require_once '../../config.php'; ?>
 <?php require_once  $abs_doc_root.$qb_url_root.'/helpers/qb_helper.php';?>
 <?php require_once  $abs_doc_root.$qb_url_root.'/helpers/helper.php';?>
-<?php require_once '../classes/zujuan_helper.php'; ?>
+<?php require_once '../classes/PaperHelper.php'; ?>
 <?php require_once '../../lib/datelib.php'; ?>
 <?php
 /**
@@ -37,47 +37,31 @@ switch( $action){
         echo \core_paper\PaperHelper::getCourseSubjects($courseid);
         break;
     case 'addquestiontocart':
-        /**
-         *  the data structure of querstioncart stored in $_session: array of  <key=questiontype, value=questionidarray>
-         * 
-         * 
-         */
         
         $questionid = $_REQUEST['questionid'];
         // put question information in session
         $paper_generator = try_get_paper_generator();
         if ($paper_generator != null){
-            // todo:[2018-10-30]: fetch question detail from database by questionid, and build a question object for next line call;
-            // notice the add/remove logic: add the question if not in generator object; remove the question if already in generator;
-            // and the code to change button look and feel should also be executed in other function,like refreshquestioncart();
-            $paper_generator->addQuestion($questionid); // a question object need here
+            if (!$paper_generator->question_exists($questionid)){
+                // add the question to paper if it is not in the paper;
+                $paper_generator->add_question_by_id($questionid); // a question object need here
+                //todo: courseid is not set in papergenerator object;
+                $responseArr['btn'] = 'remove';
+                $responseArr['btn_text'] = get_string('removecart');
+               
+            }
+            else{
+                // remove the question from paper if the quesitonid is already in paper;
+                $paper_generator->remove_question_by_id($questionid);
+                
+                $responseArr['btn']='add';
+                $responseArr['btn_text'] = get_string('addcart');
+            }
+            
         }
-        /* [2018-10-30]: comment out when refactoring
-         * $responseArr = array();
         
-        // step 1: check if this question is already in session;
-        $questionCart = $_SESSION['question_cart'];
-        if (cart_question_exists($questionid, $questionCart)){
-            // remove the question from cart if it exits in cart;
-            ///$questionCart = removeArrayAt($questionCart, $questionid);
-            $questionCart = removeQuestionFromCart($questionid, $questionCart);
-            $responseArr['btn']='add';
-            $responseArr['btn_text'] = get_string('addcart');
-            $btn_text = get_string('addcart');
-        }else{
-            ///$questionDetails = getQuestionDetails($questionid);
-            ///$row = mysqli_fetch_assoc($questionDetails);
-            ///$questionArr = array($questionid => array('qid'=>$questionid, 'qbody'=>$row['qbody'], 'difficulty'=>$row['difficulty_id'], 'subject'=>$row['subjectid']));
-            ///foreach($questionArr as $key =>$value){
-            ///    $questionCart[$key] = $value;
-            ///}
-            $questionCart = addQuestionToCart($questionid, $questionCart);
-            $responseArr['btn'] = 'remove';
-            $responseArr['btn_text'] = get_string('removecart');
-            $btn_text = get_string('removecart');
-        } */
         //update cart in session
-        $_SESSION['paper_generator'] = $paper_generator;
+        $_SESSION['paper_generator'] = serialize( $paper_generator);
         echo json_encode($responseArr, JSON_UNESCAPED_UNICODE);
         break;
     case 'updatecartinfo':
@@ -88,7 +72,7 @@ switch( $action){
     case 'updatecartbrief':
         $paper_generator = try_get_paper_generator();
             $courseId = $paper_generator->courseId;
-            $qtypeArr= $paper_generator->question_type_group;
+            $qtypeArr= $paper_generator->question_type_groups;
             
             $html = ''; 
             //[2018-10-30 refactored]
@@ -96,7 +80,7 @@ switch( $action){
                 $qtypeDisplayStr = getQuesTypeDisplayStr($qtypeGroup->quesType);
                 $html .= '<li><a><span>';
                 $html .= ' <span>' . $qtypeDisplayStr . ':</span>';
-                $html .= ' <span>' .$qtypeGroup->getQuestionCout() .'</span>';
+                $html .= ' <span>' .$qtypeGroup->getQuestionCount() .'</span>';
                 $html .= '</span></a> </li>';    
             } // end of foreach 
             $html .='  <li><div class="text-center">
@@ -308,115 +292,16 @@ switch( $action){
         echo json_encode($qtypeStatistic, JSON_UNESCAPED_UNICODE);
         break;
     case 'getSubjectInCart':
-        $questionCart = $_SESSION['question_cart'];
-        $qtype_arr = $questionCart['qtype_data'];
-        $qidRange = '('; // array of all question ids in the cart;
-        foreach($qtype_arr  as $qtype =>$qid_arr){
-            foreach($qid_arr as $vl){
-                $qidRange .= $vl .',';
-            }
-        }
-        if (strlen($qidRange) >1 ){
-            // get rid of the last ',';
-            $qidRange = rtrim($qidRange, ','); 
-        }
-        $qidRange .= ')'; 
-        global $DB;
-        $querystr = "select subjectname, count(*) QC from tk_questions Q, tk_subjects S where Q.subjectid = S.subject_id and Q.question_id in " .$qidRange . ' group by subjectname';
-        $result = mysqli_query($DB, $querystr);
-        $responseArr = array();
-        if (!$result ){
-            die(mysqli_error($DB));
-        }
-        foreach($result as $vl){
-            $subjectItem['subject'] = $vl['subjectname'];
-            $subjectItem['QC'] = $vl['QC'];
-            $responseArr[] = $subjectItem;
-        }
-        echo json_encode($responseArr, JSON_UNESCAPED_UNICODE);
+        $result =  core_paper\PaperHelper::getSubjectReportInPaper();
+        echo $result;
         break;
     case 'getDifficultyInCart':
-        $questionCart = $_SESSION['question_cart'];
-        $qtype_arr = $questionCart['qtype_data'];
-        $qidRange = '('; // array of all question ids in the cart;
-        foreach($qtype_arr  as $qtype =>$qid_arr){
-            foreach($qid_arr as $vl){
-                $qidRange .= $vl .',';
-            }
-        }
-        if (strlen($qidRange) >1 ){
-            // get rid of the last ',';
-            $qidRange = rtrim($qidRange, ',');
-        }
-        $qidRange .= ')'; 
-        
-        global $DB;
-        
-        $querystr = "select item_name Difficulty, count(*) QC from tk_questions Q, tk_dictionary_items D  where Q.difficultylevel_id =D.id and Q.question_id in " .$qidRange . ' group by Difficulty';
-        $result = mysqli_query($DB, $querystr);
-        $responseArr = array();
-        if (!$result ){
-            die(mysqli_error($DB));
-        }
-        foreach($result as $vl){
-            $difficultyItem['Difficulty'] = $vl['Difficulty'];
-            $difficultyItem['QC'] = $vl['QC'];
-            $responseArr[] = $difficultyItem;
-        }
-        
-        echo json_encode($responseArr, JSON_UNESCAPED_UNICODE);
+        $result = core_paper\PaperHelper::getDifficultyReportInPaper();
+        echo $result;
         break;
     case 'getoverallreport':
-        $questionCart = $_SESSION['question_cart'];
-        $qtype_arr = $questionCart['qtype_data'];
-        
-        // get the value-name pair array of qtype;
-        $qtypeData = getQtypes();
-        $qtypeValueNameMap = array();
-        foreach($qtypeData as $vl){
-            $qtypeValueNameMap[$vl['item_value']] = $vl['item_name'];
-        }
-        
-        $html = '<table class="table table-hover table-striped">';
-        $html .= '<thead><tr><td>题型</td><td>知识点</td><td>试题数量</td></tr></thead>';
-        foreach($qtype_arr as $qtype=>$qid_arr){
-            $qidRange = '(';
-            foreach($qid_arr as $vl){
-                $qidRange .= $vl. ',';
-            }
-            if (strlen($qidRange) > 1){
-                $qidRange  = rtrim($qidRange, ','); //  get rid of the ',' at the end;
-            }
-            $qidRange .= ')';
-            $querystr = "select subjectname, count(*) QC from tk_questions Q , tk_subjects S where Q.subjectid= S.subject_id and Q.question_id in " . $qidRange . ' group by subjectname';
-            $result = mysqli_query($DB, $querystr);
-            if ($result ){
-                $rowCount = mysqli_num_rows($result);
-               
-               $index = 0;
-               foreach($result as $vl){
-                   $html .="<tr>";
-                   $index ++;
-                   $rowspan = '';
-                   if ( $index ==1)
-                   {
-                       if ($rowCount > 1){
-                            $rowspan = 'rowspan="' . $rowCount . '"';
-                            
-                        } 
-                        $html .= '<td ' . $rowspan . '>' . $qtypeValueNameMap [$qtype] . '</td>';
-                    }
-                   
-                   $html .= '<td>'.$vl['subjectname'] .'</td><td>'. $vl['QC'].'</td>';
-                   $html .= '</tr>';
-               }
-               
-            }
-            
-            
-        }
-        
-        echo $html;
+       $result = core_paper\PaperHelper::getOverallReportInPaper();
+       echo $result;
         break;
     case 'getcoursesubjects':
         // return subjects array of specified course;

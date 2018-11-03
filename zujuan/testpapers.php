@@ -106,6 +106,29 @@ if (!loginRequired($_SERVER['REQUEST_URI'])){die();}
         </div>
         <!--  end of modal-dialog -->
     </div> <!-- /end of confirmEdit dialog -->
+    <!--  Modal dialog for delete paper  -->
+    <div id="delete_paper-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!--  Modal dialog content -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">删除试卷</h4>
+                </div>
+                <div class="modal-body">
+                    <p>你确定要删除本试卷吗?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <a class="btn btn-danger btn-ok" onclick="delete_paper(this)">删除</a>
+                </div>
+                <!--  end of modal-footer -->
+            </div>
+            <!--  end of modal-content -->
+        </div>
+        <!--  end of modal-dialog -->
+    </div>
+    <!--  end of delete_course_modal -->    
         <!-- footer content -->
         <footer>
           <div class="pull-right">

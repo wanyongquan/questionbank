@@ -9,6 +9,7 @@
 ?>
 <?php  require_once '../config.php';?>
 <?php require_once '../includes/html_header.php';?>
+<?php require_once  $abs_doc_root.$qb_url_root.'/helpers/helper.php';?>
 
 <?php  if (!loginRequired($_SERVER['REQUEST_URI'])){die();} ?>
 <?php
@@ -19,8 +20,6 @@ if (!empty($action) && $action == 'edit'){
     /***********section 1: edit paper *********/
     $paperId = $_SESSION['paperid'];
 }
-
-$paper_generator = try_get_paper_generator();
 
 ?>
 
@@ -81,7 +80,9 @@ $paper_generator = try_get_paper_generator();
                         <div >
                         
                         <ul class="list-unstyled side_toolbar">
-                          <li><a href="<?php echo isset($courseid)? $qb_url_root.'/zujuan/pickquestions.php?courseid='.$courseid:$qb_url_root.'/zujuan/zujuan.php'  ?>"><?=get_string('continueaddquestion') ?></a></li>
+                          <li><a href="<?php 
+                                $paper_generator = try_get_paper_generator();
+                                echo isset($paper_generator->courseId)? $qb_url_root.'/zujuan/pickquestions.php?courseid='.$paper_generator->courseId:$qb_url_root.'/zujuan/zujuan.php'  ?>"><?=get_string('continueaddquestion') ?></a></li>
                           <li><a  href="#" data-toggle="modal" data-target="#confirmClear" data-backdrop="false"><?=get_string('clearcart') ?></a></li>
                           <li>
                             <a >试卷设置（标题）</a>

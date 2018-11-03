@@ -48,4 +48,35 @@ namespace core_qb;
     public function getQuestionCount(){
         return count( $this->questionArr);
     }
-}
+    
+    public function questionId_exists($questionId){
+        foreach($this->questionArr as $vl){
+            if($vl->questionId == $questionId){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public function remove_question($questionId){
+        foreach($this->questionArr as $vl){
+            if ($vl->questionId == $vl){
+                // remove the question from group array;
+                remove_Array_Value($this->questionArr, $vl);
+                break;
+            }
+        }
+    }
+
+    /**
+     * return a list of question id.
+     * @return array
+     */ 
+    public function getQuestionIdList(){
+        $questionIdArr = array();
+        foreach($this->questionArr as $question){
+            $questionIdArr[] = $question->questionId;
+        }
+        return $questionIdArr;
+    }
+ }

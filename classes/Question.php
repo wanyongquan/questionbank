@@ -8,21 +8,25 @@ class Question
      * {
      *   quesType : string,
      *   difficultId : int,
+     *   courseid : int
      *   subjectId: int,
      *   questionId: int
+     *  }
      */
     
-    private $quesType, $difficultId, $subjectId, $questionId;
+    private $courseId, $quesType, $difficultId, $subjectId, $questionId;
     /**
      * Create a new Question instance。
      * @param string $quesType
      * @param int $difficultId
+     * @param int $_courseId
      * @param int $subjectId
      * @param int $questionId
      */
-    public function __construct($quesType, $difficultId, $subjectId, $questionId){
+    public function __construct($quesType, $difficultId,$_courseId, $subjectId, $questionId){
         $this->quesType = $quesType;
         $this->difficultId = $difficultId;
+        $this->courseId = $_courseId;
         $this->subjectId = $subjectId;
         $this->questionId = $questionId;
     }

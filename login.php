@@ -92,7 +92,7 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
                 <input type="password" name="password" class="form-control" placeholder="请输入密码" required />
               </div>
               <div>
-                <button class= "btn btn-primary btn-block" type="submit" name="login">登陆</button>
+                <button class= "btn btn-primary btn-block" type="submit" name="login">登录</button>
               </div>
 
               <div class="clearfix"></div>

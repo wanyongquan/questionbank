@@ -368,6 +368,11 @@ function getCourseQuestions($courseId){
 }
 
 if (!function_exists('getQuestionDetails')){
+    /**
+     * return a mysqli_result object;
+     * @param int $qid
+     * @return mysqli_result
+     */
     function getQuestionDetails($qid){
         global $DB;
         $querystr = "select question_id, question_body, qtype, point, createdDate,";
@@ -836,7 +841,7 @@ function get_questions($courseId, $difficultyId, $qtype, $subjectIdArr){
     {   
         foreach($subjectIdArr as $vl)
         {
-            $subjectStr = $vl . ',';
+            $subjectStr .= $vl . ',';
         }
         // remove the last ',' at the end of line;
         $subjectStr = rtrim($subjectStr, ',');
@@ -847,6 +852,7 @@ function get_questions($courseId, $difficultyId, $qtype, $subjectIdArr){
         die('$subjectIdArr must be an array.');
     }
     $querystr = "select * from tk_questions where courseId = $courseId";
+    $querystr .= " and difficultylevel_id=" . $difficultyId;  
     $querystr .= sprintf(" and qtype='%s'  and subjectid in $subjectStr ", $qtype);
     $result = mysqli_query($DB, $querystr);
     if (!$result){

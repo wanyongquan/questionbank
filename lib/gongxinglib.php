@@ -11,7 +11,13 @@ function get_string($identifier){
     return $result;
 }
 
-function remove_Array_Value($arrData, $value){
+/**
+ * remove a element from array
+ * @param array $arrData
+ * @param  mixed $value
+ * @return false |mixed
+ */
+function remove_Array_Value(array $arrData, $value){
     if (!is_array($arrData)){
         return false;
     }

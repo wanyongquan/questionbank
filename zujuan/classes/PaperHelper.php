@@ -130,20 +130,23 @@ class PaperHelper{
             $html = '';
             $outindex = 0;
             $outLength = count($qtypeArr);
-            foreach ( $qtypeArr as $qtype => $qid_arr ) {
+            //foreach ( $qtypeArr as $qtype => $qid_arr ) {           
+            foreach ( $qtypeArr as $qtypeGroup) {
                 $outindex ++ ;
+                // disable / enable styles for move up/down buttons for question group;
                 $disableclass= "btn disabled";
                 $disable_outter_moveup = $outindex == 1? $disableclass : '';
                 $disable_outter_movedown= $outindex == $outLength ? $disableclass : '';
                 
-                foreach ( $qtypeData as $vl){
-                    if ($vl['item_value'] == $qtype){
+                // find the question type display string by type value;
+                foreach ( $qtypeData as $vl){    
+                    if ($vl['item_value'] == $qtypeGroup->quesType){
                         $qtypeName = $vl['item_name'];
                         break;
                     }
                 }
                 if (empty($qtypeName)){
-                    $qtypeName =  $qtype;
+                    $qtypeName =  $qtypeGroup->quesType;
                 }
                 $html .= '<div class="x_panel">
                           <div class="x_title">
@@ -156,14 +159,15 @@ class PaperHelper{
                           </div>
                           <div class="x_content">';
                 $innerIndex = 0;
-                $innerLength = count($qid_arr);
-                foreach ( $qid_arr as $vl ) {
+                $innerLength = $qtypeGroup->getQuestionCount();
+                // list all questions in the type group;
+                foreach ( $qtypeGroup->questionArr as $vl ) {
                     $innerIndex ++;
-                    $questionData = getQuestionDetails ( $vl );
+                    $questionData = getQuestionDetails ( $vl->questionId );
                     $ques = mysqli_fetch_assoc ( $questionData );
                     $disable_inner_moveup = $innerIndex == 1 ? $disableclass: '';
                     $disable_inner_movedown = $innerIndex == $innerLength ? $disableclass : '';
-                    $referedCount= \getQuestionReferedCount($vl);
+                    $referedCount= \getQuestionReferedCount($vl->questionId);
                     
                     $subjectId = $ques['subjectid'];
                     $subjectNameDetail = \getSubjectName($subjectId);
@@ -173,9 +177,9 @@ class PaperHelper{
                                 <div class="panel-heading">
                                 <h5 style="float:left; margin: 5px 0 6px;">难度：easy  组卷次数：'.$referedCount.' 入库时间： 2018-8-1</h5>
                                 <ul class="nav navbar-right widget-toolbar" >';
-                    $html .= ' <li style="float:left"><a class="collapse-link '. $disable_inner_moveup . '" data-id="' . $vl . '" onclick="movequestionup(this)"><i class="fa fa-arrow-up"></i>'.get_string('moveup') .'</a></li>';
+                    $html .= ' <li style="float:left"><a class="collapse-link '. $disable_inner_moveup . '" data-id="' . $vl->questionId . '" onclick="movequestionup(this)"><i class="fa fa-arrow-up"></i>'.get_string('moveup') .'</a></li>';
                     
-                    $html .= '  <li style="float:left"><a class="collapse-link '. $disable_inner_movedown . '" data-id="' . $vl . '" onclick="movequestiondown(this)"><i class="fa fa-arrow-down"></i>'. get_string('movedown').'</a> </li>';
+                    $html .= '  <li style="float:left"><a class="collapse-link '. $disable_inner_movedown . '" data-id="' . $vl->questionId . '" onclick="movequestiondown(this)"><i class="fa fa-arrow-down"></i>'. get_string('movedown').'</a> </li>';
                     
                     $html .= ' <li style="float:left"><a class="collapse-link" data-id="<?=$vl?>"><i class="fa fa-trash-o"></i>'. get_string('removecart').'</a></li>';
                     
@@ -327,7 +331,7 @@ class PaperHelper{
             
             $rowArr = array($vl['id'], $vl['title'],$vl['coursename'], $vl['examduration'], $vl['createdtime']);
             $rowArr[] = ' <a title="' .get_string('edit') .'" class="operationbtn" data-id="' .$vl['id'] .'" onClick="beforeEditPaper(this)" ><span class="blue"><i class="fa fa-edit"></i></span></a>
-                          <a title="'. get_string('delete') .'" class="operationbtn" data-id="' . $vl['id'] .'" data-toggle="modal" data-target="#deletepaper" data-backdrop="false"><span class="red"><i class="fa fa-trash-o"></i></span></a>';
+                          <a title="'. get_string('delete') .'" class="operationbtn" data-id="' . $vl['id'] .'" data-toggle="modal" data-target="#delete_paper-modal" data-backdrop="true"><span class="red"><i class="fa fa-trash-o"></i></span></a>';
             $dataArr[] = $rowArr;
         }
         $responseArr['data'] = $dataArr;
@@ -444,7 +448,7 @@ class PaperHelper{
             return false;
         }
         // automatically pick the questions using random algrithem
-        $paperGenerator = new \core_qb\PaperGenerator();
+        $paperGenerator = \try_get_paper_generator(); //new \core_qb\PaperGenerator();
         $paperGenerator->courseId = $courseId;
         $paperGenerator->difficultyId = $difficulty;
         $paperGenerator->setRequiredQuestionTypeAndNumbers($qtypeCountArr);
@@ -453,8 +457,141 @@ class PaperHelper{
         $paperGenerator->AutoPickQuestions();
         
         unset($_SESSION['paper_generator']);
-        $_SESSION['paper_generator']= $paperGenerator;
+        $_SESSION['paper_generator']= serialize($paperGenerator);
 
         return true;
+    }
+    
+    /**
+     * return report data of subject statistics;
+     * @return array
+     */
+    public static function getSubjectReportInPaper(){
+        $paper_generator = \try_get_paper_generator();
+        $questionIdArr = $paper_generator->getQuestionIdList();
+        
+        $qidRange = '('; // array of all question ids in the cart;
+        foreach($questionIdArr as $questionId){
+            $qidRange .= $questionId .',';
+        }
+        
+        if (strlen($qidRange) >1 ){
+            // get rid of the last ',';
+            $qidRange = rtrim($qidRange, ',');
+        }
+        $qidRange .= ')';
+        global $DB;
+        $querystr = "select subjectname, count(*) QC from tk_questions Q, tk_subjects S where Q.subjectid = S.subject_id and Q.question_id in " .$qidRange . ' group by subjectname';
+        $result = mysqli_query($DB, $querystr);
+        $responseArr = array();
+        if (!$result ){
+            die(mysqli_error($DB));
+        }
+        foreach($result as $vl){
+            $subjectItem['subject'] = $vl['subjectname'];
+            $subjectItem['QC'] = $vl['QC'];
+            $responseArr[] = $subjectItem;
+        }
+        return  json_encode($responseArr, JSON_UNESCAPED_UNICODE);
+    }
+    
+    /**
+     * Return report data of difficulty statistics;
+     * @return array
+     */
+    
+    public static function getDifficultyReportInPaper(){
+        $paper_generator = \try_get_paper_generator();
+        $questionIdArr = $paper_generator->getQuestionIdList();
+
+        $qidRange = '('; // array of all question ids in the cart;
+        foreach($questionIdArr as $questionId){
+            $qidRange .= $questionId .',';
+        }
+        
+        if (strlen($qidRange) >1 ){
+            // get rid of the last ',';
+            $qidRange = rtrim($qidRange, ',');
+        }
+        $qidRange .= ')';
+        
+        global $DB;
+        
+        $querystr = "select item_name Difficulty, count(*) QC from tk_questions Q, tk_dictionary_items D  where Q.difficultylevel_id =D.id and Q.question_id in " .$qidRange . ' group by Difficulty';
+        $result = mysqli_query($DB, $querystr);
+        $responseArr = array();
+        if (!$result ){
+            die(mysqli_error($DB));
+        }
+        foreach($result as $vl){
+            $difficultyItem['Difficulty'] = $vl['Difficulty'];
+            $difficultyItem['QC'] = $vl['QC'];
+            $responseArr[] = $difficultyItem;
+        }
+        
+        return json_encode($responseArr, JSON_UNESCAPED_UNICODE);
+    }
+    
+    /**
+     * return report data of overall statistics;
+     * @return string
+     */
+    public static function getOverallReportInPaper(){
+        $paper_generator = \try_get_paper_generator();
+        
+//         $questionCart = $_SESSION['question_cart'];
+//         $qtype_arr = $questionCart['qtype_data'];
+        
+        // get the value-name pair array of qtype;
+        $qtypeData = getQtypes();
+        $qtypeValueNameMap = array();
+        foreach($qtypeData as $vl){
+            $qtypeValueNameMap[$vl['item_value']] = $vl['item_name'];
+        }
+        
+        $html = '<table class="table table-hover table-striped">';
+        $html .= '<thead><tr><td>题型</td><td>知识点</td><td>试题数量</td></tr></thead>';
+//         foreach($qtype_arr as $qtype=>$qid_arr){
+        global $DB;
+        foreach($paper_generator->question_type_groups as $typeGroup){
+            $questionIdArr = $typeGroup->getQuestionIdList();
+            $qidRange = '(';
+            foreach($questionIdArr as $vl){
+                $qidRange .= $vl. ',';
+            }
+            if (strlen($qidRange) > 1){
+                $qidRange  = rtrim($qidRange, ','); //  get rid of the ',' at the end;
+            }
+            $qidRange .= ')';
+            $querystr = "select  subjectname, count(*) QC from tk_questions Q , tk_subjects S where Q.subjectid= S.subject_id and Q.question_id in " . $qidRange . ' group by  subjectname';
+            $result = mysqli_query($DB, $querystr);
+            if ($result ){
+                $rowCount = mysqli_num_rows($result);
+                
+                $index = 0;
+                foreach($result as $vl){
+                    $html .="<tr>";
+                    $index ++;
+                    $rowspan = '';
+                    // the first column is need in one cell;
+                    if ( $index ==1)
+                    {
+                        if ($rowCount > 1){
+                            $rowspan = 'rowspan="' . $rowCount . '"';
+                            
+                        }
+                        $html .= '<td ' . $rowspan . '>' . $qtypeValueNameMap [$typeGroup->quesType] . '</td>';
+                    }
+                    
+                    $html .= '<td>'.$vl['subjectname'] .'</td><td>'. $vl['QC'].'</td>';
+                    $html .= '</tr>';
+                }
+                
+            }
+            
+            
+        }
+        
+        return $html;
     }
 }
